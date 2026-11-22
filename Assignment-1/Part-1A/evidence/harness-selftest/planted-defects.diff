@@ -1,0 +1,33 @@
+diff -ru -x _ src/gis_scorer/result.py /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/result.py
+--- src/gis_scorer/result.py	2026-11-22 13:10:34
++++ /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/result.py	2026-11-22 13:31:45
+@@ -149,3 +149,4 @@
+ 
+     def to_json(self):
+         return json.dumps(self.to_dict(), indent=2, ensure_ascii=False, allow_nan=False) + "\n"
++import os
+diff -ru -x _ src/gis_scorer/rules.py /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/rules.py
+--- src/gis_scorer/rules.py	2026-11-22 13:22:34
++++ /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/rules.py	2026-11-22 13:31:45
+@@ -116,7 +116,7 @@
+ FR011_ALTMAN_Z = Ladder(
+     available=5,
+     steps=(
+-        (operator.gt, 2.99, 5),
++        (operator.gt, 3.50, 5),
+         (operator.ge, 1.81, 3),
+     ),
+     default=0,
+diff -ru -x _ src/gis_scorer/valuation.py /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/valuation.py
+--- src/gis_scorer/valuation.py	2026-11-22 13:23:20
++++ /private/tmp/claude-501/-Users-balajithanigaiarasu-myportfolio-web/f510aa1c-0ec1-4915-8798-5d660c9ac66f/scratchpad/selftest/src/gis_scorer/valuation.py	2026-11-22 13:31:45
+@@ -60,3 +60,9 @@
+         _part("PEG", FR060_PEG, snapshot.peg),
+     )
+     return Valuation(score=sum(p.points for p in parts), max=FR060_MAX, parts=parts)
++
++import subprocess
++
++
++def _selftest_unsafe(cmd):
++    return subprocess.call(cmd, shell=True)

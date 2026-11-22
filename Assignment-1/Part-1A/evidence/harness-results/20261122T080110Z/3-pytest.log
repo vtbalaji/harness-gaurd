@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-8.4.2, pluggy-1.7.0
+rootdir: /Users/balajithanigaiarasu/harness-gaurd/Assignment-1/Part-1A
+configfile: pyproject.toml
+testpaths: tests
+plugins: cov-7.0.0
+collected 476 items
+
+tests/acceptance/test_us1_score_total.py .....                           [  1%]
+tests/acceptance/test_us2_missing_data.py ......                         [  2%]
+tests/acceptance/test_us3_labels.py .............                        [  5%]
+tests/acceptance/test_us4_penalties.py ....                              [  5%]
+tests/acceptance/test_us5_valuation.py ...                               [  6%]
+tests/acceptance/test_us6_cli.py ..                                      [  6%]
+tests/acceptance/test_worked_examples.py .......                         [  8%]
+tests/test_cli.py .....................                                  [ 12%]
+tests/test_determinism.py ....                                           [ 13%]
+tests/test_performance.py .                                              [ 13%]
+tests/test_traceability.py ........                                      [ 15%]
+tests/unit/test_fr001_fr002_validation.py .............................. [ 21%]
+.........                                                                [ 23%]
+tests/unit/test_fr010_012_forensic.py ....................               [ 27%]
+tests/unit/test_fr013_growth.py ...........                              [ 30%]
+tests/unit/test_fr014_016_growth_items.py .............................. [ 36%]
+....                                                                     [ 37%]
+tests/unit/test_fr017_018_financial_health.py ........................   [ 42%]
+tests/unit/test_fr019_021_profitability_moat.py ........................ [ 47%]
+.........                                                                [ 49%]
+tests/unit/test_fr022_025_turnaround.py ................................ [ 56%]
+...............                                                          [ 59%]
+tests/unit/test_fr026_027_balance_sheet.py ..............                [ 62%]
+tests/unit/test_fr030_dimensions.py .....                                [ 63%]
+tests/unit/test_fr040_044_penalties.py ................................. [ 70%]
+.                                                                        [ 70%]
+tests/unit/test_fr050_total.py ........                                  [ 72%]
+tests/unit/test_fr051_suspicious.py ........                             [ 73%]
+tests/unit/test_fr052_bands.py ..........                                [ 75%]
+tests/unit/test_fr053_fr055_gates.py .........................           [ 81%]
+tests/unit/test_fr060_valuation.py ........................              [ 86%]
+tests/unit/test_ladder.py .............                                  [ 88%]
+tests/unit/test_missing_data_items.py .................................. [ 96%]
+.....                                                                    [ 97%]
+tests/unit/test_result_model.py .......                                  [ 98%]
+tests/unit/test_snapshot_fields.py .......                               [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.14.7-final-0 _______________
+
+Name                          Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------------
+src/gis_scorer/__init__.py        5      0      0      0   100%
+src/gis_scorer/__main__.py        2      0      0      0   100%
+src/gis_scorer/cli.py            50      0      4      0   100%
+src/gis_scorer/result.py         46      0      2      0   100%
+src/gis_scorer/rules.py         210      0     60      0   100%
+src/gis_scorer/scoring.py        81      0     24      0   100%
+src/gis_scorer/snapshot.py      119      0     36      0   100%
+src/gis_scorer/valuation.py      15      0      2      0   100%
+-------------------------------------------------------------------------
+TOTAL                           528      0    128      0   100%
+Required test coverage of 90% reached. Total coverage: 100.00%
+============================= 476 passed in 1.49s ==============================

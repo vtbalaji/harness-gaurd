@@ -108,3 +108,13 @@ Red/green runs and notes recorded as tasks.md asks ("record the red/green runs i
   - Quickstart setup, run, sample-table and library-api examples were checked by hand and all
     match.
 - T082: the R-tagged tests are listed in the completion report.
+
+## Harness phase (run by the owner's session, 2026-11-22)
+
+- Initial generation snapshotted to `evidence/initial-generation/` (commit 133a591) before any harness run.
+- T079: `.harness/run_harness.sh` run 1 at 20261122T080110Z → Gate 1 PASS, Gate 2 PASS, Gate 3 PASS, OVERALL PASS (exit 0). 476 passed, coverage 100% (lines and branches).
+- T073–T076 ticked with T079 per the C1 rule.
+- T080: `3-pytest.log` shows rules.py, scoring.py and valuation.py at 100% statements and branches (SC-002).
+- T081: quickstart Q8 (the harness) done by T079; the other quickstart steps were checked during implement.
+- T007: not run as a smoke test (see tasks.md); harness self-test with planted defects in a scratch copy is in `evidence/harness-selftest/`.
+- No repair cycles were needed; `evidence/final-generation/` is identical to `evidence/initial-generation/`.

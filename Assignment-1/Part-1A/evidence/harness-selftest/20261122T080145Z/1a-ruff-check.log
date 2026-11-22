@@ -1,0 +1,30 @@
+E402 Module level import not at top of file
+   --> src/gis_scorer/result.py:152:1
+    |
+150 |     def to_json(self):
+151 |         return json.dumps(self.to_dict(), indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+152 | import os
+    | ^^^^^^^^^
+    |
+
+F401 [*] `os` imported but unused
+   --> src/gis_scorer/result.py:152:8
+    |
+150 |     def to_json(self):
+151 |         return json.dumps(self.to_dict(), indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+152 | import os
+    |        ^^
+    |
+help: Remove unused import: `os`
+
+E402 Module level import not at top of file
+  --> src/gis_scorer/valuation.py:64:1
+   |
+62 |     return Valuation(score=sum(p.points for p in parts), max=FR060_MAX, parts=parts)
+63 |
+64 | import subprocess
+   | ^^^^^^^^^^^^^^^^^
+   |
+
+Found 3 errors.
+[*] 1 fixable with the `--fix` option.
