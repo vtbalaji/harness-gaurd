@@ -133,4 +133,4 @@ Follow FR-033 and constitution Principle VII:
 4. Rerun the **same** evaluation.
 
 Do not edit thresholds, cases or ground truth. If the 4B model still fails after reasonable
-repairs, stop and report the failure with the evidence. ACCEPT/REJECT is Balaji's decision.
+repairs, stop and report the failure with the evidence. ACCEPT/REJECT is Balakrishnan's decision.

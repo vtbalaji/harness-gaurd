@@ -113,7 +113,7 @@ See [contracts/output.schema.json](./contracts/output.schema.json), FR-001 … F
 | `additional_orders` | list of AdditionalOrder |
 | `evidence` | TopEvidence (keys ⊆ {`company`, `announcement_date`, `order_value`, `currency`, `unit`, `client`, `order_type`, `execution_period`}) |
 | `missing_fields` | list ⊆ {`order_value`, `client`}, unique |
-| `unstated_fields` | list ⊆ {`company`, `announcement_date`, `order_type`, `execution_period`}, unique, in that fixed order. These are the null optional fields (FR-012 rev 2, INV-10). `[]` for `rejected`; only `company` / `announcement_date` for `not_an_order`. P-5, **CONFIRMED by Balaji 2026-11-22** |
+| `unstated_fields` | list ⊆ {`company`, `announcement_date`, `order_type`, `execution_period`}, unique, in that fixed order. These are the null optional fields (FR-012 rev 2, INV-10). `[]` for `rejected`; only `company` / `announcement_date` for `not_an_order`. P-5, **CONFIRMED by Balakrishnan 2026-11-22** |
 | `rejection_reason` | `empty` \| `whitespace_only` \| `too_long` \| `garbled` \| null |
 
 - **Order**: `order_value`, `currency`, `unit`, `value_in_cr` (rev 3), `client`, `order_type`
@@ -155,7 +155,7 @@ computed value is the declared derived field `value_in_cr` (A-9, rev 3).
   fixed order.
 - **A-6**: `status = extracted` if `missing_fields` is empty, else `needs_clarification`.
 - **A-7**: `schema_version = "1.0"`, `rejection_reason = null`.
-- **A-8** (rev 2, P-5, **CONFIRMED by Balaji 2026-11-22**): this rule applies after A-1 or after
+- **A-8** (rev 2, P-5, **CONFIRMED by Balakrishnan 2026-11-22**): this rule applies after A-1 or after
   A-2 … A-7.
 
   ```text
@@ -288,7 +288,7 @@ input bytes
   (`validators.check_output`) and the runner's own `structural_check`.
 - **DG-5**: each injection case's `counterpart_id` exists and has the same ground-truth status.
 - **DG-6**: `rejection_reason` is consistent with the ground truth.
-- **DG-7**: no case has more than 4 orders (P-3, CONFIRMED by Balaji 2026-11-22).
+- **DG-7**: no case has more than 4 orders (P-3, CONFIRMED by Balakrishnan 2026-11-22).
 - **DG-8** (rev 2, L4; rev 3): each case's `expected_properties.invariants` equals, as a set, the
   invariants that apply when the ground truth is the candidate, using the spec's "Applies to"
   column:
@@ -335,7 +335,7 @@ The ground-truth status is the expected agent status.
 | N02 | LoA "Rs 12.5 Cr" EPC from a named state transmission PSU; dated "20.11.2026" | normal_single_order, unit_crore | extracted | AC-1.4, FR-004, FR-007 | |
 | N03 | O&M services "Rs. 85.40 lakh" | normal_single_order, unit_lakh | extracted | AC-1.2, FR-007 | |
 | N04 | Export "USD 15 million" from a named overseas client | normal_single_order, unit_million | extracted | AC-1.3, FR-006, FR-007 | |
-| N05 | Defence order "340 crore" (no currency marker) from Ministry of Defence; "November 20, 2026" | normal_single_order, edge_case | extracted | AC-1.4, AC-1.6, FR-006, FR-007, FR-035 | P-2 (CONFIRMED by Balaji 2026-11-22); INV-11 |
+| N05 | Defence order "340 crore" (no currency marker) from Ministry of Defence; "November 20, 2026" | normal_single_order, edge_case | extracted | AC-1.4, AC-1.6, FR-006, FR-007, FR-035 | P-2 (CONFIRMED by Balakrishnan 2026-11-22); INV-11 |
 | N06 | "₹45,00,000" supply order received by a subsidiary; no date in text | normal_single_order, edge_case | extracted | AC-1.4, FR-003, FR-006 | null date |
 | U01 | (rev 3) Installation and commissioning work order "INR 48.5 million" from Bharat Heavy Electricals Limited, "to be completed by March 2027", dated "21/11/2026" | normal_single_order, unit_million | extracted | AC-1.6, FR-006, FR-007, FR-035 | INR million → value_in_cr 4.85; INV-11 |
 | M01 | ₹800 crore (X) and ₹450 crore (Y), aggregate ₹1,250 crore stated | multiple_orders | extracted | AC-4.1, FR-009 | |
@@ -398,7 +398,7 @@ Ground-truth `value_in_cr` per case (rev 3; every order object carries the key):
 | M03 | null (EUR 2.3 Mn) | 15 (₹15 crore), 0.4 (₹40 lakh) |
 | A01, A04, V01 | null (value null, so currency null) | — |
 | K01 | null (USD) | — |
-| X05 | the conversion of its base order text's INR value, per FR-035 (author's choice, fixed by T029) | — |
+| X05 | 62.75 (₹62.75 crore in its base order text; fixed by T029) | — |
 | E01 | 500 | — |
 | E02 | 600 | — |
 | A02, A03, R01, R02, J02, P01, X01–X04 | no order object | — |

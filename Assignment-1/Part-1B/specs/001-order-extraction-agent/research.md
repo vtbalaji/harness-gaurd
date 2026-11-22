@@ -14,7 +14,7 @@ evaluation run. Every reading that used to be "plan-level" is now written in the
 FR-031, AC-5.6), and the decisions below follow that text. Sections changed in rev 2 are marked
 "(rev 2)".
 
-**Spec rev 3 (2026-11-22)**: Balaji answered Q3 (P-2) and Q4 (P-3) in the project thread. Both
+**Spec rev 3 (2026-11-22)**: Balakrishnan answered Q3 (P-2) and Q4 (P-3) in the project thread. Both
 are confirmed, and the Q3 answer adds the derived field `value_in_cr` (spec FR-035, INV-11; R-17
 below). No evaluation has run. Sections changed in rev 3 are marked "(rev 3)".
 
@@ -30,17 +30,17 @@ heading and its anchor are kept so that existing links still work.
 
 ### P-1 — The five Assumption defaults in spec.md
 
-**CONFIRMED by Balaji 2026-11-22**
+**CONFIRMED by Balakrishnan 2026-11-22**
 
 Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#assumptions):
 
 | # | Default | Where it is applied |
 |---|---|---|
-| P-1.1 | L1-bidder status and MoUs are `not_an_order`. **CONFIRMED by Balaji 2026-11-22** | prompt rule; cases A02, A03 |
-| P-1.2 | An unnamed client ("a leading PSU", "a reputed overseas customer") counts as missing → `needs_clarification`. A named government department or PSU is a client. **CONFIRMED by Balaji 2026-11-22** | prompt rule; case K01 |
-| P-1.3 | Ranges, "between", "up to" are ambiguous (value null). "Approximately / about / over / more than X" reports X. **CONFIRMED by Balaji 2026-11-22** | prompt rule; cases A01, A04, E01 |
-| P-1.4 | Maximum input length is 20,000 code points. **CONFIRMED by Balaji 2026-11-22** | `guards.MAX_CHARS`; cases X04, X05 |
-| P-1.5 | Reference FX rates for ranking only: USD = 84 INR, EUR = 90 INR. They are never applied to `value_in_cr` (rev 3). **CONFIRMED by Balaji 2026-11-22** | `validators` ranking; INV-9; case M03 |
+| P-1.1 | L1-bidder status and MoUs are `not_an_order`. **CONFIRMED by Balakrishnan 2026-11-22** | prompt rule; cases A02, A03 |
+| P-1.2 | An unnamed client ("a leading PSU", "a reputed overseas customer") counts as missing → `needs_clarification`. A named government department or PSU is a client. **CONFIRMED by Balakrishnan 2026-11-22** | prompt rule; case K01 |
+| P-1.3 | Ranges, "between", "up to" are ambiguous (value null). "Approximately / about / over / more than X" reports X. **CONFIRMED by Balakrishnan 2026-11-22** | prompt rule; cases A01, A04, E01 |
+| P-1.4 | Maximum input length is 20,000 code points. **CONFIRMED by Balakrishnan 2026-11-22** | `guards.MAX_CHARS`; cases X04, X05 |
+| P-1.5 | Reference FX rates for ranking only: USD = 84 INR, EUR = 90 INR. They are never applied to `value_in_cr` (rev 3). **CONFIRMED by Balakrishnan 2026-11-22** | `validators` ranking; INV-9; case M03 |
 
 - **Rationale**: these are the spec's own defaults. They are conservative: when in doubt the agent
   reports "missing" or "not an order" instead of a guess.
@@ -50,7 +50,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-2 — "Cr" / "crore" / "lakh" with no currency symbol is INR
 
-**CONFIRMED by Balaji 2026-11-22**
+**CONFIRMED by Balakrishnan 2026-11-22**
 
 - **Confirmation (rev 3)**: spec Clarifications Q3, answered in the project thread on 2026-11-22
   in the owner's words: "1b unless is mentioned in $". It is read as two rules:
@@ -75,7 +75,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-3 — `num_predict` stays 700; at most 4 itemised orders per announcement in v1
 
-**CONFIRMED by Balaji 2026-11-22**
+**CONFIRMED by Balakrishnan 2026-11-22**
 
 - **Confirmation (rev 3)**: spec Clarifications Q4, answered in the project thread on 2026-11-22
   in the owner's words: "max 4 order". v1 handles at most 4 itemised orders per announcement, and
@@ -99,7 +99,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-4 — Amendments, extensions and corrigenda are `not_an_order`
 
-**CONFIRMED by Balaji 2026-11-22**
+**CONFIRMED by Balakrishnan 2026-11-22**
 
 - **Decision**: an announcement that amends, extends, corrects (corrigendum) or re-states an order
   that was **already disclosed** is `not_an_order`, unless the text explicitly calls it a new or
@@ -113,7 +113,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-5 — Explicit marker for unstated optional fields: `unstated_fields` (spec rev 2)
 
-**CONFIRMED by Balaji 2026-11-22**
+**CONFIRMED by Balakrishnan 2026-11-22**
 
 - **Decision**: schema 1.0 gains a required top-level array `unstated_fields`. It lists every
   **optional** field that is null in the result: `company` and `announcement_date` when null, and,
@@ -290,7 +290,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
   - it copies `value_quote` to the `order_value`, `currency` and `unit` evidence keys and
     `client_quote` to `client`, which FR-010 allows ("one quote may support several fields");
   - it adds the constants `schema_version` and `rejection_reason: null`;
-  - it derives `unstated_fields` from the nulls (A-8, P-5, **CONFIRMED by Balaji 2026-11-22**);
+  - it derives `unstated_fields` from the nulls (A-8, P-5, **CONFIRMED by Balakrishnan 2026-11-22**);
   - it computes `value_in_cr` for every order from the order's own `order_value`, `currency` and
     `unit` (A-9, spec FR-035, rev 3; R-17).
 
@@ -367,7 +367,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
   | `C-1` | `missing_fields` is inconsistent | L2 |
   | `C-2` | the ranking does not hold | L2 |
   | `C-3` | the status is inconsistent | L2 |
-  | `C-4` | `unstated_fields` is not exactly the null optional fields (rev 2, P-5, **CONFIRMED by Balaji 2026-11-22**) | L2 |
+  | `C-4` | `unstated_fields` is not exactly the null optional fields (rev 2, P-5, **CONFIRMED by Balakrishnan 2026-11-22**) | L2 |
   | `C-5` | a `value_in_cr` is not the FR-035 conversion of its order, or is non-null for a non-INR order (rev 3) | L2 |
 
   C-1 … C-5 hold by construction. They are checked anyway as a guard against regressions. C-5
@@ -768,3 +768,43 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
     already grounds it.
   - (e) A new schema version 1.1. Rejected: 1.0 has never been used by a run and its pin was still
     pending, so the constitution's "version bump on change" applies from T098 on.
+
+---
+
+## Implementation notes (`/speckit-implement`, 2026-11-22)
+
+Details settled while implementing (T089). None changes a requirement, threshold, case or
+ground truth; each one narrows a design statement above.
+
+- **R-9, opener**: a bare `urllib.request.OpenerDirector` with only the four HTTP handlers
+  returns `None` (no error) for a `file:`, `ftp:` or `data:` URL. `client.build_opener()`
+  therefore returns a small `OpenerDirector` subclass, still holding only those four handlers,
+  that raises `URLError` for any scheme other than http/https before any handler or socket is
+  involved. `bandit -r src .harness -ll` reports nothing, so the `http.client` fallback was not
+  needed.
+- **R-9, classification**: an `HTTPError` exception (an HTTP status ≥ 400) is classified as
+  `http_error`, ahead of the generic `URLError` → `unreachable` row. `default_transport` never
+  raises it, because it returns the status and body instead.
+- **R-9, evidence**: each `Attempt` keeps the verbatim response body (`response_body`) for the
+  `raw/` evidence files; the per-case summary (`to_dict()`) omits it.
+- **R-8**: PC-3 also rejects the non-JSON constants `NaN` / `Infinity` and duplicate object keys.
+  Neither is valid, unambiguous JSON, and nothing is repaired.
+- **R-1**: a trailing `$` in a schema `pattern` is matched as ECMA-262 end of input (Python's
+  `$` would also match before a final newline).
+- **R-3**: the 85% recognised-ratio comparison is exact decimal arithmetic (`0.85 * 100` is not
+  85.0 in binary floating point, which would reject the exact boundary).
+- **R-4**: the parties section names the NSE as "the National Stock Exchange of India (NSE)",
+  without "Limited", because the bare addressee line "National Stock Exchange of India Limited"
+  occurs in dataset inputs, and no dataset line may appear in the prompt (T067).
+- **R-11**: `pip_freeze` is read through `importlib.metadata` and git HEAD is read from the
+  `.git` directory, so the runner starts no subprocess. A pin-check request failure is recorded
+  as `request_failed: <path> <kind>: …` in `pin_check.mismatches`.
+- **R-13, dataset gate**: DG-9 is checked before DG-4, so a wrong or missing ground-truth
+  `value_in_cr` is reported as DG-9 even when the schema also rejects it. DG-3 checks an injection
+  case's own status class; equality with the counterpart is DG-5.
+- **R-13, counting**: `service_failures.model.retried_attempts` counts the failed attempts of
+  cases that were resolved by a later attempt. A case with no candidate has one layer-2 entry
+  `INV-1: no candidate`; its `application_failures.checks` list the agent codes (e.g. `EXC`).
+- **R-15**: two runs started in the same second get distinct folders (`<stamp>`, `<stamp>-2`).
+- **CLI**: `cli.main` also takes a keyword-only `sleep` (default `time.sleep`), so tests do not
+  wait through the backoff.

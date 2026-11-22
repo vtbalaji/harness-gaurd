@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Revision**: rev 3 (2026-11-22). See [Spec revisions](#spec-revisions).
+**Revision**: rev 5 (2026-11-22; rev 4 is the Dataset binding, rev 5 the owner name and schema-byte restore). See [Spec revisions](#spec-revisions).
 
 **Input**: User description (verbatim, non-interactive run):
 
@@ -26,7 +26,7 @@
 >
 > Evaluation (declare this in the spec as requirements, BEFORE any evaluation exists): dataset of at least 18 cases in evals/dataset.json; Layer 1 structural (100%); Layer 2 invariants INV-1..INV-7 (100% of cases); Layer 3 semantic field accuracy (>= 80%); informational LLM judge (qwen3.6-35b-a3b on the "tinytitan" MLX server, http://127.0.0.1:8081/v1/chat/completions, temperature 0); verdict PASS / INCONCLUSIVE rules; service vs application failures; up to 2 retries for service failures only; thresholds never lowered, cases never dropped, ground truth changed only by spec revision; stop and report if the 4B model cannot meet the threshold after reasonable repairs.
 >
-> Users: an analyst who wants reliable order-win data from announcements; the evaluator (Balaji) who decides ACCEPT/REJECT from the evidence.
+> Users: an analyst who wants reliable order-win data from announcements; the evaluator (Balakrishnan) who decides ACCEPT/REJECT from the evidence.
 
 *(The evaluation part of the input is summarised above; its full content is restated as binding requirements in [Evaluation Requirements](#evaluation-requirements).)*
 
@@ -35,12 +35,12 @@
 ### Session 2026-11-22
 
 - Q: What num_ctx formula matches myportfolio-web? → A: `num_ctx = max(4096, len(prompt) // 3 + num_predict + 512)` with `num_predict = 700` (source: owner's myportfolio-web `scripts/fundamental/announcements_v2/helpers.py`, consulted read-only). Applied to FR-020, FR-022 and Assumptions.
-- Q3 (P-2): An amount stated in crore/Cr/lakh with no currency marker (e.g. "an order of 340 crore") — is it INR? → A: owner's words "1b unless is mentioned in $". Yes: such an amount is `INR`. In addition, the agent reports every INR amount **also converted to crore** (`value_in_cr`), unless the amount is in $ (USD) or any other non-INR currency, in which case no conversion is made (confirmed by Balaji in the project thread, 2026-11-22). Applied in rev 3 to FR-005, FR-006, FR-009, FR-035, AC-1.1 … AC-1.3, AC-1.6, INV-11 and the output schema.
-- Q4 (P-3): How many itemised orders per announcement must v1 handle within `num_predict = 700`? → A: owner's words "max 4 order". v1 handles at most 4 itemised orders per announcement, and `num_predict` stays 700 (confirmed by Balaji in the project thread, 2026-11-22). Applied in rev 3 to FR-009 and Assumptions.
+- Q3 (P-2): An amount stated in crore/Cr/lakh with no currency marker (e.g. "an order of 340 crore") — is it INR? → A: owner's words "1b unless is mentioned in $". Yes: such an amount is `INR`. In addition, the agent reports every INR amount **also converted to crore** (`value_in_cr`), unless the amount is in $ (USD) or any other non-INR currency, in which case no conversion is made (confirmed by Balakrishnan in the project thread, 2026-11-22). Applied in rev 3 to FR-005, FR-006, FR-009, FR-035, AC-1.1 … AC-1.3, AC-1.6, INV-11 and the output schema.
+- Q4 (P-3): How many itemised orders per announcement must v1 handle within `num_predict = 700`? → A: owner's words "max 4 order". v1 handles at most 4 itemised orders per announcement, and `num_predict` stays 700 (confirmed by Balakrishnan in the project thread, 2026-11-22). Applied in rev 3 to FR-009 and Assumptions.
 
-- Q5 (P-4): Is an amendment, extension or corrigendum of an already-disclosed order a new order? → A: owner's words "Q5 not_an_order": it is `not_an_order` unless the text calls it a new or additional order. (Confirmed by Balaji in the project thread, 2026-11-22.)
-- Q6 (P-5): How are null OPTIONAL fields marked? → A: owner's words "yes to Q6": a top-level `unstated_fields` list (spec rev 2, INV-10). (Confirmed by Balaji in the project thread, 2026-11-22.)
-- Q7 (P-1.1–P-1.5): Are the five Assumption defaults accepted (20,000-character cap; L1-bidder and MoU are `not_an_order`; an unnamed client such as "a leading PSU" is a missing client; ranges and "up to X" are ambiguous; USD = 84 / EUR = 90 INR only to rank orders)? → A: owner's words "yes to … all five". (Confirmed by Balaji in the project thread, 2026-11-22.)
+- Q5 (P-4): Is an amendment, extension or corrigendum of an already-disclosed order a new order? → A: owner's words "Q5 not_an_order": it is `not_an_order` unless the text calls it a new or additional order. (Confirmed by Balakrishnan in the project thread, 2026-11-22.)
+- Q6 (P-5): How are null OPTIONAL fields marked? → A: owner's words "yes to Q6": a top-level `unstated_fields` list (spec rev 2, INV-10). (Confirmed by Balakrishnan in the project thread, 2026-11-22.)
+- Q7 (P-1.1–P-1.5): Are the five Assumption defaults accepted (20,000-character cap; L1-bidder and MoU are `not_an_order`; an unnamed client such as "a leading PSU" is a missing client; ranges and "up to X" are ambiguous; USD = 84 / EUR = 90 INR only to rank orders)? → A: owner's words "yes to … all five". (Confirmed by Balakrishnan in the project thread, 2026-11-22.)
 
 *All open items are now confirmed; no PROVISIONAL decision remains.*
 
@@ -76,7 +76,7 @@ list. No case is dropped.
   - (d) INV-9 is rewritten for currency `other`, and is now strictly no looser than FR-009;
   - (e) the pin check in verdict rule 1 is defined exactly.
 - **C3**: FR-001, FR-012 and FR-015 (and schema 1.0) gain `unstated_fields`. FR-028 gains INV-10
-  and the agent code C-4. This is P-5, **CONFIRMED by Balaji 2026-11-22**. Schema 1.0 had not been
+  and the agent code C-4. This is P-5, **CONFIRMED by Balakrishnan 2026-11-22**. Schema 1.0 had not been
   used by any run, so the change is made in 1.0 before its first use.
 - **L7**: FR-033 requires a prompt-version bump for every repair that changes the prompt.
 - **E1**: layer 1 also requires the evaluation runner's own independent structural check (FR-027).
@@ -105,7 +105,7 @@ list. No case is dropped.
 
 ### Rev 3 — 2026-11-22 (owner answers Q3 / Q4: P-2 and P-3 confirmed; `value_in_cr`)
 
-**Reason**: the owner, Balaji, answered Q3 (P-2) and Q4 (P-3) in the project thread on
+**Reason**: the owner, Balakrishnan, answered Q3 (P-2) and Q4 (P-3) in the project thread on
 2026-11-22 (see [Clarifications](#clarifications)). The Q3 answer adds a requirement: every INR
 amount is also reported in crore. **No evaluation has run**, schema 1.0 has not been used by any
 run, its SHA-256 pin has not been recorded (`PENDING-T098`), and the dataset has not been authored
@@ -114,12 +114,12 @@ or bound. The field is therefore added to schema 1.0 before its first use, with 
 **Unchanged**: the thresholds (layer 1 100%, layer 2 100%, layer 3 ≥ 80%), the 0.5% value
 tolerance, the reference FX rates (USD 84, EUR 90, still CONFIRMED P-1.5 and still used only
 for ranking), the 9 layer-3 fields per case, the retry limit, `num_predict = 700`. No case is
-dropped. P-1, P-4 and P-5 stay **CONFIRMED by Balaji 2026-11-22**.
+dropped. P-1, P-4 and P-5 stay **CONFIRMED by Balakrishnan 2026-11-22**.
 
 **Changes**:
 
-- **Clarifications**: Q3 and Q4 recorded, confirmed by Balaji in the project thread on
-  2026-11-22. Research P-2 and P-3 are now "CONFIRMED by Balaji 2026-11-22".
+- **Clarifications**: Q3 and Q4 recorded, confirmed by Balakrishnan in the project thread on
+  2026-11-22. Research P-2 and P-3 are now "CONFIRMED by Balakrishnan 2026-11-22".
 - **FR-006 (P-2)**: an amount in crore or lakh with no currency marker is `INR`.
 - **FR-009 (P-3)**: v1 handles at most 4 itemised orders per announcement.
 - **FR-035 (new)**: every order object (the top-level `order` and each `additional_orders` item)
@@ -149,10 +149,47 @@ dropped. P-1, P-4 and P-5 stay **CONFIRMED by Balaji 2026-11-22**.
 - T098 records the SHA-256 of the schema files **as they stand after rev 3**, in
   [Schema file pins](#schema-file-pins-rev-2). The `output.schema.json` row records the rev 3
   bytes. The `model-response.schema.json` row records bytes that rev 3 did not change.
-- The *Dataset binding* entry is now **rev 4**, written by T093.
+- The *Dataset binding* entry is now **rev 4**, written by T093. *(Done: rev 4, 2026-11-22.)*
 - Schema pins recorded by T098 on 2026-11-22.
 
 **Until both exist, the constitution's gate before the first evaluation is not met.**
+
+### Rev 4 — 2026-11-22 (Dataset binding)
+
+**Reason**: binds the authored ground truth to the spec before the first evaluation; no evaluation has run.
+
+**Dataset**: `evals/dataset.json`, `dataset_version` 1.0, the 28 planned cases (data-model.md
+Planned cases), authored by tasks T027–T029 from the spec rules (rev 2 and rev 3).
+
+**Authoring corrections from T030**: none. No ground-truth value was changed after the dataset
+contract test (T020) first ran against it.
+
+**Unchanged**: thresholds, tolerance, FX rates, the case list and every requirement.
+
+```text
+DATASET-BINDING dataset_version=1.0 sha256=8ab71de92f6e2def624dc67b9da7c0102be86f8c90b7d78a8172b4a07f24ef98
+```
+
+From this entry on, any change to `evals/dataset.json`, ground truth included, is made only by a
+new dated Spec revision entry that states the reason and carries a new `DATASET-BINDING` line
+(FR-026).
+
+### Rev 5 — 2026-11-22 (owner name; schema bytes restored)
+
+**Reason**: (1) the owner asked for their name to read "Balakrishnan" (student ID 2026ns93087)
+instead of "Balaji" in the project text; (2) a label edit in commit cfc12de changed two
+non-normative `$comment` strings inside `contracts/output.schema.json` ("PROVISIONAL — pending
+Balaji" → "CONFIRMED …"), which moved the file off its G1 pin.
+
+**Change**: the name is updated in this spec and the other project documents and code comments.
+Both copies of `output.schema.json` are restored byte-for-byte to the pinned rev 3 bytes
+(SHA-256 3665851208cb84acce9011ec0a45817011ac2a8864436a4bd92e020722726a22). Their `$comment` text
+therefore still reads "PROVISIONAL — pending Balaji" for P-5. That wording is historical: every
+owner decision, P-5 included, is confirmed (see Clarifications), and the schema's normative
+content never depended on it. The recorded Spec Kit transcripts keep the earlier name verbatim.
+
+**Unchanged**: schema version and pins, thresholds, tolerance, FX rates, the dataset and its
+binding, and every requirement. No evaluation has run.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -231,7 +268,7 @@ A company sometimes announces several orders at once ("orders aggregating ₹1,2
 
 ### User Story 5 - Evaluator decides ACCEPT/REJECT from evidence (Priority: P1)
 
-The evaluator (Balaji) runs the evaluation over the fixed dataset and receives a report that states the verdict (PASS / FAIL / INCONCLUSIVE), the score of each layer against its pre-declared threshold, every failing case with expected vs. actual and the reason, service failures listed separately from application failures, the judge's informational ratings, and the exact model/runner/settings used. From that report alone the evaluator decides ACCEPT or REJECT.
+The evaluator (Balakrishnan) runs the evaluation over the fixed dataset and receives a report that states the verdict (PASS / FAIL / INCONCLUSIVE), the score of each layer against its pre-declared threshold, every failing case with expected vs. actual and the reason, service failures listed separately from application failures, the judge's informational ratings, and the exact model/runner/settings used. From that report alone the evaluator decides ACCEPT or REJECT.
 
 **Why this priority**: Co-equal with US1: without a trustworthy, pre-declared evaluation the owner cannot accept the agent, and the constitution forbids accepting it on the model's word.
 
@@ -283,18 +320,18 @@ The evaluator (Balaji) runs the evaluation over the fixed dataset and receives a
 
 #### Output contract (schema version "1.0")
 
-- **FR-001** (rev 2): For every input the agent MUST return exactly one JSON object carrying `schema_version: "1.0"` and the fields `status`, `company`, `announcement_date`, `order`, `additional_orders`, `evidence`, `missing_fields`, `unstated_fields` (rev 2, P-5, **CONFIRMED by Balaji 2026-11-22**) and `rejection_reason`. No other top-level fields are permitted.
+- **FR-001** (rev 2): For every input the agent MUST return exactly one JSON object carrying `schema_version: "1.0"` and the fields `status`, `company`, `announcement_date`, `order`, `additional_orders`, `evidence`, `missing_fields`, `unstated_fields` (rev 2, P-5, **CONFIRMED by Balakrishnan 2026-11-22**) and `rejection_reason`. No other top-level fields are permitted.
 - **FR-002**: `status` MUST be one of `extracted`, `not_an_order`, `needs_clarification`, `rejected`, with the meanings in FR-013, FR-014 and FR-016.
 - **FR-003**: `company` MUST be the announcing listed company as named in the text (letterhead, sign-off or "we, X Limited"), or null if not stated. Stock exchanges, regulators, addressees and subsidiaries MUST NOT be reported as the company.
 - **FR-004**: `announcement_date` MUST be the date of the announcement itself in ISO `YYYY-MM-DD`, or null if no announcement date appears. Numeric dates are read day-first (DD/MM/YYYY, DD.MM.YYYY, DD-MM-YYYY), per Indian convention. Order-receipt or meeting dates are not the announcement date unless the text gives no other date and states that the announcement is made that day.
 - **FR-005** (rev 3): `order` MUST be null when status is `not_an_order` or `rejected`, and an object otherwise, with fields `order_value` (number or null), `currency` (`INR` | `USD` | `EUR` | `other` | null), `unit` (`crore` | `lakh` | `million` | `billion` | `thousand` | `absolute` | null), `value_in_cr` (number or null, derived per FR-035, rev 3), `client` (string or null), `order_type` (enum below, never null in an order object), `execution_period` (string or null).
-- **FR-006** (rev 3): `order_value` MUST be the number as stated in the text, without unit conversion, with thousands/lakh separators removed (e.g. "₹1,250.50 crore" → 1250.5 crore; "₹45,00,000" → 4500000 absolute). `currency` and `unit` MUST be null if and only if `order_value` is null. ₹, Rs, Rs., INR → `INR`; Cr/Crore/Crores → `crore`; Lakh/Lakhs/Lac → `lakh`; Mn/Million → `million`; Bn/Billion → `billion`; K/Thousand → `thousand`; a bare figure with no unit word → `absolute`. A currency other than INR/USD/EUR → `other`. *(Rev 3, P-2, confirmed by Balaji 2026-11-22)*: an amount stated in crore or lakh (Cr, Crore, Crores, Lakh, Lakhs, Lac) with no currency marker is `INR`, and its value quote is the evidence for `currency` too. The crore conversion in `value_in_cr` (FR-035) never changes `order_value`, which stays as stated.
+- **FR-006** (rev 3): `order_value` MUST be the number as stated in the text, without unit conversion, with thousands/lakh separators removed (e.g. "₹1,250.50 crore" → 1250.5 crore; "₹45,00,000" → 4500000 absolute). `currency` and `unit` MUST be null if and only if `order_value` is null. ₹, Rs, Rs., INR → `INR`; Cr/Crore/Crores → `crore`; Lakh/Lakhs/Lac → `lakh`; Mn/Million → `million`; Bn/Billion → `billion`; K/Thousand → `thousand`; a bare figure with no unit word → `absolute`. A currency other than INR/USD/EUR → `other`. *(Rev 3, P-2, confirmed by Balakrishnan 2026-11-22)*: an amount stated in crore or lakh (Cr, Crore, Crores, Lakh, Lakhs, Lac) with no currency marker is `INR`, and its value quote is the evidence for `currency` too. The crore conversion in `value_in_cr` (FR-035) never changes `order_value`, which stays as stated.
 - **FR-007**: `order_type` MUST be the first matching type in this precedence: `defence` (defence ministry, armed forces, defence PSU client or defence equipment) → `export` (client outside India or stated as an export order) → `epc_construction` (EPC, turnkey, construction, civil, installation/commissioning projects) → `supply` (supply/manufacture of goods) → `services` (O&M, maintenance, consultancy, IT or other services) → `government` (government/PSU client and the nature of the work is not stated) → `other`.
 - **FR-008**: `execution_period` MUST be the execution/completion period exactly as stated (e.g. "within 18 months", "by March 2027"), or null if not stated.
-- **FR-009**: When an announcement contains more than one order, each itemised order with its own value MUST be reported once: the largest by INR-equivalent base value (crore 1e7, lakh 1e5, million 1e6, billion 1e9, thousand 1e3, absolute 1; for ranking only, USD = 84 INR and EUR = 90 INR) as `order`, the rest in `additional_orders` in order of appearance. Ties go to the first-stated order. An order in currency `other` is never chosen as top-level while an INR/USD/EUR order exists. A stated aggregate of itemised orders MUST NOT be reported as an additional order. Each additional order carries `order_value`, `currency`, `unit`, `value_in_cr` (FR-035, rev 3), `client` and its own `evidence` object (keys `order_value`, `currency`, `unit`, `client`; `value_in_cr` has no evidence key). `additional_orders` MUST be an empty list when there is at most one order. An order without a value in a multi-order announcement is listed by appearance after valued orders. *(Rev 3, P-3, confirmed by Balaji 2026-11-22)*: v1 handles **at most 4 itemised orders** per announcement, within `num_predict = 700` (FR-020). No guard counts orders. A model response cut off at the token limit is not valid JSON and fails layer 1.
+- **FR-009**: When an announcement contains more than one order, each itemised order with its own value MUST be reported once: the largest by INR-equivalent base value (crore 1e7, lakh 1e5, million 1e6, billion 1e9, thousand 1e3, absolute 1; for ranking only, USD = 84 INR and EUR = 90 INR) as `order`, the rest in `additional_orders` in order of appearance. Ties go to the first-stated order. An order in currency `other` is never chosen as top-level while an INR/USD/EUR order exists. A stated aggregate of itemised orders MUST NOT be reported as an additional order. Each additional order carries `order_value`, `currency`, `unit`, `value_in_cr` (FR-035, rev 3), `client` and its own `evidence` object (keys `order_value`, `currency`, `unit`, `client`; `value_in_cr` has no evidence key). `additional_orders` MUST be an empty list when there is at most one order. An order without a value in a multi-order announcement is listed by appearance after valued orders. *(Rev 3, P-3, confirmed by Balakrishnan 2026-11-22)*: v1 handles **at most 4 itemised orders** per announcement, within `num_predict = 700` (FR-020). No guard counts orders. A model response cut off at the token limit is not valid JSON and fails layer 1.
 - **FR-010**: `evidence` MUST be an object whose keys are exactly the names of the non-null extracted fields among `company`, `announcement_date`, `order_value`, `currency`, `unit`, `client`, `order_type`, `execution_period`; each value is a quote copied verbatim from the source text that supports the field. One quote may support several fields (e.g. "₹1,250.50 crore" for value, currency and unit). Null fields MUST have no evidence entry. For `rejected`, `evidence` is `{}`.
 - **FR-011**: `missing_fields` MUST list, from {`order_value`, `client`}, exactly those required order fields that are null in the top-level `order`. It MUST be empty when `order` is null.
-- **FR-012**: The agent MUST NOT invent any value. A required field that is absent, unnamed (e.g. "a leading private-sector company", "a reputed overseas customer") or ambiguous (range, upper bound, several conflicting values for one order — a value stated both with and without taxes is not a conflict; the first-stated total is used) MUST be null and listed in `missing_fields`. Optional fields that are absent MUST be null **and, from rev 2, listed in `unstated_fields`** (P-5, **CONFIRMED by Balaji 2026-11-22**). `unstated_fields` names exactly the optional fields that are null in the result: `company` and `announcement_date` when null, and, only when `order` is non-null, `order_type` and `execution_period` when null (`order_type` is never null in an order object, so in practice it never appears). Entries are unique, in the fixed order `company`, `announcement_date`, `order_type`, `execution_period`. `unstated_fields` is distinct from `missing_fields`: only missing *required* fields affect the status (FR-014).
+- **FR-012**: The agent MUST NOT invent any value. A required field that is absent, unnamed (e.g. "a leading private-sector company", "a reputed overseas customer") or ambiguous (range, upper bound, several conflicting values for one order — a value stated both with and without taxes is not a conflict; the first-stated total is used) MUST be null and listed in `missing_fields`. Optional fields that are absent MUST be null **and, from rev 2, listed in `unstated_fields`** (P-5, **CONFIRMED by Balakrishnan 2026-11-22**). `unstated_fields` names exactly the optional fields that are null in the result: `company` and `announcement_date` when null, and, only when `order` is non-null, `order_type` and `execution_period` when null (`order_type` is never null in an order object, so in practice it never appears). Entries are unique, in the fixed order `company`, `announcement_date`, `order_type`, `execution_period`. `unstated_fields` is distinct from `missing_fields`: only missing *required* fields affect the status (FR-014).
 - **FR-013**: `not_an_order` MUST be returned when the announcement does not report a new order received by the company: financial results (even if they mention order book or order inflow), board-meeting intimations and outcomes, dividends, AGMs, credit ratings, shareholding, investor meets, L1-bidder status, MoUs, bids submitted, order cancellations, and other non-order filings.
 - **FR-014**: `needs_clarification` MUST be returned when the announcement reports a new order and at least one required field (`order_value`, `client`) of the top-level order is null under FR-012; `extracted` MUST be returned when it reports a new order and both required fields are non-null.
 - **FR-015** (rev 2): Status-dependent shape MUST hold:
@@ -305,7 +342,7 @@ The evaluator (Balaji) runs the evaluation over the fixed dataset and receives a
 
   `rejection_reason` MUST be one of `empty`, `whitespace_only`, `too_long`, `garbled` when status is `rejected`, and null otherwise. For `not_an_order`, company and announcement_date MAY be extracted (with evidence) or null.
 
-- **FR-035** (rev 3, from Q3 / P-2, confirmed by Balaji 2026-11-22): every order object, the top-level `order` and each `additional_orders` item, MUST carry `value_in_cr` (number or null). It is a **derived** field, not an extracted one.
+- **FR-035** (rev 3, from Q3 / P-2, confirmed by Balakrishnan 2026-11-22): every order object, the top-level `order` and each `additional_orders` item, MUST carry `value_in_cr` (number or null). It is a **derived** field, not an extracted one.
   - **INR**: when `currency` is `INR`, `value_in_cr` is `order_value` multiplied by the crore multiplier of its `unit`, rounded to 4 decimal places. The multipliers are crore × 1, lakh × 0.01, million × 0.1, billion × 100, thousand × 0.0001 and absolute × 0.0000001. Each equals the FR-009 unit factor divided by the crore factor 1e7.
   - **Not INR**: when `currency` is `USD`, `EUR`, `other` or null, `value_in_cr` is null. No FX conversion is made; the FR-009 reference rates are used only for ranking. A null `order_value` has a null currency, so its `value_in_cr` is null too.
   - **Computed by code, never by the model**: deterministic code computes it from the reported `order_value` and `unit`, after the model response has been validated. The model response (`mr-1`) has no such field, so a model response that contains one fails `MR-SCHEMA`. `order_value` itself is never altered.
@@ -529,7 +566,7 @@ INV-11 crore multipliers are not separate rows: INV-11 derives them as `unit_fac
   Judge data is not an input to the verdict. Neither is the dataset binding (FR-026): a mismatch is reported but does not change the verdict.
 - **FR-032**: Each run MUST produce: a per-case result (status, layer outcomes, failed invariants, field-level layer-3 comparison, attempts, service-failure details, judge rating or judge failure); a structured feedback record for every failing case (case id, layer failed, expected vs. actual, raw model output, reason); and a summary report showing the verdict, each layer's score against its threshold, the four FR-023 categories (application failures, semantic misses, service failures, judge failures) as separate counts and lists, judge results as a separate informational section, and the FR-022 run metadata.
 - **FR-033**: Repairs after a failing run MUST target the prompt, parser, validators or guardrails only, and MUST be followed by a rerun of the same evaluation (same cases, thresholds, pinned settings); each repair cycle MUST be logged with what changed and why. A repair that changes the prompt text MUST bump the prompt version (`p1` → `p2` → …), and the log entry MUST name the old and new versions (rev 2, L7). If the 4B model cannot meet the thresholds after reasonable repairs, work MUST stop and the failure MUST be reported with the evidence collected.
-- **FR-034**: The final ACCEPT/REJECT decision belongs to the owner (Balaji). The system and any agent MAY recommend but MUST NOT record that decision on the owner's behalf.
+- **FR-034**: The final ACCEPT/REJECT decision belongs to the owner (Balakrishnan). The system and any agent MAY recommend but MUST NOT record that decision on the owner's behalf.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -561,20 +598,20 @@ INV-11 crore multipliers are not separate rows: INV-11 derives them as `unit_fac
 
 ## Assumptions
 
-- **Users**: an analyst consuming order-win records, and the evaluator/owner (Balaji) who makes the final ACCEPT/REJECT decision. Single-user, local, offline use; no authentication or multi-tenancy.
+- **Users**: an analyst consuming order-win records, and the evaluator/owner (Balakrishnan) who makes the final ACCEPT/REJECT decision. Single-user, local, offline use; no authentication or multi-tenancy.
 - **Scope**: one announcement in, one result out. Batch feeds, fetching filings from exchange websites, PDF-to-text conversion, persistence/database storage and UI are out of scope; the input is already plain text.
 - **No clarification markers were used**: every open choice had a defensible default, recorded here and in the FRs; they can be revisited in `/speckit-clarify`.
-- **Order vs. non-order**: Letters of Award/Intent, Notifications of Award, work/purchase orders and signed contracts count as orders; bids, framework agreements without committed value, order cancellations and order-book updates do not. **CONFIRMED by Balaji 2026-11-22**: L1-bidder status and MoUs are treated as `not_an_order`.
-- **Unnamed client counts as missing** (**CONFIRMED by Balaji 2026-11-22**): generic descriptors ("a leading PSU", "a reputed overseas customer") are not a client; the order is `needs_clarification`. A named government department or PSU is a client.
-- **Ambiguous value**: **CONFIRMED by Balaji 2026-11-22**: ranges, "between", "up to" are ambiguous (null). "Approximately / about / over / more than X" report X as stated.
+- **Order vs. non-order**: Letters of Award/Intent, Notifications of Award, work/purchase orders and signed contracts count as orders; bids, framework agreements without committed value, order cancellations and order-book updates do not. **CONFIRMED by Balakrishnan 2026-11-22**: L1-bidder status and MoUs are treated as `not_an_order`.
+- **Unnamed client counts as missing** (**CONFIRMED by Balakrishnan 2026-11-22**): generic descriptors ("a leading PSU", "a reputed overseas customer") are not a client; the order is `needs_clarification`. A named government department or PSU is a client.
+- **Ambiguous value**: **CONFIRMED by Balakrishnan 2026-11-22**: ranges, "between", "up to" are ambiguous (null). "Approximately / about / over / more than X" report X as stated.
 - **Rejection reason field**: `rejection_reason` is added to the owner's field list so the analyst and evaluator can see why an input was rejected; it is null for all non-rejected results. `schema_version` is carried in the object.
-- **Over-length limit** (**CONFIRMED by Balaji 2026-11-22**): 20,000 characters, chosen to cover long announcements (typical order filings are 1–3 KB) while keeping the prompt within a small context window for the 4B model.
+- **Over-length limit** (**CONFIRMED by Balakrishnan 2026-11-22**): 20,000 characters, chosen to cover long announcements (typical order filings are 1–3 KB) while keeping the prompt within a small context window for the 4B model.
 - **Garbled thresholds** (85% recognised characters, ≥ 3 words) are deliberate defaults that accept PDF-conversion noise but reject binary/encoding junk. From rev 2, combining marks count as recognised and as part of words, so text in Indic scripts (e.g. Hindi with vowel signs) is not penalised.
-- **Explicit marker for unstated optional facts** (**CONFIRMED by Balaji 2026-11-22**, P-5, rev 2): constitution Principle II requires "null plus an explicit missing marker" for any fact the source does not state. `missing_fields` marks only the required order fields (`order_value`, `client`). Schema 1.0 therefore gains a top-level `unstated_fields` list naming every optional field (`company`, `announcement_date`, `order_type`, `execution_period`) that is null (FR-012), checked by INV-10. It never affects the status. The alternative is to amend the constitution to say "required facts"; that is the owner's call. If the owner chooses it before the first evaluation, `unstated_fields` and INV-10 are removed through a spec revision; after the first evaluation, removing them also needs a schema version bump.
+- **Explicit marker for unstated optional facts** (**CONFIRMED by Balakrishnan 2026-11-22**, P-5, rev 2): constitution Principle II requires "null plus an explicit missing marker" for any fact the source does not state. `missing_fields` marks only the required order fields (`order_value`, `client`). Schema 1.0 therefore gains a top-level `unstated_fields` list naming every optional field (`company`, `announcement_date`, `order_type`, `execution_period`) that is null (FR-012), checked by INV-10. It never affects the status. The alternative is to amend the constitution to say "required facts"; that is the owner's call. If the owner chooses it before the first evaluation, `unstated_fields` and INV-10 are removed through a spec revision; after the first evaluation, removing them also needs a schema version bump.
 - **Context length**: the formula is taken from myportfolio-web (`scripts/fundamental/announcements_v2/helpers.py`, read-only; see Clarifications): `num_ctx = max(4096, len(prompt) // 3 + num_predict + 512)`, `num_predict = 700`. At the 20,000-character input limit this gives roughly 7,900 plus the prompt template's share, so the floor of 4096 applies only to short prompts.
-- **Reference FX rates** (USD 84, EUR 90 INR) (**CONFIRMED by Balaji 2026-11-22**) are used only to rank orders in different currencies for top-level selection. No FX rate is ever applied to a reported value: `order_value` is as stated, and `value_in_cr` is null for every non-INR order (FR-035, rev 3).
-- **Crore conversion of INR amounts** (rev 3, Q3, confirmed by Balaji 2026-11-22): every INR order also reports `value_in_cr`, computed by deterministic code per FR-035. An amount in crore or lakh with no currency marker is INR (P-2).
-- **Order count** (rev 3, Q4, confirmed by Balaji 2026-11-22): v1 handles at most 4 itemised orders per announcement with `num_predict = 700`. `value_in_cr` costs no output tokens, because the model does not emit it.
+- **Reference FX rates** (USD 84, EUR 90 INR) (**CONFIRMED by Balakrishnan 2026-11-22**) are used only to rank orders in different currencies for top-level selection. No FX rate is ever applied to a reported value: `order_value` is as stated, and `value_in_cr` is null for every non-INR order (FR-035, rev 3).
+- **Crore conversion of INR amounts** (rev 3, Q3, confirmed by Balakrishnan 2026-11-22): every INR order also reports `value_in_cr`, computed by deterministic code per FR-035. An amount in crore or lakh with no currency marker is INR (P-2).
+- **Order count** (rev 3, Q4, confirmed by Balakrishnan 2026-11-22): v1 handles at most 4 itemised orders per announcement with `num_predict = 700`. `value_in_cr` costs no output tokens, because the model does not emit it.
 - **Compound units** such as "lakh crore" / "thousand crore" are out of scope for v1 and absent from the dataset; if met in practice, they are expected to surface as invariant or accuracy failures rather than silent conversions.
 - **Derived fields**: the plan may compute `missing_fields`, status-shape consistency and top-level ordering with documented deterministic code around the model (constitution Principle V), provided no field value is invented or altered. From rev 3, code also computes `value_in_cr` (FR-035). It is a declared derived field, calculated by a fixed formula from the extracted `order_value` and `unit`, which are themselves never altered.
 - **Layer 3 null handling**: a field correctly reported as null counts as correct; this rewards honest "missing" over guessing.

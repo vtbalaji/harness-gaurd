@@ -71,7 +71,7 @@ $ printf '' | python -m order_agent -                   # AC-3.1, no model call
 ```
 
 (The examples are shown compacted. Real output is indented as described above. `unstated_fields`
-is spec rev 2, P-5, **CONFIRMED by Balaji 2026-11-22**. For a rejected input it is always `[]`.
+is spec rev 2, P-5, **CONFIRMED by Balakrishnan 2026-11-22**. For a rejected input it is always `[]`.
 `value_in_cr` is spec rev 3, FR-035. It appears in every order object, computed by code: the
 crore value for an INR amount (e.g. "Rs. 85.40 lakh" → `0.854`) and `null` for USD, EUR or
 `other`. It has no `evidence` key.)

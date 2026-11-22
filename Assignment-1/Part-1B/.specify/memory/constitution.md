@@ -146,7 +146,7 @@ ones that demonstrate improvement rather than goal-post moving.
   recorded; feedback files exist for every failure (Principle VII).
 - Evaluation outcomes MUST be reported with application failures and model/service failures
   shown separately (Principle IV).
-- The owner (Balaji) gives the final human decision (accept/reject) on the evaluated result;
+- The owner (Balakrishnan) gives the final human decision (accept/reject) on the evaluated result;
   agents MAY recommend but MUST NOT record that decision on the owner's behalf.
 
 ## Governance
