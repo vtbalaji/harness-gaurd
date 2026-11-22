@@ -1,0 +1,193 @@
+{
+  "case_id": "N05",
+  "categories": [
+    "normal_single_order",
+    "edge_case"
+  ],
+  "covers": {
+    "fr": [
+      "FR-006",
+      "FR-007",
+      "FR-035"
+    ],
+    "ac": [
+      "AC-1.4",
+      "AC-1.6",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:48:12.837Z",
+      "ended_at": "2026-11-22T15:48:18.572Z",
+      "elapsed_s": 5.735,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4441,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Aravalli Defence Systems Limited\", \"company_quote\": \"Aravalli Defence Systems Limited has received an order\", \"announcement_date\": \"2026-11-20\", \"announcement_date_quote\": \"November 20, 2026\", \"order_type\": \"defence\", \"order_type_quote\": \"supply of electronic fuzes for artillery ammunition\", \"execution_period\": \"within 36 months\", \"execution_period_quote\": \"to be executed within 36 months\", \"orders\": [{\"order_value\": 340, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Ministry of Defence\", \"value_quote\": \"340 crore\", \"client_quote\": \"Ministry of Defence\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 174,
+        "prompt_eval_count": 2458,
+        "total_duration": 5722214625,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Aravalli Defence Systems Limited",
+    "announcement_date": "2026-11-20",
+    "order": {
+      "order_value": 340,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 340.0,
+      "client": "Ministry of Defence",
+      "order_type": "defence",
+      "execution_period": "within 36 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Aravalli Defence Systems Limited has received an order",
+      "announcement_date": "November 20, 2026",
+      "order_value": "340 crore",
+      "currency": "340 crore",
+      "unit": "340 crore",
+      "client": "Ministry of Defence",
+      "order_type": "supply of electronic fuzes for artillery ammunition",
+      "execution_period": "to be executed within 36 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "3400000000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      340.0
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Aravalli Defence Systems Limited",
+        "actual": "Aravalli Defence Systems Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-20",
+        "actual": "2026-11-20",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 340,
+        "actual": 340,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Ministry of Defence",
+        "actual": "Ministry of Defence",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "defence",
+        "actual": "defence",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 36 months",
+        "actual": "within 36 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction incorrectly infers the currency as INR and misreports the evidence for currency and unit by repeating the full value string '340 crore' instead of extracting the specific currency code or unit, which constitutes a misreporting of the stated text."
+  }
+}

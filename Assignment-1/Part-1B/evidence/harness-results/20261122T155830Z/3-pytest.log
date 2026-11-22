@@ -1,0 +1,49 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-8.4.2, pluggy-1.7.0
+rootdir: /Users/balajithanigaiarasu/harness-gaurd/Assignment-1/Part-1B
+configfile: pyproject.toml
+testpaths: tests
+plugins: cov-7.0.0
+collected 652 items
+
+tests/contract/test_dataset.py ......................                    [  3%]
+tests/contract/test_dataset_guards.py ............................       [  7%]
+tests/contract/test_schemas.py ..............                            [  9%]
+tests/contract/test_traceability.py .....                                [ 10%]
+tests/harness/test_harness_scripts.py ............                       [ 12%]
+tests/harness/test_run_eval.py ......................................... [ 18%]
+........................................................................ [ 29%]
+........................                                                 [ 33%]
+tests/harness/test_run_eval_e2e.py ...........                           [ 35%]
+tests/unit/test_agent.py .........................................       [ 41%]
+tests/unit/test_cli.py .............                                     [ 43%]
+tests/unit/test_client.py .............................................. [ 50%]
+............................                                             [ 54%]
+tests/unit/test_config.py .................................              [ 59%]
+tests/unit/test_guards.py ..................                             [ 62%]
+tests/unit/test_parser.py ..................                             [ 65%]
+tests/unit/test_prompt.py ..........................                     [ 69%]
+tests/unit/test_validators.py .......................................... [ 75%]
+........................................................................ [ 86%]
+........................................................................ [ 97%]
+..............                                                           [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.14.7-final-0 _______________
+
+Name                            Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------
+.harness/run_eval.py             1064     53    438     33    94%   244, 251->250, 259, 262->264, 292, 325, 367, 394-395, 433->436, 544-547, 701-702, 804-805, 853, 873, 888, 891, 934, 943, 989, 1031-1033, 1166-1167, 1199, 1311->1309, 1325, 1329-1337, 1354-1355, 1448, 1453->1455, 1522->1521, 1528, 1530, 1532, 1549, 1550->1552, 1669-1670, 1975, 2048-2049, 2062, 2148-2149
+src/order_agent/__init__.py         2      0      0      0   100%
+src/order_agent/__main__.py         4      0      2      1    83%   7->exit
+src/order_agent/agent.py           98      0     32      2    98%   60->62, 73->75
+src/order_agent/cli.py             64      0     10      0   100%
+src/order_agent/client.py         212      2     54      2    98%   141, 365
+src/order_agent/config.py          93      2     26      0    98%   88-89
+src/order_agent/guards.py          55      0     20      0   100%
+src/order_agent/parser.py          41      0     12      0   100%
+src/order_agent/prompt.py          21      0      0      0   100%
+src/order_agent/validators.py     369      3    210      4    99%   110, 119, 176, 532->531
+---------------------------------------------------------------------------
+TOTAL                            2023     60    804     42    96%
+============================= 652 passed in 7.97s ==============================

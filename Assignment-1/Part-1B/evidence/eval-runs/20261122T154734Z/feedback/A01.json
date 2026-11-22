@@ -1,0 +1,107 @@
+{
+  "case_id": "A01",
+  "layers_failed": [
+    2
+  ],
+  "failed_checks": [
+    {
+      "id": "INV-5",
+      "detail": "status 'not_an_order' != expected 'needs_clarification'"
+    },
+    {
+      "id": "L3:client",
+      "detail": "expected 'Chittaranjan Locomotive Works', got None"
+    },
+    {
+      "id": "L3:order_type",
+      "detail": "expected 'supply', got None"
+    },
+    {
+      "id": "L3:execution_period",
+      "detail": "expected 'within 15 months', got None"
+    }
+  ],
+  "expected": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Tapti Engineering Works Limited",
+    "announcement_date": "2026-11-14",
+    "order": {
+      "order_value": null,
+      "currency": null,
+      "unit": null,
+      "value_in_cr": null,
+      "client": "Chittaranjan Locomotive Works",
+      "order_type": "supply",
+      "execution_period": "within 15 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Tapti Engineering Works Limited wishes to inform",
+      "announcement_date": "Date: 14.11.2026",
+      "client": "Chittaranjan Locomotive Works",
+      "order_type": "supply of bogie frames",
+      "execution_period": "to be executed within 15 months"
+    },
+    "missing_fields": [
+      "order_value"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "actual": {
+    "schema_version": "1.0",
+    "status": "not_an_order",
+    "company": "Tapti Engineering Works Limited",
+    "announcement_date": "2026-11-14",
+    "order": null,
+    "additional_orders": [],
+    "evidence": {
+      "company": "Tapti Engineering Works Limited wishes to inform that it has received orders",
+      "announcement_date": "Date: 14.11.2026"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "raw_model_output": "{\"is_new_order\": false, \"company\": \"Tapti Engineering Works Limited\", \"company_quote\": \"Tapti Engineering Works Limited wishes to inform that it has received orders\", \"announcement_date\": \"2026-11-14\", \"announcement_date_quote\": \"Date: 14.11.2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+  "parser_log": [],
+  "agent_errors": [],
+  "reason": "Failed layer 2: INV-5.",
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:49:09.049Z",
+      "ended_at": "2026-11-22T15:49:15.850Z",
+      "elapsed_s": 6.802,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4408,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": false, \"company\": \"Tapti Engineering Works Limited\", \"company_quote\": \"Tapti Engineering Works Limited wishes to inform that it has received orders\", \"announcement_date\": \"2026-11-14\", \"announcement_date_quote\": \"Date: 14.11.2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 106,
+        "prompt_eval_count": 2444,
+        "total_duration": 6787500000,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "run_id": "20261122T154734Z"
+}

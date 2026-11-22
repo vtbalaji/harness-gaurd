@@ -1,0 +1,166 @@
+{
+  "case_id": "V01",
+  "categories": [
+    "missing_value"
+  ],
+  "covers": {
+    "fr": [
+      "FR-011",
+      "FR-014"
+    ],
+    "ac": [
+      "AC-2.3",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "application_failure",
+  "stage": "mr_consistency",
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:49:36.449Z",
+      "ended_at": "2026-11-22T15:49:43.646Z",
+      "elapsed_s": 7.198,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4412,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Shivalik Rail Products Limited\", \"company_quote\": \"Shivalik Rail Products Limited has bagged a prestigious order\", \"announcement_date\": \"2026-11-10\", \"announcement_date_quote\": \"Date: 10/11/2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of elastic rail clips\", \"execution_period\": \"within 9 months\", \"execution_period_quote\": \"to be supplied within 9 months\", \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 121,
+        "prompt_eval_count": 2440,
+        "total_duration": 7183829167,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": null,
+  "agent_errors": [
+    {
+      "code": "MR-CONSIST",
+      "pointer": "/orders",
+      "message": "MC-1: is_new_order true needs at least one order entry",
+      "layer": 1
+    }
+  ],
+  "parser_log": [],
+  "assembly_trace": null,
+  "scored": true,
+  "layer1": {
+    "pass": false,
+    "has_candidate": false,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [
+      {
+        "code": "MR-CONSIST",
+        "pointer": "/orders",
+        "message": "MC-1: is_new_order true needs at least one order entry",
+        "layer": 1
+      }
+    ],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": false,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [
+      {
+        "inv": "INV-1",
+        "detail": "no candidate (FR-028 item 1)"
+      }
+    ],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Shivalik Rail Products Limited",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "announcement_date": {
+        "expected": "2026-11-10",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "order_value": {
+        "expected": null,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "currency": {
+        "expected": null,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "unit": {
+        "expected": null,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "client": {
+        "expected": "Indian Railways",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "execution_period": {
+        "expected": "within 9 months",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      }
+    },
+    "correct": 0,
+    "compared": 9
+  },
+  "judge": {
+    "status": "not_applicable"
+  }
+}

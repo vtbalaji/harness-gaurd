@@ -1,0 +1,10 @@
+E501 Line too long (122 > 100)
+  --> tests/unit/test_prompt.py:44:101
+   |
+43 | def test_fr018_bundle_version_hash_and_length():
+44 |     """FR-018, FR-022, R-4: PROMPT_VERSION p2 (p1 until eval repair cycle 1), system_sha256, prompt_chars, determinism."""
+   |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+45 |     from order_agent import prompt
+   |
+
+Found 1 error.

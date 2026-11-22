@@ -1,0 +1,192 @@
+{
+  "case_id": "N06",
+  "categories": [
+    "normal_single_order",
+    "edge_case"
+  ],
+  "covers": {
+    "fr": [
+      "FR-003",
+      "FR-006"
+    ],
+    "ac": [
+      "AC-1.4",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:48:18.575Z",
+      "ended_at": "2026-11-22T15:48:26.904Z",
+      "elapsed_s": 8.329,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4430,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Nilgiri Agro Machinery Limited\", \"company_quote\": \"Nilgiri Agro Machinery Limited hereby informs\", \"announcement_date\": null, \"announcement_date_quote\": null, \"order_type\": \"supply\", \"order_type_quote\": \"supply of power tillers\", \"execution_period\": \"within 6 months\", \"execution_period_quote\": \"to be delivered within 6 months\", \"orders\": [{\"order_value\": 4500000, \"currency\": \"INR\", \"unit\": \"absolute\", \"client\": \"Tamil Nadu Agro Industries Corporation Limited\", \"value_quote\": \"₹45,00,000\", \"client_quote\": \"Tamil Nadu Agro Industries Corporation Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 161,
+        "prompt_eval_count": 2446,
+        "total_duration": 8314442458,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Nilgiri Agro Machinery Limited",
+    "announcement_date": null,
+    "order": {
+      "order_value": 4500000,
+      "currency": "INR",
+      "unit": "absolute",
+      "value_in_cr": 0.45,
+      "client": "Tamil Nadu Agro Industries Corporation Limited",
+      "order_type": "supply",
+      "execution_period": "within 6 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Nilgiri Agro Machinery Limited hereby informs",
+      "order_value": "₹45,00,000",
+      "currency": "₹45,00,000",
+      "unit": "₹45,00,000",
+      "client": "Tamil Nadu Agro Industries Corporation Limited",
+      "order_type": "supply of power tillers",
+      "execution_period": "to be delivered within 6 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [
+      "announcement_date"
+    ],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "4500000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      0.45
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Nilgiri Agro Machinery Limited",
+        "actual": "Nilgiri Agro Machinery Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "order_value": {
+        "expected": 4500000,
+        "actual": 4500000,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "absolute",
+        "actual": "absolute",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Tamil Nadu Agro Industries Corporation Limited",
+        "actual": "Tamil Nadu Agro Industries Corporation Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": "supply",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 6 months",
+        "actual": "within 6 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the order amount, client name, and delivery timeline, are explicitly stated in the announcement text and are accurately represented without any misreporting or invention."
+  }
+}

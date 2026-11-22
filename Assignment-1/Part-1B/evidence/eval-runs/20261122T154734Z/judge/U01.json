@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 2,
+  "rationale": "The extraction misreports the order_type as 'epc_construction' when the text explicitly specifies 'installation and commissioning', and incorrectly maps the currency string to the 'currency' evidence field instead of just the currency code.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:52:09.623Z",
+      "ended_at": "2026-11-22T15:52:45.798Z",
+      "elapsed_s": 36.176,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 2,\n  \"rationale\": \"The extraction misreports the order_type as 'epc_construction' when the text explicitly specifies 'installation and commissioning', and incorrectly maps the currency string to the 'currency' evidence field instead of just the currency code.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

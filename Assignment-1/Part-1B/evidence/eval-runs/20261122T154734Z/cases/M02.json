@@ -1,0 +1,211 @@
+{
+  "case_id": "M02",
+  "categories": [
+    "multiple_orders",
+    "multiple_orders_mixed_units"
+  ],
+  "covers": {
+    "fr": [
+      "FR-009"
+    ],
+    "ac": [
+      "AC-4.2"
+    ]
+  },
+  "outcome": "application_failure",
+  "stage": "post_validation",
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:48:47.481Z",
+      "ended_at": "2026-11-22T15:48:58.221Z",
+      "elapsed_s": 10.741,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4430,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Sahyadri Cables Limited\", \"company_quote\": \"Sahyadri Cables Limited has received two purchase orders\", \"announcement_date\": \"2026-11-16\", \"announcement_date_quote\": \"Date: November 16, 2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of LT power cables\", \"execution_period\": \"within 4 months\", \"execution_period_quote\": \"Both orders are to be executed within 4 months\", \"orders\": [{\"order_value\": 95, \"currency\": \"INR\", \"unit\": \"lakh\", \"client\": \"Pune Municipal Corporation\", \"value_quote\": \"₹95 lakh\", \"client_quote\": \"Pune Municipal Corporation\"}, {\"order_value\": 12000000, \"currency\": \"INR\", \"unit\": \"absolute\", \"client\": \"Maharashtra State Electricity Distribution Company Limited\", \"value_quote\": \"₹1.2 crore\", \"client_quote\": \"Maharashtra State Electricity Distribution Company Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 243,
+        "prompt_eval_count": 2453,
+        "total_duration": 10726901458,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Sahyadri Cables Limited",
+    "announcement_date": "2026-11-16",
+    "order": {
+      "order_value": 12000000,
+      "currency": "INR",
+      "unit": "absolute",
+      "value_in_cr": 1.2,
+      "client": "Maharashtra State Electricity Distribution Company Limited",
+      "order_type": "supply",
+      "execution_period": "within 4 months"
+    },
+    "additional_orders": [
+      {
+        "order_value": 95,
+        "currency": "INR",
+        "unit": "lakh",
+        "value_in_cr": 0.95,
+        "client": "Pune Municipal Corporation",
+        "evidence": {
+          "order_value": "₹95 lakh",
+          "currency": "₹95 lakh",
+          "unit": "₹95 lakh",
+          "client": "Pune Municipal Corporation"
+        }
+      }
+    ],
+    "evidence": {
+      "company": "Sahyadri Cables Limited has received two purchase orders",
+      "announcement_date": "Date: November 16, 2026",
+      "order_value": "₹1.2 crore",
+      "currency": "₹1.2 crore",
+      "unit": "₹1.2 crore",
+      "client": "Maharashtra State Electricity Distribution Company Limited",
+      "order_type": "supply of LT power cables",
+      "execution_period": "Both orders are to be executed within 4 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [
+    {
+      "code": "G-2",
+      "pointer": "/order/order_value",
+      "message": "digits of 12000000 not in '₹1.2 crore'",
+      "layer": 2
+    }
+  ],
+  "parser_log": [],
+  "assembly_trace": null,
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": false,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-9",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [
+      {
+        "inv": "INV-3",
+        "detail": "/order: digits of 12000000 not in '₹1.2 crore'"
+      }
+    ],
+    "agent_errors": [
+      {
+        "code": "G-2",
+        "pointer": "/order/order_value",
+        "message": "digits of 12000000 not in '₹1.2 crore'",
+        "layer": 2
+      }
+    ]
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Sahyadri Cables Limited",
+        "actual": "Sahyadri Cables Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-16",
+        "actual": "2026-11-16",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 1.2,
+        "actual": 12000000,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "absolute",
+        "correct": false,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Maharashtra State Electricity Distribution Company Limited",
+        "actual": "Maharashtra State Electricity Distribution Company Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": "supply",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 4 months",
+        "actual": "within 4 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 1,
+        "actual": 1,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 8,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction incorrectly assigns the order type 'supply of LT power cables' (which belongs to the first order) to the primary order from Maharashtra State Electricity Distribution Company Limited, which is for HT aerial bunched cables."
+  }
+}

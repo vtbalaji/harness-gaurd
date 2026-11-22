@@ -1,0 +1,191 @@
+{
+  "case_id": "N04",
+  "categories": [
+    "normal_single_order",
+    "unit_million"
+  ],
+  "covers": {
+    "fr": [
+      "FR-006",
+      "FR-007"
+    ],
+    "ac": [
+      "AC-1.3",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:48:03.562Z",
+      "ended_at": "2026-11-22T15:48:12.834Z",
+      "elapsed_s": 9.271,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4441,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Deccan Precision Forgings Limited\", \"company_quote\": \"We, Deccan Precision Forgings Limited, are pleased to announce that the Company has secured an export order\", \"announcement_date\": \"2026-11-19\", \"announcement_date_quote\": \"Date: 19/11/2026\", \"order_type\": \"export\", \"order_type_quote\": \"export order\", \"execution_period\": \"within 24 months\", \"execution_period_quote\": \"to be executed within 24 months\", \"orders\": [{\"order_value\": 15, \"currency\": \"USD\", \"unit\": \"million\", \"client\": \"Ostrava Rail Components s.r.o.\", \"value_quote\": \"USD 15 million\", \"client_quote\": \"Ostrava Rail Components s.r.o.\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 189,
+        "prompt_eval_count": 2460,
+        "total_duration": 9252658458,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Deccan Precision Forgings Limited",
+    "announcement_date": "2026-11-19",
+    "order": {
+      "order_value": 15,
+      "currency": "USD",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": "Ostrava Rail Components s.r.o.",
+      "order_type": "export",
+      "execution_period": "within 24 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "We, Deccan Precision Forgings Limited, are pleased to announce that the Company has secured an export order",
+      "announcement_date": "Date: 19/11/2026",
+      "order_value": "USD 15 million",
+      "currency": "USD 15 million",
+      "unit": "USD 15 million",
+      "client": "Ostrava Rail Components s.r.o.",
+      "order_type": "export order",
+      "execution_period": "to be executed within 24 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "1260000000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      null
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Deccan Precision Forgings Limited",
+        "actual": "Deccan Precision Forgings Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-19",
+        "actual": "2026-11-19",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 15,
+        "actual": 15,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "USD",
+        "actual": "USD",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "million",
+        "actual": "million",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Ostrava Rail Components s.r.o.",
+        "actual": "Ostrava Rail Components s.r.o.",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "export",
+        "actual": "export",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 24 months",
+        "actual": "within 24 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the company name, date, order value, currency, client, and execution period, are explicitly stated in the announcement text and are reported accurately without any invention or misrepresentation."
+  }
+}

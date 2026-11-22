@@ -1,0 +1,22 @@
+## python --version
+Python 3.14.7
+
+## pip freeze
+bandit==1.9.1
+coverage==7.17.4
+iniconfig==2.3.1
+markdown-it-py==4.3.0
+mdurl==0.1.2
+-e git+https://github.com/vtbalaji/harness-gaurd.git@6d10eacf6a704d8f09065a2335dc895aed96eafa#egg=order_agent&subdirectory=Assignment-1/Part-1B
+packaging==26.3
+pluggy==1.7.0
+Pygments==2.21.0
+pytest==8.4.2
+pytest-cov==7.0.0
+PyYAML==6.0.4
+rich==15.0.0
+ruff==0.14.0
+stevedore==5.10.0
+
+## git rev-parse HEAD
+6d10eacf6a704d8f09065a2335dc895aed96eafa

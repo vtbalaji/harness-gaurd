@@ -15,7 +15,7 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 
-PROMPT_VERSION = "p1"
+PROMPT_VERSION = "p2"
 
 _MR_SHAPE = """\
 {"is_new_order": true or false,
@@ -47,13 +47,18 @@ SECTIONS: dict[str, str] = {
         "these keys, all of them, and no others:\n" + _MR_SHAPE + "\n"
         "Write enum values exactly as shown (lower case, or INR/USD/EUR in capitals). "
         "order_value is a JSON number, never a string. A field and its quote are both null or "
-        "both filled."
+        "both filled. Every entry in orders has all six keys, order_value, currency, unit, "
+        "client, value_quote and client_quote, even when some of them are null."
     ),
     "values_as_stated": (
         "order_value is the amount exactly as stated in the text, with thousands and lakh "
         'separators removed and with no change of unit: "₹2,345.60 crore" gives 2345.6 with '
         'unit crore; "₹12,50,000" gives 1250000 with unit absolute; "Rs 7.5 Cr" gives 7.5 '
-        "with unit crore. Never multiply, divide or rescale an amount."
+        'with unit crore; "INR 63.4 million" gives 63.4 with unit million; "US$ 7.9 million" '
+        'gives 7.9 with unit million; "₹3.6 crore" gives 3.6 with unit crore. Never multiply, '
+        "divide or rescale an amount: copy the digits that are written, and put the unit word "
+        "that follows them into unit."
+        ' "approximately ₹410 crore (including GST)" gives 410 with unit crore.'
     ),
     "currency_unit": (
         'Currency: ₹, Rs, Rs., INR give "INR"; USD, US$, $ give "USD"; EUR, € give "EUR"; '
@@ -136,7 +141,11 @@ SECTIONS: dict[str, str] = {
         'null. A value given as "approximately", "about", "around", "over", "more than" or '
         '"exceeding" X reports X as stated. A tax qualifier such as "(including GST)" or '
         '"(excluding taxes)" does not make a value ambiguous. If no value is stated, the value '
-        "fields are null and the order is still listed, with its client."
+        "fields are null and the order is still listed, with its client. A range, an upper "
+        "bound or a missing value never makes an announcement a non-order: if a new order was "
+        "received, is_new_order is true and orders has one entry for it, with order_value, "
+        "currency, unit and value_quote null and client and client_quote filled when the "
+        "client is named."
     ),
     # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --
     "multi_order": (

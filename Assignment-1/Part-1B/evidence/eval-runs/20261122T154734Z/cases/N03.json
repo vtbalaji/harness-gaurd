@@ -1,0 +1,190 @@
+{
+  "case_id": "N03",
+  "categories": [
+    "normal_single_order",
+    "unit_lakh"
+  ],
+  "covers": {
+    "fr": [
+      "FR-007"
+    ],
+    "ac": [
+      "AC-1.2",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:47:54.025Z",
+      "ended_at": "2026-11-22T15:48:03.558Z",
+      "elapsed_s": 9.533,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4442,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Kaveri Facility Services Limited\", \"company_quote\": \"Kaveri Facility Services Limited is pleased to inform that it has received a work order\", \"announcement_date\": \"2026-11-18\", \"announcement_date_quote\": \"Date: November 18, 2026\", \"order_type\": \"services\", \"order_type_quote\": \"annual operation and maintenance (O&M) services\", \"execution_period\": \"within 12 months\", \"execution_period_quote\": \"to be completed within 12 months\", \"orders\": [{\"order_value\": 85.4, \"currency\": \"INR\", \"unit\": \"lakh\", \"client\": \"Bangalore Metro Rail Corporation Limited\", \"value_quote\": \"Rs. 85.40 lakh\", \"client_quote\": \"Bangalore Metro Rail Corporation Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 192,
+        "prompt_eval_count": 2460,
+        "total_duration": 9518097375,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Kaveri Facility Services Limited",
+    "announcement_date": "2026-11-18",
+    "order": {
+      "order_value": 85.4,
+      "currency": "INR",
+      "unit": "lakh",
+      "value_in_cr": 0.854,
+      "client": "Bangalore Metro Rail Corporation Limited",
+      "order_type": "services",
+      "execution_period": "within 12 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Kaveri Facility Services Limited is pleased to inform that it has received a work order",
+      "announcement_date": "Date: November 18, 2026",
+      "order_value": "Rs. 85.40 lakh",
+      "currency": "Rs. 85.40 lakh",
+      "unit": "Rs. 85.40 lakh",
+      "client": "Bangalore Metro Rail Corporation Limited",
+      "order_type": "annual operation and maintenance (O&M) services",
+      "execution_period": "to be completed within 12 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "8540000.0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      0.854
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Kaveri Facility Services Limited",
+        "actual": "Kaveri Facility Services Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-18",
+        "actual": "2026-11-18",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 85.4,
+        "actual": 85.4,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "lakh",
+        "actual": "lakh",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Bangalore Metro Rail Corporation Limited",
+        "actual": "Bangalore Metro Rail Corporation Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "services",
+        "actual": "services",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 12 months",
+        "actual": "within 12 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the company name, announcement date, order value, currency, unit, client, order type, and execution period, are explicitly stated in the announcement text and are accurately represented without any misreporting or invention."
+  }
+}

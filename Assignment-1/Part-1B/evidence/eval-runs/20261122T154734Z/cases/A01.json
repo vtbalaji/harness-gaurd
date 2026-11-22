@@ -1,0 +1,170 @@
+{
+  "case_id": "A01",
+  "categories": [
+    "ambiguous_value"
+  ],
+  "covers": {
+    "fr": [
+      "FR-012"
+    ],
+    "ac": [
+      "AC-2.5",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:49:09.049Z",
+      "ended_at": "2026-11-22T15:49:15.850Z",
+      "elapsed_s": 6.802,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4408,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": false, \"company\": \"Tapti Engineering Works Limited\", \"company_quote\": \"Tapti Engineering Works Limited wishes to inform that it has received orders\", \"announcement_date\": \"2026-11-14\", \"announcement_date_quote\": \"Date: 14.11.2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 106,
+        "prompt_eval_count": 2444,
+        "total_duration": 6787500000,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "not_an_order",
+    "company": "Tapti Engineering Works Limited",
+    "announcement_date": "2026-11-14",
+    "order": null,
+    "additional_orders": [],
+    "evidence": {
+      "company": "Tapti Engineering Works Limited wishes to inform that it has received orders",
+      "announcement_date": "Date: 14.11.2026"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "is_new_order": false,
+    "value_in_cr": []
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": false,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [
+      {
+        "inv": "INV-5",
+        "detail": "status 'not_an_order' != expected 'needs_clarification'"
+      }
+    ],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Tapti Engineering Works Limited",
+        "actual": "Tapti Engineering Works Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-14",
+        "actual": "2026-11-14",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "unit": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "client": {
+        "expected": "Chittaranjan Locomotive Works",
+        "actual": null,
+        "correct": false,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": null,
+        "correct": false,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 15 months",
+        "actual": null,
+        "correct": false,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 6,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 1,
+    "rationale": "The extraction is unfaithful because it sets the status to 'not_an_order' and the order field to null, directly contradicting the announcement which explicitly states that orders were received."
+  }
+}

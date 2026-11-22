@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 5,
+  "rationale": "The extraction accurately reflects the announcement's content by correctly identifying the company and date, and appropriately marking the status as 'not_an_order' with null values for order details, which aligns with the text describing a 'rate contract' rather than a specific purchase order.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:54:32.582Z",
+      "ended_at": "2026-11-22T15:54:52.591Z",
+      "elapsed_s": 20.01,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n\"rating\": 5,\n\"rationale\": \"The extraction accurately reflects the announcement's content by correctly identifying the company and date, and appropriately marking the status as 'not_an_order' with null values for order details, which aligns with the text describing a 'rate contract' rather than a specific purchase order.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

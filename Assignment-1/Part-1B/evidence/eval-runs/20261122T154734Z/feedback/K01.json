@@ -1,0 +1,127 @@
+{
+  "case_id": "K01",
+  "layers_failed": [
+    2
+  ],
+  "failed_checks": [
+    {
+      "id": "INV-3",
+      "detail": "/order: digits of 4200000 not in 'USD 4.2 million'"
+    },
+    {
+      "id": "G-2",
+      "detail": "digits of 4200000 not in 'USD 4.2 million'"
+    },
+    {
+      "id": "L3:order_value",
+      "detail": "expected 4.2, got 4200000"
+    }
+  ],
+  "expected": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Coromandel Textile Machinery Limited",
+    "announcement_date": "2026-11-09",
+    "order": {
+      "order_value": 4.2,
+      "currency": "USD",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": null,
+      "order_type": "export",
+      "execution_period": "within 8 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Coromandel Textile Machinery Limited is pleased to inform",
+      "announcement_date": "Date: 09.11.2026",
+      "order_value": "USD 4.2 million",
+      "currency": "USD 4.2 million",
+      "unit": "USD 4.2 million",
+      "order_type": "export order",
+      "execution_period": "to be executed within 8 months"
+    },
+    "missing_fields": [
+      "client"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "actual": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Coromandel Textile Machinery Limited",
+    "announcement_date": "2026-11-09",
+    "order": {
+      "order_value": 4200000,
+      "currency": "USD",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": null,
+      "order_type": "export",
+      "execution_period": "within 8 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Coromandel Textile Machinery Limited is pleased to inform that it has received an export order",
+      "announcement_date": "Date: 09.11.2026",
+      "order_value": "USD 4.2 million",
+      "currency": "USD 4.2 million",
+      "unit": "USD 4.2 million",
+      "order_type": "export order",
+      "execution_period": "to be executed within 8 months"
+    },
+    "missing_fields": [
+      "client"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "raw_model_output": "{\"is_new_order\": true, \"company\": \"Coromandel Textile Machinery Limited\", \"company_quote\": \"Coromandel Textile Machinery Limited is pleased to inform that it has received an export order\", \"announcement_date\": \"2026-11-09\", \"announcement_date_quote\": \"Date: 09.11.2026\", \"order_type\": \"export\", \"order_type_quote\": \"export order\", \"execution_period\": \"within 8 months\", \"execution_period_quote\": \"to be executed within 8 months\", \"orders\": [{\"order_value\": 4200000, \"currency\": \"USD\", \"unit\": \"million\", \"client\": null, \"value_quote\": \"USD 4.2 million\", \"client_quote\": null}]}",
+  "parser_log": [],
+  "agent_errors": [
+    {
+      "code": "G-2",
+      "pointer": "/order/order_value",
+      "message": "digits of 4200000 not in 'USD 4.2 million'",
+      "layer": 2
+    }
+  ],
+  "reason": "Failed layer 2: G-2, INV-3.",
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:49:43.648Z",
+      "ended_at": "2026-11-22T15:49:52.274Z",
+      "elapsed_s": 8.626,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4416,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Coromandel Textile Machinery Limited\", \"company_quote\": \"Coromandel Textile Machinery Limited is pleased to inform that it has received an export order\", \"announcement_date\": \"2026-11-09\", \"announcement_date_quote\": \"Date: 09.11.2026\", \"order_type\": \"export\", \"order_type_quote\": \"export order\", \"execution_period\": \"within 8 months\", \"execution_period_quote\": \"to be executed within 8 months\", \"orders\": [{\"order_value\": 4200000, \"currency\": \"USD\", \"unit\": \"million\", \"client\": null, \"value_quote\": \"USD 4.2 million\", \"client_quote\": null}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 172,
+        "prompt_eval_count": 2439,
+        "total_duration": 8612036083,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "run_id": "20261122T154734Z"
+}

@@ -1,0 +1,121 @@
+{
+  "case_id": "E01",
+  "layers_failed": [
+    2
+  ],
+  "failed_checks": [
+    {
+      "id": "INV-5",
+      "detail": "status 'needs_clarification' != expected 'extracted'"
+    },
+    {
+      "id": "L3:order_value",
+      "detail": "expected 500, got None"
+    },
+    {
+      "id": "L3:currency",
+      "detail": "expected 'INR', got None"
+    },
+    {
+      "id": "L3:unit",
+      "detail": "expected 'crore', got None"
+    }
+  ],
+  "expected": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Ganga Smart Infra Limited",
+    "announcement_date": "2026-11-05",
+    "order": {
+      "order_value": 500,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 500,
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "epc_construction",
+      "execution_period": "within 24 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Ganga Smart Infra Limited has received a Letter of Award",
+      "announcement_date": "Date: 05/11/2026",
+      "order_value": "approximately ₹500 crore (including GST)",
+      "currency": "approximately ₹500 crore (including GST)",
+      "unit": "approximately ₹500 crore (including GST)",
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "turnkey execution of a rural water supply scheme",
+      "execution_period": "to be completed within 24 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "actual": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Ganga Smart Infra Limited",
+    "announcement_date": "2026-11-05",
+    "order": {
+      "order_value": null,
+      "currency": null,
+      "unit": null,
+      "value_in_cr": null,
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "epc_construction",
+      "execution_period": "within 24 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Ganga Smart Infra Limited has received a Letter of Award",
+      "announcement_date": "Date: 05/11/2026",
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "turnkey execution",
+      "execution_period": "to be completed within 24 months"
+    },
+    "missing_fields": [
+      "order_value"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "raw_model_output": "{\"is_new_order\": true, \"company\": \"Ganga Smart Infra Limited\", \"company_quote\": \"Ganga Smart Infra Limited has received a Letter of Award\", \"announcement_date\": \"2026-11-05\", \"announcement_date_quote\": \"Date: 05/11/2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"turnkey execution\", \"execution_period\": \"within 24 months\", \"execution_period_quote\": \"to be completed within 24 months\", \"orders\": [{\"order_value\": null, \"currency\": null, \"unit\": null, \"client\": \"Uttar Pradesh Jal Nigam\", \"value_quote\": null, \"client_quote\": \"Uttar Pradesh Jal Nigam\"}]}",
+  "parser_log": [],
+  "agent_errors": [],
+  "reason": "Failed layer 2: INV-5.",
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:50:41.412Z",
+      "ended_at": "2026-11-22T15:50:50.191Z",
+      "elapsed_s": 8.778,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4428,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Ganga Smart Infra Limited\", \"company_quote\": \"Ganga Smart Infra Limited has received a Letter of Award\", \"announcement_date\": \"2026-11-05\", \"announcement_date_quote\": \"Date: 05/11/2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"turnkey execution\", \"execution_period\": \"within 24 months\", \"execution_period_quote\": \"to be completed within 24 months\", \"orders\": [{\"order_value\": null, \"currency\": null, \"unit\": null, \"client\": \"Uttar Pradesh Jal Nigam\", \"value_quote\": null, \"client_quote\": \"Uttar Pradesh Jal Nigam\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 170,
+        "prompt_eval_count": 2454,
+        "total_duration": 8763218334,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "run_id": "20261122T154734Z"
+}

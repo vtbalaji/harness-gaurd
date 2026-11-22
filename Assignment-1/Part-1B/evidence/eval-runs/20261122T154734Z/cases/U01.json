@@ -1,0 +1,199 @@
+{
+  "case_id": "U01",
+  "categories": [
+    "normal_single_order",
+    "unit_million"
+  ],
+  "covers": {
+    "fr": [
+      "FR-006",
+      "FR-007",
+      "FR-035"
+    ],
+    "ac": [
+      "AC-1.6",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "application_failure",
+  "stage": "post_validation",
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:48:26.907Z",
+      "ended_at": "2026-11-22T15:48:36.275Z",
+      "elapsed_s": 9.369,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4420,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Konkan Electromech Limited\", \"company_quote\": \"Konkan Electromech Limited has received a work order\", \"announcement_date\": \"2026-11-21\", \"announcement_date_quote\": \"Date: 21/11/2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"installation and commissioning of auxiliary cooling water systems\", \"execution_period\": \"by March 2027\", \"execution_period_quote\": \"to be completed by March 2027\", \"orders\": [{\"order_value\": 48500000, \"currency\": \"INR\", \"unit\": \"absolute\", \"client\": \"Bharat Heavy Electricals Limited\", \"value_quote\": \"INR 48.5 million\", \"client_quote\": \"Bharat Heavy Electricals Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 198,
+        "prompt_eval_count": 2445,
+        "total_duration": 9354765791,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Konkan Electromech Limited",
+    "announcement_date": "2026-11-21",
+    "order": {
+      "order_value": 48500000,
+      "currency": "INR",
+      "unit": "absolute",
+      "value_in_cr": 4.85,
+      "client": "Bharat Heavy Electricals Limited",
+      "order_type": "epc_construction",
+      "execution_period": "by March 2027"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Konkan Electromech Limited has received a work order",
+      "announcement_date": "Date: 21/11/2026",
+      "order_value": "INR 48.5 million",
+      "currency": "INR 48.5 million",
+      "unit": "INR 48.5 million",
+      "client": "Bharat Heavy Electricals Limited",
+      "order_type": "installation and commissioning of auxiliary cooling water systems",
+      "execution_period": "to be completed by March 2027"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [
+    {
+      "code": "G-2",
+      "pointer": "/order/order_value",
+      "message": "digits of 48500000 not in 'INR 48.5 million'",
+      "layer": 2
+    }
+  ],
+  "parser_log": [],
+  "assembly_trace": null,
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": false,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [
+      {
+        "inv": "INV-3",
+        "detail": "/order: digits of 48500000 not in 'INR 48.5 million'"
+      }
+    ],
+    "agent_errors": [
+      {
+        "code": "G-2",
+        "pointer": "/order/order_value",
+        "message": "digits of 48500000 not in 'INR 48.5 million'",
+        "layer": 2
+      }
+    ]
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Konkan Electromech Limited",
+        "actual": "Konkan Electromech Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-21",
+        "actual": "2026-11-21",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 48.5,
+        "actual": 48500000,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "million",
+        "actual": "absolute",
+        "correct": false,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Bharat Heavy Electricals Limited",
+        "actual": "Bharat Heavy Electricals Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "epc_construction",
+        "actual": "epc_construction",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "by March 2027",
+        "actual": "by March 2027",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 8,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction misreports the order_type as 'epc_construction' when the text explicitly specifies 'installation and commissioning', and incorrectly maps the currency string to the 'currency' evidence field instead of just the currency code."
+  }
+}
