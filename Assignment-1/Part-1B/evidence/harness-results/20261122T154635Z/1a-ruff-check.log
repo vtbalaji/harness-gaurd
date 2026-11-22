@@ -1,0 +1,23 @@
+E501 Line too long (102 > 100)
+   --> evidence/initial-generation/src/order_agent/prompt.py:141:101
+    |
+139 |         "fields are null and the order is still listed, with its client."
+140 |     ),
+141 |     # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --------
+    |                                                                                                     ^^
+142 |     "multi_order": (
+143 |         "If the announcement lists several orders, put each itemised order that has its own "
+    |
+
+E501 Line too long (102 > 100)
+   --> src/order_agent/prompt.py:141:101
+    |
+139 |         "fields are null and the order is still listed, with its client."
+140 |     ),
+141 |     # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --------
+    |                                                                                                     ^^
+142 |     "multi_order": (
+143 |         "If the announcement lists several orders, put each itemised order that has its own "
+    |
+
+Found 2 errors.

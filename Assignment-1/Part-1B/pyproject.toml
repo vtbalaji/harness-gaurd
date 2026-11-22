@@ -16,6 +16,7 @@ where = ["src"]
 target-version = "py312"
 line-length = 100
 extend-include = [".harness/*.py"]
+extend-exclude = ["evidence"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM"]

@@ -138,7 +138,7 @@ SECTIONS: dict[str, str] = {
         '"(excluding taxes)" does not make a value ambiguous. If no value is stated, the value '
         "fields are null and the order is still listed, with its client."
     ),
-    # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --------
+    # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --
     "multi_order": (
         "If the announcement lists several orders, put each itemised order that has its own "
         "value into orders once, in order of appearance (at most 4 entries). A stated total or "
