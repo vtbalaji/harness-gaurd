@@ -28,6 +28,14 @@
 
 *(The evaluation part of the input is summarised above; its full content is restated as binding requirements in [Evaluation Requirements](#evaluation-requirements).)*
 
+## Clarifications
+
+### Session 2026-11-22
+
+- Q: What num_ctx formula matches myportfolio-web? → A: `num_ctx = max(4096, len(prompt) // 3 + num_predict + 512)` with `num_predict = 700` (source: owner's myportfolio-web `scripts/fundamental/announcements_v2/helpers.py`, consulted read-only). Applied to FR-020, FR-022 and Assumptions.
+
+*Not answered in this session:* five defaults remain unconfirmed by the owner and are labelled "PROVISIONAL — pending Balaji" in [Assumptions](#assumptions); they are not clarifications.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Extract a single new-order win with evidence (Priority: P1)
@@ -175,9 +183,9 @@ The evaluator (Balaji) runs the evaluation over the fixed dataset and receives a
 
 #### Production model and configuration (owner-mandated constraints)
 
-- **FR-020**: The agent MUST use the locally served model `qwen3.5:4b` (quantisation Q4_K_M, digest `d8b0f5e9760c`) on Ollama 0.32.14, called through the same generate interface and settings as the owner's myportfolio-web pipeline: thinking disabled, JSON output mode, temperature 0.1, maximum 700 output tokens, context length = max(4096, the prompt-dependent requirement defined in the plan), request timeout 300 s, plus fixed seed 42. These settings MUST be pinned in configuration, not chosen per run.
+- **FR-020**: The agent MUST use the locally served model `qwen3.5:4b` (quantisation Q4_K_M, digest `d8b0f5e9760c`) on Ollama 0.32.14, called through the same generate interface and settings as the owner's myportfolio-web pipeline: thinking disabled, JSON output mode, temperature 0.1, maximum 700 output tokens (`num_predict = 700`), context length `num_ctx = max(4096, len(prompt) // 3 + num_predict + 512)` where `len(prompt)` is the character length of the full prompt sent to the model (the myportfolio-web formula), request timeout 300 s, plus fixed seed 42. These settings MUST be pinned in configuration, not chosen per run.
 - **FR-021**: Model and judge endpoints MUST be read from a `.env` file that is not committed; a `.env.example` with placeholder/default values (`http://localhost:11434` for the agent, `http://127.0.0.1:8081/v1/chat/completions` for the judge) MUST be committed. No secrets, keys or tokens may be committed.
-- **FR-022**: Each evaluation run MUST record: model tag and digest, runner version, all generation settings (temperature, seed, context length, output-token limit, thinking disabled, JSON mode, timeout), prompt version, schema version, dataset fingerprint (content hash), judge model identity and settings, and start/end time. If the installed model digest or runner version differs from the pinned values, the run MUST be marked INCONCLUSIVE.
+- **FR-022**: Each evaluation run MUST record: model tag and digest, runner version, all generation settings (temperature, seed, context-length formula and the computed `num_ctx` of each request, output-token limit, thinking disabled, JSON mode, timeout), prompt version, schema version, dataset fingerprint (content hash), judge model identity and settings, and start/end time. If the installed model digest or runner version differs from the pinned values, the run MUST be marked INCONCLUSIVE.
 - **FR-023**: Model/service failures — timeout, runner unreachable, HTTP error status, or an empty response body/text — MUST be classified separately from application failures (schema, invariant or semantic misses). A case MAY be retried up to 2 times (3 attempts in total) for a service failure only; application failures MUST NOT be retried. Every attempt MUST be logged.
 
 ### Evaluation Requirements
@@ -278,14 +286,14 @@ These are declared before any evaluation exists and are binding (constitution Pr
 - **Users**: an analyst consuming order-win records, and the evaluator/owner (Balaji) who makes the final ACCEPT/REJECT decision. Single-user, local, offline use; no authentication or multi-tenancy.
 - **Scope**: one announcement in, one result out. Batch feeds, fetching filings from exchange websites, PDF-to-text conversion, persistence/database storage and UI are out of scope; the input is already plain text.
 - **No clarification markers were used**: every open choice had a defensible default, recorded here and in the FRs; they can be revisited in `/speckit-clarify`.
-- **Order vs. non-order**: Letters of Award/Intent, Notifications of Award, work/purchase orders and signed contracts count as orders; L1-bidder status, MoUs, bids, framework agreements without committed value, order cancellations and order-book updates do not.
-- **Unnamed client counts as missing**: generic descriptors ("a leading PSU", "a reputed overseas customer") are not a client; the order is `needs_clarification`. A named government department or PSU is a client.
-- **Ambiguous value**: ranges, "between", "up to" are ambiguous (null). "Approximately / about / over / more than X" report X as stated.
+- **Order vs. non-order**: Letters of Award/Intent, Notifications of Award, work/purchase orders and signed contracts count as orders; bids, framework agreements without committed value, order cancellations and order-book updates do not. **PROVISIONAL — pending Balaji**: L1-bidder status and MoUs are treated as `not_an_order`.
+- **Unnamed client counts as missing** (**PROVISIONAL — pending Balaji**): generic descriptors ("a leading PSU", "a reputed overseas customer") are not a client; the order is `needs_clarification`. A named government department or PSU is a client.
+- **Ambiguous value**: **PROVISIONAL — pending Balaji**: ranges, "between", "up to" are ambiguous (null). "Approximately / about / over / more than X" report X as stated.
 - **Rejection reason field**: `rejection_reason` is added to the owner's field list so the analyst and evaluator can see why an input was rejected; it is null for all non-rejected results. `schema_version` is carried in the object.
-- **Over-length limit**: 20,000 characters, chosen to cover long announcements (typical order filings are 1–3 KB) while keeping the prompt within a small context window for the 4B model.
+- **Over-length limit** (**PROVISIONAL — pending Balaji**): 20,000 characters, chosen to cover long announcements (typical order filings are 1–3 KB) while keeping the prompt within a small context window for the 4B model.
 - **Garbled thresholds** (85% recognised characters, ≥ 3 words) are deliberate defaults that accept PDF-conversion noise but reject binary/encoding junk.
-- **Context length**: myportfolio-web was not readable from this workspace, so its exact prompt-dependent formula is not copied; the plan must define it (default: estimated prompt tokens + 700 output tokens + safety margin, floor 4096) and record it per run.
-- **Reference FX rates** (USD 84, EUR 90 INR) are used only to rank orders in different currencies for top-level selection; reported values are never converted.
+- **Context length**: the formula is taken from myportfolio-web (`scripts/fundamental/announcements_v2/helpers.py`, read-only; see Clarifications): `num_ctx = max(4096, len(prompt) // 3 + num_predict + 512)`, `num_predict = 700`. At the 20,000-character input limit this gives roughly 7,900 plus the prompt template's share, so the floor of 4096 applies only to short prompts.
+- **Reference FX rates** (USD 84, EUR 90 INR) (**PROVISIONAL — pending Balaji**) are used only to rank orders in different currencies for top-level selection; reported values are never converted.
 - **Compound units** such as "lakh crore" / "thousand crore" are out of scope for v1 and absent from the dataset; if met in practice, they are expected to surface as invariant or accuracy failures rather than silent conversions.
 - **Derived fields**: the plan may compute `missing_fields`, status-shape consistency and top-level ordering with documented deterministic code around the model (constitution Principle V), provided no field value is invented or altered.
 - **Layer 3 null handling**: a field correctly reported as null counts as correct; this rewards honest "missing" over guessing.
