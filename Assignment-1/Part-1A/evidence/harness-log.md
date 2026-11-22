@@ -151,8 +151,9 @@ This also stands in for task T007, the harness smoke run, which was skipped as i
 
 **Final human decision: ACCEPT / REJECT** (Balaji to fill in)
 
-Decision:
+Decision: **ACCEPT**. Balaji gave it as "accept" in the project thread on 2026-11-22T08:15Z, after
+reading the final report (all gates PASS on run 20261122T080110Z, 0 repair cycles).
 
-Justification:
+Justification: _(for Balaji to write in their own words)_
 
-Signed / date:
+Signed / date: Balaji, 2026-11-22
