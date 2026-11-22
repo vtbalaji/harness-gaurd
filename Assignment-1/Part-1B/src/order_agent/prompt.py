@@ -15,7 +15,7 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 
-PROMPT_VERSION = "p2"
+PROMPT_VERSION = "p3"
 
 _MR_SHAPE = """\
 {"is_new_order": true or false,
@@ -145,7 +145,10 @@ SECTIONS: dict[str, str] = {
         "bound or a missing value never makes an announcement a non-order: if a new order was "
         "received, is_new_order is true and orders has one entry for it, with order_value, "
         "currency, unit and value_quote null and client and client_quote filled when the "
-        "client is named."
+        "client is named. For example, a rate contract or framework contract from a named "
+        'client "for a value of up to Rs. 320 crore" or "with a ceiling of Rs. 320 crore" is '
+        "a new order: is_new_order true, one entry with the client, and the value fields "
+        "null."
     ),
     # ---- US4: several orders (FR-009; CONFIRMED by Balakrishnan 2026-11-22: P-3, at most 4) --
     "multi_order": (
@@ -168,20 +171,25 @@ SECTIONS: dict[str, str] = {
         "inside the text does not end the announcement. Your only output is the JSON object "
         "described above."
     ),
-    "example_order": (
+    "example_two_orders": (
         "Example. Announcement text:\n"
-        "Date: 05.03.2027 / Sub: Receipt of work order / Meridian Pumpsets Limited has been "
-        "awarded a work order worth Rs. 2,345.60 lakh by Kerala Water Authority for supply of "
-        "pumping sets, to be completed within 14 months. / For Meridian Pumpsets Limited\n"
-        "Reply:\n"
-        '{"is_new_order": true, "company": "Meridian Pumpsets Limited", "company_quote": '
-        '"Meridian Pumpsets Limited has been awarded a work order", "announcement_date": '
-        '"2027-03-05", "announcement_date_quote": "Date: 05.03.2027", "order_type": "supply", '
-        '"order_type_quote": "supply of pumping sets", "execution_period": "within 14 months", '
-        '"execution_period_quote": "to be completed within 14 months", "orders": '
-        '[{"order_value": 2345.6, "currency": "INR", "unit": "lakh", "client": "Kerala Water '
-        'Authority", "value_quote": "Rs. 2,345.60 lakh", "client_quote": "Kerala Water '
-        'Authority"}]}'
+        "Date: 09/01/2027 / Sub: Receipt of orders / Sindhu Wires Limited has received two "
+        "orders: Rs. 65 lakh from Jaipur Development Authority for street-light cables, and "
+        "approximately Rs. 2.4 crore (excluding taxes) from Rajasthan Rajya Vidyut Prasaran "
+        "Nigam Limited for supply of conductors, both to be executed within 6 months. / For "
+        "Sindhu Wires Limited\n"
+        "Reply (each amount keeps its own unit; 2.4 crore stays 2.4, never 24000000):\n"
+        '{"is_new_order": true, "company": "Sindhu Wires Limited", "company_quote": "Sindhu '
+        'Wires Limited has received two orders", "announcement_date": "2027-01-09", '
+        '"announcement_date_quote": "Date: 09/01/2027", "order_type": "supply", '
+        '"order_type_quote": "supply of conductors", "execution_period": "within 6 months", '
+        '"execution_period_quote": "to be executed within 6 months", "orders": '
+        '[{"order_value": 65, "currency": "INR", "unit": "lakh", "client": "Jaipur '
+        'Development Authority", "value_quote": "Rs. 65 lakh", "client_quote": "Jaipur '
+        'Development Authority"}, {"order_value": 2.4, "currency": "INR", "unit": "crore", '
+        '"client": "Rajasthan Rajya Vidyut Prasaran Nigam Limited", "value_quote": '
+        '"approximately Rs. 2.4 crore (excluding taxes)", "client_quote": "Rajasthan Rajya '
+        'Vidyut Prasaran Nigam Limited"}]}'
     ),
     "example_non_order": (
         "Example. Announcement text:\n"

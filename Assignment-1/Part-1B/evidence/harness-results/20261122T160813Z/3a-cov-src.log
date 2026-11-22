@@ -1,0 +1,14 @@
+Name                            Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------
+src/order_agent/__init__.py         2      0      0      0   100%
+src/order_agent/__main__.py         4      0      2      1    83%   7->exit
+src/order_agent/agent.py           98      0     32      2    98%   60->62, 73->75
+src/order_agent/cli.py             64      0     10      0   100%
+src/order_agent/client.py         212      2     54      2    98%   141, 365
+src/order_agent/config.py          93      2     26      0    98%   88-89
+src/order_agent/guards.py          55      0     20      0   100%
+src/order_agent/parser.py          41      0     12      0   100%
+src/order_agent/prompt.py          21      0      0      0   100%
+src/order_agent/validators.py     369      3    210      4    99%   110, 119, 176, 532->531
+---------------------------------------------------------------------------
+TOTAL                             959      7    366      9    99%

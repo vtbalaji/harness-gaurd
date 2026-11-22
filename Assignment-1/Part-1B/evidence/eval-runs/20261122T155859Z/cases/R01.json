@@ -1,0 +1,101 @@
+{
+  "case_id": "R01",
+  "categories": [
+    "non_order_results"
+  ],
+  "covers": {
+    "fr": [
+      "FR-013"
+    ],
+    "ac": [
+      "AC-2.1"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:01:57.001Z",
+      "ended_at": "2026-11-22T16:02:06.067Z",
+      "elapsed_s": 9.067,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4730,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": false, \"company\": \"Bharatpur Electricals Limited\", \"company_quote\": \"The Board of Directors of Bharatpur Electricals Limited\", \"announcement_date\": \"2026-11-08\", \"announcement_date_quote\": \"Date: November 8, 2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 102,
+        "prompt_eval_count": 2701,
+        "total_duration": 9011155209,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "not_an_order",
+    "company": "Bharatpur Electricals Limited",
+    "announcement_date": "2026-11-08",
+    "order": null,
+    "additional_orders": [],
+    "evidence": {
+      "company": "The Board of Directors of Bharatpur Electricals Limited",
+      "announcement_date": "Date: November 8, 2026"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "is_new_order": false,
+    "value_in_cr": []
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": null,
+  "judge": {
+    "status": "not_applicable"
+  }
+}

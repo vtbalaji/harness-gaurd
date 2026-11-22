@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 2,
+  "rationale": "The extraction incorrectly infers the currency as INR and misreports the evidence for currency and unit by repeating the full value string '340 crore' instead of extracting the specific currency code or unit, which constitutes a misreporting of the stated text.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:04:01.031Z",
+      "ended_at": "2026-11-22T16:04:07.606Z",
+      "elapsed_s": 6.575,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 2,\n  \"rationale\": \"The extraction incorrectly infers the currency as INR and misreports the evidence for currency and unit by repeating the full value string '340 crore' instead of extracting the specific currency code or unit, which constitutes a misreporting of the stated text.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

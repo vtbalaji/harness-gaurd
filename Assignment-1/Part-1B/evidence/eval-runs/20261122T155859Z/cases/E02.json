@@ -1,0 +1,188 @@
+{
+  "case_id": "E02",
+  "categories": [
+    "edge_case"
+  ],
+  "covers": {
+    "fr": [
+      "FR-009"
+    ],
+    "ac": [
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:03:10.237Z",
+      "ended_at": "2026-11-22T16:03:21.395Z",
+      "elapsed_s": 11.159,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4636,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Brahmaputra Power Equipment Limited\", \"company_quote\": \"Brahmaputra Power Equipment Limited has received orders\", \"announcement_date\": \"2026-11-04\", \"announcement_date_quote\": \"Date: 04.11.2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of hydro turbine components\", \"execution_period\": \"within 20 months\", \"execution_period_quote\": \"to be executed within 20 months\", \"orders\": [{\"order_value\": 600, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"NTPC and NHPC\", \"value_quote\": \"₹600 crore\", \"client_quote\": \"NTPC and NHPC\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 179,
+        "prompt_eval_count": 2622,
+        "total_duration": 11063695291,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Brahmaputra Power Equipment Limited",
+    "announcement_date": "2026-11-04",
+    "order": {
+      "order_value": 600,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 600.0,
+      "client": "NTPC and NHPC",
+      "order_type": "supply",
+      "execution_period": "within 20 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Brahmaputra Power Equipment Limited has received orders",
+      "announcement_date": "Date: 04.11.2026",
+      "order_value": "₹600 crore",
+      "currency": "₹600 crore",
+      "unit": "₹600 crore",
+      "client": "NTPC and NHPC",
+      "order_type": "supply of hydro turbine components",
+      "execution_period": "to be executed within 20 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "6000000000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      600.0
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Brahmaputra Power Equipment Limited",
+        "actual": "Brahmaputra Power Equipment Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-04",
+        "actual": "2026-11-04",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 600,
+        "actual": 600,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "NTPC and NHPC",
+        "actual": "NTPC and NHPC",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": "supply",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 20 months",
+        "actual": "within 20 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the company name, date, order value, currency, unit, clients, order type, and execution period, are explicitly stated in the announcement text and are accurately represented without any misreporting or invention."
+  }
+}

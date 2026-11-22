@@ -41,12 +41,12 @@ def test_fr018_instructions_only_in_system_and_text_between_markers():
 
 
 def test_fr018_bundle_version_hash_and_length():
-    """FR-018, FR-022, R-4: PROMPT_VERSION p2, system_sha256, prompt_chars, determinism."""
+    """FR-018, FR-022, R-4: PROMPT_VERSION p3, system_sha256, prompt_chars, determinism."""
     from order_agent import prompt
 
     bundle = prompt.build(N01_TEXT)
-    assert prompt.PROMPT_VERSION == "p2"  # FR-033: bumped by eval repair cycle 1
-    assert bundle.prompt_version == "p2"
+    assert prompt.PROMPT_VERSION == "p3"  # FR-033: bumped by eval repair cycles 1 and 2
+    assert bundle.prompt_version == "p3"
     assert bundle.system_sha256 == hashlib.sha256(bundle.system.encode("utf-8")).hexdigest()
     assert bundle.prompt_chars == len(bundle.system) + len(bundle.prompt)
     assert prompt.build(N01_TEXT) == bundle
@@ -362,6 +362,7 @@ def test_fr009_multi_order_section_confirmed_p3():
 KNOWN_PROMPTS = {
     "p1": "0a1c82e131bbcb6523f45b027678ec6b18fd029bab59c9928ae8b34371f9edb6",
     "p2": "d6bb51dd2d4a7127894df56128462671fb3b60966639ecd59ce98a7e41b52fcf",
+    "p3": "a19b0bb4eba850a359d45ffbbad55905d16640a553aa005bbd4189db75c07797",
 }
 
 

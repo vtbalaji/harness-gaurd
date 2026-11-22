@@ -1,0 +1,210 @@
+{
+  "case_id": "M01",
+  "categories": [
+    "multiple_orders"
+  ],
+  "covers": {
+    "fr": [
+      "FR-009"
+    ],
+    "ac": [
+      "AC-4.1"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:00:13.687Z",
+      "ended_at": "2026-11-22T16:00:27.115Z",
+      "elapsed_s": 13.429,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4696,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Godavari Infraprojects Limited\", \"company_quote\": \"Godavari Infraprojects Limited is pleased to announce that it has received orders aggregating ₹1,250 crore\", \"announcement_date\": \"2026-11-17\", \"announcement_date_quote\": \"Date: 17.11.2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"construction of a four-lane highway section\", \"execution_period\": \"within 30 months\", \"execution_period_quote\": \"to be completed within 30 months\", \"orders\": [{\"order_value\": 800, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"National Highways Authority of India\", \"value_quote\": \"₹800 crore\", \"client_quote\": \"National Highways Authority of India\"}, {\"order_value\": 450, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Rail Vikas Nigam Limited\", \"value_quote\": \"₹450 crore\", \"client_quote\": \"Rail Vikas Nigam Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 262,
+        "prompt_eval_count": 2666,
+        "total_duration": 13365625625,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Godavari Infraprojects Limited",
+    "announcement_date": "2026-11-17",
+    "order": {
+      "order_value": 800,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 800.0,
+      "client": "National Highways Authority of India",
+      "order_type": "epc_construction",
+      "execution_period": "within 30 months"
+    },
+    "additional_orders": [
+      {
+        "order_value": 450,
+        "currency": "INR",
+        "unit": "crore",
+        "value_in_cr": 450.0,
+        "client": "Rail Vikas Nigam Limited",
+        "evidence": {
+          "order_value": "₹450 crore",
+          "currency": "₹450 crore",
+          "unit": "₹450 crore",
+          "client": "Rail Vikas Nigam Limited"
+        }
+      }
+    ],
+    "evidence": {
+      "company": "Godavari Infraprojects Limited is pleased to announce that it has received orders aggregating ₹1,250 crore",
+      "announcement_date": "Date: 17.11.2026",
+      "order_value": "₹800 crore",
+      "currency": "₹800 crore",
+      "unit": "₹800 crore",
+      "client": "National Highways Authority of India",
+      "order_type": "construction of a four-lane highway section",
+      "execution_period": "to be completed within 30 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "8000000000"
+      ],
+      [
+        0,
+        "4500000000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [
+      1
+    ],
+    "value_in_cr": [
+      800.0,
+      450.0
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-9",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Godavari Infraprojects Limited",
+        "actual": "Godavari Infraprojects Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-17",
+        "actual": "2026-11-17",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 800,
+        "actual": 800,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "National Highways Authority of India",
+        "actual": "National Highways Authority of India",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "epc_construction",
+        "actual": "epc_construction",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 30 months",
+        "actual": "within 30 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 1,
+        "actual": 1,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction incorrectly assigns the total aggregate order value of ₹1,250 crore to the specific order from the National Highways Authority of India, which is actually valued at ₹800 crore, thereby misreporting the primary data point."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "case_id": "X01",
+  "categories": [
+    "malformed_empty"
+  ],
+  "covers": {
+    "fr": [
+      "FR-016"
+    ],
+    "ac": [
+      "AC-3.1"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": false,
+  "attempts": [],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "rejected",
+    "company": null,
+    "announcement_date": null,
+    "order": null,
+    "additional_orders": [],
+    "evidence": {},
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": "empty"
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "guard": "rule 1: the input has zero bytes"
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-5",
+      "INV-6"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": null,
+  "judge": {
+    "status": "not_applicable"
+  }
+}

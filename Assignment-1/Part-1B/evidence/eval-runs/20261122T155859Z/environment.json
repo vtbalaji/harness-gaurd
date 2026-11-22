@@ -1,0 +1,42 @@
+{
+  "ollama_url_host": "localhost:11434",
+  "ollama_version": "0.32.14",
+  "model": {
+    "tag": "qwen3.5:4b",
+    "digest_pinned": "d8b0f5e9760c",
+    "digest_installed": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04"
+  },
+  "runner": {
+    "name": "ollama",
+    "version_pinned": "0.32.14",
+    "version_installed": "0.32.14"
+  },
+  "quantization_level": "Q4_K_M",
+  "quantization_pinned": "Q4_K_M",
+  "env_mismatch": [],
+  "python_version": "3.14.7",
+  "pip_freeze": [
+    "bandit==1.9.1",
+    "coverage==7.17.4",
+    "iniconfig==2.3.1",
+    "markdown-it-py==4.3.0",
+    "mdurl==0.1.2",
+    "order-agent==0.1.0",
+    "packaging==26.3",
+    "pip==26.2.1",
+    "pluggy==1.7.0",
+    "Pygments==2.21.0",
+    "pytest-cov==7.0.0",
+    "pytest==8.4.2",
+    "PyYAML==6.0.4",
+    "rich==15.0.0",
+    "ruff==0.14.0",
+    "stevedore==5.10.0"
+  ],
+  "git_head": "6d10eacf6a704d8f09065a2335dc895aed96eafa",
+  "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+  "judge": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "case_id": "A04",
+  "layers_failed": [
+    2
+  ],
+  "failed_checks": [
+    {
+      "id": "INV-5",
+      "detail": "status 'not_an_order' != expected 'needs_clarification'"
+    },
+    {
+      "id": "L3:client",
+      "detail": "expected 'Mahanadi Coalfields Limited', got None"
+    },
+    {
+      "id": "L3:order_type",
+      "detail": "expected 'services', got None"
+    },
+    {
+      "id": "L3:execution_period",
+      "detail": "expected 'within three years', got None"
+    }
+  ],
+  "expected": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Utkal Bulk Logistics Limited",
+    "announcement_date": "2026-11-11",
+    "order": {
+      "order_value": null,
+      "currency": null,
+      "unit": null,
+      "value_in_cr": null,
+      "client": "Mahanadi Coalfields Limited",
+      "order_type": "services",
+      "execution_period": "within three years"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Utkal Bulk Logistics Limited has received a rate contract",
+      "announcement_date": "Date: 11.11.2026",
+      "client": "Mahanadi Coalfields Limited",
+      "order_type": "coal transportation and handling services",
+      "execution_period": "to be executed within three years"
+    },
+    "missing_fields": [
+      "order_value"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "actual": {
+    "schema_version": "1.0",
+    "status": "not_an_order",
+    "company": "Utkal Bulk Logistics Limited",
+    "announcement_date": "2026-11-11",
+    "order": null,
+    "additional_orders": [],
+    "evidence": {
+      "company": "Utkal Bulk Logistics Limited has received a rate contract",
+      "announcement_date": "Date: 11.11.2026"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "raw_model_output": "{\"is_new_order\": false, \"company\": \"Utkal Bulk Logistics Limited\", \"company_quote\": \"Utkal Bulk Logistics Limited has received a rate contract\", \"announcement_date\": \"2026-11-11\", \"announcement_date_quote\": \"Date: 11.11.2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+  "parser_log": [],
+  "agent_errors": [],
+  "reason": "Failed layer 2: INV-5.",
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:01:28.039Z",
+      "ended_at": "2026-11-22T16:01:36.576Z",
+      "elapsed_s": 8.537,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4621,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": false, \"company\": \"Utkal Bulk Logistics Limited\", \"company_quote\": \"Utkal Bulk Logistics Limited has received a rate contract\", \"announcement_date\": \"2026-11-11\", \"announcement_date_quote\": \"Date: 11.11.2026\", \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 103,
+        "prompt_eval_count": 2608,
+        "total_duration": 8491770416,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "run_id": "20261122T155859Z"
+}

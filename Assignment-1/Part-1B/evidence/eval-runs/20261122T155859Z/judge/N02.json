@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 5,
+  "rationale": "All extracted values, including the company name, date, order value, currency, unit, client, and order type, are explicitly stated in the announcement text and are accurately reported without any misrepresentation or invention.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:03:31.177Z",
+      "ended_at": "2026-11-22T16:03:38.691Z",
+      "elapsed_s": 7.514,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 5,\n  \"rationale\": \"All extracted values, including the company name, date, order value, currency, unit, client, and order type, are explicitly stated in the announcement text and are accurately reported without any misrepresentation or invention.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

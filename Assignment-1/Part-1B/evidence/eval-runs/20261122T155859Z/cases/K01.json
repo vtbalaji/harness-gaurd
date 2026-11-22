@@ -1,0 +1,191 @@
+{
+  "case_id": "K01",
+  "categories": [
+    "missing_client",
+    "owner_decision"
+  ],
+  "covers": {
+    "fr": [
+      "FR-011",
+      "FR-012"
+    ],
+    "ac": [
+      "AC-2.4",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:01:46.797Z",
+      "ended_at": "2026-11-22T16:01:56.996Z",
+      "elapsed_s": 10.199,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4654,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Coromandel Textile Machinery Limited\", \"company_quote\": \"Coromandel Textile Machinery Limited is pleased to inform that it has received an export order\", \"announcement_date\": \"2026-11-09\", \"announcement_date_quote\": \"Date: 09.11.2026\", \"order_type\": \"export\", \"order_type_quote\": \"export order\", \"execution_period\": \"within 8 months\", \"execution_period_quote\": \"to be executed within 8 months\", \"orders\": [{\"order_value\": 4.2, \"currency\": \"USD\", \"unit\": \"million\", \"client\": null, \"value_quote\": \"USD 4.2 million\", \"client_quote\": null}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 168,
+        "prompt_eval_count": 2625,
+        "total_duration": 10173227000,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Coromandel Textile Machinery Limited",
+    "announcement_date": "2026-11-09",
+    "order": {
+      "order_value": 4.2,
+      "currency": "USD",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": null,
+      "order_type": "export",
+      "execution_period": "within 8 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Coromandel Textile Machinery Limited is pleased to inform that it has received an export order",
+      "announcement_date": "Date: 09.11.2026",
+      "order_value": "USD 4.2 million",
+      "currency": "USD 4.2 million",
+      "unit": "USD 4.2 million",
+      "order_type": "export order",
+      "execution_period": "to be executed within 8 months"
+    },
+    "missing_fields": [
+      "client"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "352800000.0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      null
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Coromandel Textile Machinery Limited",
+        "actual": "Coromandel Textile Machinery Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-09",
+        "actual": "2026-11-09",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 4.2,
+        "actual": 4.2,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "USD",
+        "actual": "USD",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "million",
+        "actual": "million",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "order_type": {
+        "expected": "export",
+        "actual": "export",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 8 months",
+        "actual": "within 8 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction is unfaithful because the 'currency' and 'unit' fields in the evidence section incorrectly quote the entire value string 'USD 4.2 million' instead of extracting the specific currency code and unit as defined in the schema."
+  }
+}

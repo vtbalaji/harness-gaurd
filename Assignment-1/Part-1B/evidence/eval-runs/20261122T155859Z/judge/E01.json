@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 1,
+  "rationale": "The extraction is unfaithful because it sets order_value, currency, and value_in_cr to null despite the announcement explicitly stating the value is approximately ₹500 crore (including GST), and it misreports the order_type as 'epc_construction' instead of the text's 'turnkey execution'.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:07:19.423Z",
+      "ended_at": "2026-11-22T16:07:25.640Z",
+      "elapsed_s": 6.218,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 1,\n  \"rationale\": \"The extraction is unfaithful because it sets order_value, currency, and value_in_cr to null despite the announcement explicitly stating the value is approximately ₹500 crore (including GST), and it misreports the order_type as 'epc_construction' instead of the text's 'turnkey execution'.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

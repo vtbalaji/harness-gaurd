@@ -1,0 +1,192 @@
+{
+  "case_id": "N01",
+  "categories": [
+    "normal_single_order",
+    "unit_crore"
+  ],
+  "covers": {
+    "fr": [
+      "FR-003",
+      "FR-006"
+    ],
+    "ac": [
+      "AC-1.1",
+      "AC-1.5",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T15:58:59.892Z",
+      "ended_at": "2026-11-22T15:59:12.075Z",
+      "elapsed_s": 12.188,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4616,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Example Transformers Limited\", \"company_quote\": \"Example Transformers Limited has received an order\", \"announcement_date\": \"2026-11-20\", \"announcement_date_quote\": \"Date: November 20, 2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of transformers\", \"execution_period\": \"within 18 months\", \"execution_period_quote\": \"to be executed within 18 months\", \"orders\": [{\"order_value\": 1250.5, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"NTPC Limited\", \"value_quote\": \"₹1,250.50 crore\", \"client_quote\": \"NTPC Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 173,
+        "prompt_eval_count": 2602,
+        "total_duration": 12074650834,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Example Transformers Limited",
+    "announcement_date": "2026-11-20",
+    "order": {
+      "order_value": 1250.5,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 1250.5,
+      "client": "NTPC Limited",
+      "order_type": "supply",
+      "execution_period": "within 18 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Example Transformers Limited has received an order",
+      "announcement_date": "Date: November 20, 2026",
+      "order_value": "₹1,250.50 crore",
+      "currency": "₹1,250.50 crore",
+      "unit": "₹1,250.50 crore",
+      "client": "NTPC Limited",
+      "order_type": "supply of transformers",
+      "execution_period": "to be executed within 18 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "12505000000.0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      1250.5
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Example Transformers Limited",
+        "actual": "Example Transformers Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-20",
+        "actual": "2026-11-20",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 1250.5,
+        "actual": 1250.5,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "NTPC Limited",
+        "actual": "NTPC Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": "supply",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 18 months",
+        "actual": "within 18 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the company name, date, order value, currency, unit, client, order type, and execution period, are explicitly stated in the announcement text and are accurately represented without any misreporting or invention."
+  }
+}
