@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:order-agent:output:1.0",
   "title": "Order extraction result, schema version 1.0",
-  "description": "One object per announcement (FR-001..FR-015). Cross-field grounding rules (evidence substrings, digits, client-in-quote, evidence coverage, ranking) are checked in code, see research.md R-7 and the INV table in spec.md. Uses only the keyword subset declared in research.md R-1.",
+  "description": "One object per announcement (FR-001..FR-015 and FR-035, spec rev 3). Cross-field grounding rules (evidence substrings, digits, client-in-quote, evidence coverage, ranking, unstated_fields equality, the exact value_in_cr conversion) are checked in code, see research.md R-7 and the INV table in spec.md. unstated_fields is P-5, PROVISIONAL — pending Balaji. value_in_cr (rev 3, FR-035) is derived by deterministic code, never by the model, and has no evidence key. Uses only the keyword subset declared in research.md R-1. The SHA-256 of this file is pinned against version 1.0 in spec.md (Schema file pins). Version 1.0 is still pre-release: rev 3 changed these bytes before any run and before the pin was recorded (T098), so the pin records the rev 3 bytes.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,6 +14,7 @@
     "additional_orders",
     "evidence",
     "missing_fields",
+    "unstated_fields",
     "rejection_reason"
   ],
   "properties": {
@@ -31,6 +32,12 @@
     "missing_fields": {
       "type": "array",
       "items": { "enum": ["order_value", "client"] },
+      "uniqueItems": true
+    },
+    "unstated_fields": {
+      "$comment": "Spec rev 2, P-5 (PROVISIONAL — pending Balaji): the optional fields that are null. Equality with the set of null optional fields is INV-10 (layer 2), checked in code.",
+      "type": "array",
+      "items": { "enum": ["company", "announcement_date", "order_type", "execution_period"] },
       "uniqueItems": true
     },
     "rejection_reason": { "enum": ["empty", "whitespace_only", "too_long", "garbled", null] }
@@ -59,19 +66,20 @@
       }
     },
     {
-      "$comment": "FR-015: not_an_order => order null, additional_orders empty, missing_fields empty, rejection_reason null",
+      "$comment": "FR-015: not_an_order => order null, additional_orders empty, missing_fields empty, unstated_fields only company/announcement_date, rejection_reason null",
       "if": { "properties": { "status": { "const": "not_an_order" } } },
       "then": {
         "properties": {
           "order": { "type": "null" },
           "additional_orders": { "maxItems": 0 },
           "missing_fields": { "maxItems": 0 },
+          "unstated_fields": { "items": { "enum": ["company", "announcement_date"] } },
           "rejection_reason": { "const": null }
         }
       }
     },
     {
-      "$comment": "FR-015: rejected => company, announcement_date, order null; additional_orders empty; evidence {}; missing_fields empty; rejection_reason non-null",
+      "$comment": "FR-015: rejected => company, announcement_date, order null; additional_orders empty; evidence {}; missing_fields empty; unstated_fields empty; rejection_reason non-null",
       "if": { "properties": { "status": { "const": "rejected" } } },
       "then": {
         "properties": {
@@ -81,6 +89,7 @@
           "additional_orders": { "maxItems": 0 },
           "evidence": { "maxProperties": 0 },
           "missing_fields": { "maxItems": 0 },
+          "unstated_fields": { "maxItems": 0 },
           "rejection_reason": { "enum": ["empty", "whitespace_only", "too_long", "garbled"] }
         }
       }
@@ -92,6 +101,27 @@
     "currency": { "enum": ["INR", "USD", "EUR", "other", null] },
     "unit": { "enum": ["crore", "lakh", "million", "billion", "thousand", "absolute", null] },
     "client": { "type": ["string", "null"], "minLength": 1 },
+    "value_in_cr": {
+      "$comment": "Spec rev 3, FR-035: order_value converted to crore by deterministic code (crore x1, lakh x0.01, million x0.1, billion x100, thousand x0.0001, absolute x1e-7; exact decimal arithmetic, ROUND_HALF_UP to 4 decimals) when currency is INR, otherwise null. No lower bound here: an INR amount below 500 absolute rounds to 0. The exact value is INV-11 (layer 2), checked in code.",
+      "type": ["number", "null"]
+    },
+    "value_in_cr_rule": {
+      "$comment": "FR-035 shape: value_in_cr is a number if and only if currency is INR; null for USD, EUR, other and a null currency (no FX conversion).",
+      "anyOf": [
+        {
+          "properties": {
+            "currency": { "const": "INR" },
+            "value_in_cr": { "type": "number" }
+          }
+        },
+        {
+          "properties": {
+            "currency": { "enum": ["USD", "EUR", "other", null] },
+            "value_in_cr": { "type": "null" }
+          }
+        }
+      ]
+    },
     "order_type": {
       "enum": ["supply", "epc_construction", "services", "export", "defence", "government", "other"]
     },
@@ -117,27 +147,38 @@
     "order": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["order_value", "currency", "unit", "client", "order_type", "execution_period"],
+      "required": [
+        "order_value",
+        "currency",
+        "unit",
+        "value_in_cr",
+        "client",
+        "order_type",
+        "execution_period"
+      ],
       "properties": {
         "order_value": { "$ref": "#/$defs/order_value" },
         "currency": { "$ref": "#/$defs/currency" },
         "unit": { "$ref": "#/$defs/unit" },
+        "value_in_cr": { "$ref": "#/$defs/value_in_cr" },
         "client": { "$ref": "#/$defs/client" },
         "order_type": { "$ref": "#/$defs/order_type" },
         "execution_period": { "type": ["string", "null"], "minLength": 1 }
       },
-      "allOf": [{ "$ref": "#/$defs/value_triplet" }]
+      "allOf": [{ "$ref": "#/$defs/value_triplet" }, { "$ref": "#/$defs/value_in_cr_rule" }]
     },
     "additional_order": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["order_value", "currency", "unit", "client", "evidence"],
+      "required": ["order_value", "currency", "unit", "value_in_cr", "client", "evidence"],
       "properties": {
         "order_value": { "$ref": "#/$defs/order_value" },
         "currency": { "$ref": "#/$defs/currency" },
         "unit": { "$ref": "#/$defs/unit" },
+        "value_in_cr": { "$ref": "#/$defs/value_in_cr" },
         "client": { "$ref": "#/$defs/client" },
         "evidence": {
+          "$comment": "value_in_cr has no evidence key (FR-035): it is derived from order_value, whose quote covers it.",
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -148,7 +189,7 @@
           }
         }
       },
-      "allOf": [{ "$ref": "#/$defs/value_triplet" }]
+      "allOf": [{ "$ref": "#/$defs/value_triplet" }, { "$ref": "#/$defs/value_in_cr_rule" }]
     },
     "top_evidence": {
       "type": "object",

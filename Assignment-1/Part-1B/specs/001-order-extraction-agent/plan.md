@@ -1,6 +1,6 @@
 # Implementation Plan: New-Order Announcement Extraction Agent
 
-**Branch**: `001-order-extraction-agent` (spec directory name; no branch hook is configured, so work stays on `main`) | **Date**: 2026-11-22 | **Spec**: [spec.md](./spec.md)
+**Branch**: `001-order-extraction-agent` (spec directory name; no branch hook is configured, so work stays on `main`) | **Date**: 2026-11-22 (updated for spec rev 2 and rev 3, same day) | **Spec**: [spec.md](./spec.md) rev 3
 
 **Input**: Feature specification from `specs/001-order-extraction-agent/spec.md`
 
@@ -13,20 +13,24 @@ with verbatim evidence, and the model under test is the local `qwen3.5:4b` on Ol
 The pipeline is: deterministic **guards** → **prompt** (announcement delimited as data) →
 **client** (Ollama `/api/generate`, settings pinned) → **parser** (three documented clean-up rules
 only) → strict validation of a compact **model response** → deterministic **assembly** (ranking,
-`missing_fields`, status) → **post-validation** (schema, grounding, denylist, consistency). Only a
-result that passes all of these is emitted. Anything else is surfaced as an application failure
-with the raw output, or as a service failure.
+`missing_fields`, status, and from rev 3 the crore conversion `value_in_cr` of INR amounts) →
+**post-validation** (schema, grounding, denylist, consistency). Only a result that passes all of
+these is emitted. Anything else is surfaced as an application failure with the raw output, or as
+a service failure.
 
-A single evaluation runner (`.harness/run_eval.py`) scores a 27-case dataset:
+A single evaluation runner (`.harness/run_eval.py`) scores a 28-case dataset:
 
-- layer 1 (schema), layer 2 (INV-1…INV-9), layer 3 (field accuracy ≥ 80%), each implemented
-  independently of the agent's own checks;
+- layer 1 (schema file plus the runner's own structural check), layer 2 (INV-1…INV-11), layer 3
+  (field accuracy ≥ 80%), each implemented independently of the agent's own checks, with
+  agent-reported errors also failing their layer (spec FR-027/028 rev 2). INV-11 (rev 3)
+  recomputes `value_in_cr` with the runner's own conversion;
 - an informational judge (`qwen3.6-35b-a3b`);
 - the FR-031 verdict, with service, judge and application failures counted separately;
 - full evidence written under `evidence/eval-runs/<stamp>/`.
 
-A Part-1A-style harness (ruff, bandit, pytest with ≥ 90% coverage) gates the deterministic code,
-and `run_all.sh` chains the harness and the evaluation.
+A Part-1A-style harness gates the deterministic code: ruff, bandit over `src` and `.harness`,
+pytest with ≥ 90% branch coverage on `src/order_agent` and, separately, on `.harness/run_eval.py`.
+`run_all.sh` chains the harness and the evaluation.
 
 ## Technical Context
 
@@ -38,6 +42,10 @@ and `run_all.sh` chains the harness and the evaluation.
   `OpenerDirector`. JSON Schema validation is done by an in-package validator for a declared
   keyword subset (R-1).
 - Dev, pinned exactly: `ruff==0.14.0`, `bandit==1.9.1`, `pytest==8.4.2`, `pytest-cov==7.0.0`.
+  Their transitive dependencies are pinned by the committed `constraints-dev.txt` (rev 2, C4;
+  R-16).
+- Build backend, pinned exactly: `setuptools==80.9.0` (rev 2, C4; R-16). It is used at build time
+  only.
 
 **Storage**: files only:
 
@@ -48,7 +56,8 @@ and `run_all.sh` chains the harness and the evaluation.
 
 **Testing**:
 
-- pytest with branch coverage ≥ 90% on `src/order_agent`;
+- pytest with branch coverage ≥ 90% on `src/order_agent` and, gated separately, ≥ 90% on
+  `.harness/run_eval.py` (rev 2, G2);
 - all HTTP faked through an injected transport;
 - an autouse fixture blocks real sockets;
 - tests named with FR/AC/INV ids.
@@ -59,9 +68,10 @@ judge is the MLX "tinytitan" server at `127.0.0.1:8081`.
 **Project Type**: single Python package with a CLI (`python -m order_agent <file>`), plus an
 evaluation runner and harness scripts.
 
-**Performance Goals**: each model request stays within 300 s (SC-006). A full evaluation of 27
-cases runs sequentially, about 22 model calls plus 17 judge calls. Expected wall time is
-10–30 minutes on the owner's machine. This is not a gate.
+**Performance Goals**: each model request stays within 300 s (SC-006). A full evaluation of 28
+cases runs sequentially: 24 model calls (28 cases minus the 4 rejected cases X01–X04, which make
+no call) plus 18 judge calls. Retries can add more. Expected wall time is 10–30 minutes on the
+owner's machine. This is not a gate. Each judge attempt is capped at 180 s (R-12).
 
 **Constraints**:
 
@@ -69,16 +79,19 @@ cases runs sequentially, about 22 model calls plus 17 judge calls. Expected wall
   `format` json, `num_ctx = max(4096, len(prompt)//3 + 700 + 512)`, timeout 300 s;
 - ≤ 3 attempts, for service failures only;
 - input ≤ 20,000 code points;
-- ≤ 4 itemised orders per announcement (P-3);
+- ≤ 4 itemised orders per announcement (P-3, CONFIRMED by Balaji 2026-11-22; spec FR-009 rev 3);
+- `value_in_cr` is computed by deterministic code only, never by the model (spec FR-035, rev 3);
 - no secrets in the repo;
 - `myportfolio-web` is read-only and is not imported.
 
-**Scale/Scope**: one announcement per call and a single user. The dataset has 27 cases (≥ 18
-required). Batch processing, fetching, PDF conversion, persistence and UI are out of scope.
+**Scale/Scope**: one announcement per call and a single user. The dataset has 28 cases (≥ 18
+required; U01 was added in rev 3). Batch processing, fetching, PDF conversion, persistence and UI
+are out of scope.
 
-No item is marked NEEDS CLARIFICATION. The owner fixed the technical context, and the open domain
-defaults are recorded as **PROVISIONAL — pending Balaji** in [research.md](./research.md#provisional-decisions)
-(P-1…P-4).
+No item is marked NEEDS CLARIFICATION. The owner fixed the technical context. The domain decisions
+are in [research.md](./research.md#provisional-decisions): P-2 and P-3 are **CONFIRMED by Balaji
+2026-11-22** (spec rev 3, Clarifications Q3/Q4); P-1, P-4 and P-5 (`unstated_fields`, added in
+spec rev 2) remain **PROVISIONAL — pending Balaji**.
 
 ## Constitution Check
 
@@ -86,30 +99,39 @@ defaults are recorded as **PROVISIONAL — pending Balaji** in [research.md](./r
 
 | Principle / rule | How the plan complies | Pre-design | Post-design |
 |---|---|---|---|
-| **I. Contract-First Output** | `schemas/output.schema.json` is version 1.0 and every result carries `schema_version: "1.0"`. Nonconforming output is an application failure (`MR-SCHEMA`, `MR-CONSIST`, `OUT-SCHEMA`, `OUT-DATE`). The parser's only clean-up is PC-1…PC-3, logged per case (R-8). Assembly A-1…A-7 is documented and derives fields without creating or altering values (R-5). A schema change needs a version bump, enforced by the contract test that requires byte identity with `contracts/`. | ✅ | ✅ |
-| **II. Grounded Extraction** | Every non-null field has a verbatim quote. G-1…G-4 run in the agent before emission, and INV-2/3/4/8 are re-implemented independently in the evaluation. Null plus `missing_fields` is used instead of guessing (FR-012). There is no fallback that drops ungrounded fields (R-7). | ✅ | ✅ |
-| **III. Threshold Declared Before Evaluation (NON-NEGOTIABLE)** | Thresholds (100% / 100% / ≥ 80%), formulas, normalisation and verdict order are already in the spec. The runner has no threshold, settings or case-filter options. Dataset gate DG-1…DG-7 and the dataset fingerprint make ground-truth changes detectable. The PROVISIONAL defaults change ground truth only through a spec revision. | ✅ | ✅ |
-| **IV. Layered Evaluation** | Layers 1 and 2 are deterministic and authoritative. Layer 3 uses the spec's normalisation. The judge is informational and is structurally excluded from the verdict function (R-12, with a unit test). Model service, judge and application failures have separate counters, and an unresolved service failure is never a pass (R-13). | ✅ | ✅ |
+| **I. Contract-First Output** | `schemas/output.schema.json` is version 1.0 and every result carries `schema_version: "1.0"`. Nonconforming output is an application failure (`MR-SCHEMA`, `MR-CONSIST`, `OUT-SCHEMA`, `OUT-DATE`). The parser's only clean-up is PC-1…PC-3, logged per case (R-8). Assembly A-1…A-9 is documented and derives fields without creating or altering extracted values; A-9 computes the declared derived field `value_in_cr` (R-5, R-17). A schema change needs a version bump. That is enforced by each schema file's SHA-256 being pinned against its version in spec.md "Schema file pins" (rev 2, G1; contract test T016), on top of byte identity with `contracts/`. Rev 2 adds `unstated_fields` to 1.0 before 1.0's first use (P-5). Rev 3 adds `value_in_cr` to 1.0 for the same reason: 1.0 has not been used and its pin is still pending, so T098 records the rev 3 bytes (R-2, R-17). | ✅ | ✅ (once T098 records the pins) |
+| **II. Grounded Extraction** | Every non-null extracted field has a verbatim quote. G-1…G-4 run in the agent before emission, and INV-2/3/4/8 are re-implemented independently in the evaluation. Null plus `missing_fields` is used for required fields instead of guessing (FR-012). Null plus `unstated_fields` is the explicit marker for optional fields (rev 2, P-5, **PROVISIONAL — pending Balaji**; INV-10). There is no fallback that drops ungrounded fields (R-7). `value_in_cr` (rev 3) is a declared derived field with no quote of its own. It is computed in code from the grounded `order_value` and `unit`, checked by C-5 and, independently, by INV-11. | ✅ | ✅ (P-5 pending owner) |
+| **III. Threshold Declared Before Evaluation (NON-NEGOTIABLE)** | Thresholds (100% / 100% / ≥ 80%) are unchanged, including by rev 3. Rev 3 is a dated spec revision made before any evaluation, before the dataset exists, and before it is bound (the binding becomes rev 4, T093). Since spec rev 2, the formulas, every scoring reading (a)–(e), normalisation and verdict order are written in the spec itself, not only in this plan, and the constants are in one spec table that the runner is tested against (D1). The runner has no threshold, settings or case-filter options. Dataset gate DG-1…DG-8 and the dataset fingerprint make ground-truth changes detectable. The ground truth is bound into the spec by a *Dataset binding* revision entry (FR-026, task T093), and the harness fails if the dataset no longer matches it. The PROVISIONAL defaults change ground truth only through a spec revision. | ✅ | ✅ (gate met only after T093 and T098) |
+| **IV. Layered Evaluation** | Layers 1 and 2 are deterministic and authoritative. Layer 1 does not depend only on the agent's validator: the runner has its own structural check (rev 2, E1). Layer 3 uses the spec's normalisation. The judge is informational and is structurally excluded from the verdict function (R-12, with a unit test), and a judge exception is contained (U1). Application failures, semantic misses, model service failures and judge failures are four separate categories (FR-023 rev 2). Connection drops mid-response are classified as `connection_lost` (E2). An unresolved service failure is never a pass and is listed as `not_scored` (R-13). | ✅ | ✅ |
 | **V. Untrusted Input** | The announcement is delimited as data with a hash-derived marker (R-4). Injection cases J01 and J02 go through the same layers, plus INV-7. Guards, schema allow-list, grounding, code-derived status and ranking, and the exchange denylist are deterministic, so the model's own compliance is not the only defence. The residual risk (an injected value copied verbatim is "grounded") is caught by INV-7 in evaluation and documented. | ✅ | ✅ |
 | **VI. Reproducible Local Model** | Pins and settings are code constants. `.env` supplies only endpoints and identity, and an env/pin mismatch means INCONCLUSIVE (R-10). Each run records Ollama version, model digest and quantisation, all settings, `num_ctx` per request, prompt version and hash, schema and MR versions, dataset hash, judge identity and timing (R-11, data-model). `.env` is git-ignored and `.env.example` is committed. | ✅ | ✅ |
-| **VII. Repair Through Evidence** | A feedback record is written for every failing case (data-model), including layer-3-only misses. Repairs follow FR-033 and are logged in `evidence/repair-log.md`, then the identical evaluation is rerun (R-15). | ✅ | ✅ |
-| **Technical Constraints** | Python 3.12+ in `.venv`. Standard library first, with no runtime dependency (`jsonschema` considered and rejected, R-1). Dev tools pinned exactly. `qwen3.5:4b` on Ollama and no hosted LLM for the agent. pytest, ruff and bandit gates. `myportfolio-web` is not imported. | ✅ | ✅ |
-| **Workflow & Quality Gates** | Constitution → specify → clarify → **plan** (this document) → tasks → analyze → implement → evaluate. The gate before first evaluation is already met in the spec. The gate before reporting is enforced by `run_all.sh`, which does not run the evaluation if the harness fails (R-14). ACCEPT/REJECT is left to Balaji: the report states it and never records it (FR-034). | ✅ | ✅ |
+| **VII. Repair Through Evidence** | A feedback record is written for every failing case (data-model), including semantic-miss-only cases and agent exceptions. Repairs follow FR-033 and are logged in `evidence/repair-log.md`, then the identical evaluation is rerun (R-15). Every prompt repair bumps `PROMPT_VERSION`, enforced by T097. `run.json` records the hashes of `validators.py` and `run_eval.py`, so a change to the measuring code between runs is visible. | ✅ | ✅ |
+| **Technical Constraints** | Python 3.12+ in `.venv`. Standard library first, with no runtime dependency (`jsonschema` considered and rejected, R-1). Dev tools, the build backend (`setuptools==80.9.0`) and the transitive dev dependencies (`constraints-dev.txt`) are pinned exactly (rev 2, C4). `qwen3.5:4b` on Ollama and no hosted LLM for the agent. pytest, ruff and bandit gates, with bandit covering `.harness` too. `myportfolio-web` is not imported. | ✅ | ✅ |
+| **Workflow & Quality Gates** | Constitution → specify → clarify → **plan** (this document) → tasks → analyze → implement → evaluate. **Correction (rev 2, C1)**: the gate before first evaluation is **not** met by the plan alone. The spec contains the schema version, formula, thresholds and normalisation, but the ground truth only becomes part of the spec when T093 records the dataset's SHA-256 and `dataset_version` in a dated Dataset binding entry, and the schema pins only once T098 records them. The gate is met after both tasks, before T091. The gate before reporting is enforced by `run_all.sh`, which does not run the evaluation if the harness fails (R-14). ACCEPT/REJECT is left to Balaji: the report states it and never records it (FR-034). | ✅ | ✅ (after T093, T098) |
 
 **Result**: PASS. There are no violations and no deviations from Principle III. Complexity Tracking
-is empty.
+is empty. The two gate items above are open tasks, not deviations.
 
-Plan-level readings recorded so `/speckit-analyze` can check them. Each is stricter than the spec,
-never looser.
+**Scoring readings** (rev 2): the readings that used to be "plan-level" are now spec text, so this
+plan no longer adds any reading of its own to the scoring formula:
 
-- A case with no candidate output scores 0 of 9 in layer 3 (R-13).
-- `other`-currency additional orders are outside INV-9's comparison, since they have no reference
-  rate (R-6).
-- Agent post-validation errors fail their own layer in addition to the harness checks (R-13).
-- The G-5 exchange denylist is a guard on top of AC-1.5.
-- Under P-2, a million/billion amount with no currency marker makes the value null (P-2).
+- (a) agent-reported errors fail their layer, G-5 and C-1…C-5 included (C-5 is rev 3): FR-027 item 5, FR-028
+  item 3;
+- (b) OUT-DATE is in layer 1: FR-027 item 4;
+- (c) no candidate scores 0 of 9: FR-029;
+- (d) INV-9 for currency `other`, which is now no looser than FR-009: FR-028 INV-9 (i)–(iii);
+- (e) the pin-check definition: FR-031 step 1 and AC-5.6.
+
+Rev 3 adds INV-11 and C-5 for `value_in_cr` to spec FR-028, with the rounding rule (exact decimal,
+half up, 4 places) written in spec FR-035. So this plan again adds no scoring reading of its own.
+
+The remaining plan-level choices do not affect scoring:
+
+- Under P-2 (CONFIRMED by Balaji 2026-11-22), a million/billion amount with no currency marker
+  makes the value null. The owner's answer named crore/lakh; this sub-rule is carried over from
+  the provisional text, and no case uses it.
 - Judge service failures get the same 2 retries as the model (R-12).
-- `2b-nosec-scan` is added to gate 2 (R-14).
+- `2b-nosec-scan` is added to gate 2, over `src` and `.harness` (R-14).
 
 ## Project Structure
 
@@ -119,12 +141,12 @@ never looser.
 specs/001-order-extraction-agent/
 ├── spec.md
 ├── plan.md              # this file
-├── research.md          # Phase 0: R-1…R-16, PROVISIONAL P-1…P-4
+├── research.md          # Phase 0: R-1…R-17, P-1…P-5 (P-2, P-3 confirmed in rev 3)
 ├── data-model.md        # Phase 1: entities, assembly rules, dataset format, planned cases, verdict
 ├── quickstart.md        # Phase 1: run and validation guide
 ├── contracts/
 │   ├── output.schema.json          # public contract, version 1.0 (copied verbatim to schemas/)
-│   ├── model-response.schema.json  # internal model response, version mr-1 (copied verbatim to schemas/)
+│   ├── model-response.schema.json  # internal model response, version mr-1 (copied verbatim to schemas/; SHA-256 pinned in spec)
 │   ├── cli.md                      # python -m order_agent
 │   ├── eval-results.md             # run_eval.py, run folder, eval-results.json, summary.md
 │   └── harness.md                  # run_harness.sh, run_all.sh, test layout
@@ -137,6 +159,7 @@ specs/001-order-extraction-agent/
 ```text
 pyproject.toml                 # name order-agent, requires-python >=3.12, dependencies = [], ruff/pytest/coverage config
 requirements-dev.txt           # ruff==0.14.0 bandit==1.9.1 pytest==8.4.2 pytest-cov==7.0.0
+constraints-dev.txt            # pip freeze --exclude-editable after the first install; committed (rev 2, C4)
 .env.example                   # OLLAMA_URL, AGENT_MODEL, AGENT_MODEL_DIGEST, JUDGE_URL, JUDGE_MODEL (no secrets)
 .gitignore                     # .env, .venv/, __pycache__/, .pytest_cache/, .coverage, *.egg-info
 schemas/
@@ -150,20 +173,21 @@ src/order_agent/
 ├── prompt.py                  # system/user prompt, data markers, PROMPT_VERSION, template hash (R-4)
 ├── client.py                  # transport, Ollama generate client, OpenAI-compatible judge client, retries, failure kinds (R-9, R-12)
 ├── parser.py                  # PC-1…PC-3 (R-8)
-├── validators.py              # JSON Schema subset validator, MR consistency, ranking, missing_fields/status derivation, post-validation G/C codes (R-1, R-5…R-7)
-├── agent.py                   # pipeline and assembly A-1…A-7, AgentOutcome (data-model)
+├── validators.py              # JSON Schema subset validator, MR consistency, ranking, missing_fields/status derivation, value_in_cr conversion (R-17), post-validation G/C codes incl. C-5 (R-1, R-5…R-7)
+├── agent.py                   # pipeline and assembly A-1…A-9, AgentOutcome (data-model)
 └── cli.py                     # argument parsing, exit codes (contracts/cli.md)
 evals/
-└── dataset.json               # 27 cases (data-model › Planned cases)
+└── dataset.json               # 28 cases (data-model › Planned cases)
 .harness/
 ├── run_harness.sh             # gates 1–3 → evidence/harness-results/<stamp>/
-├── run_eval.py                # the one evaluation runner → evidence/eval-runs/<stamp>/, evidence/eval-results.json
+├── run_eval.py                # the one evaluation runner → evidence/eval-runs/<stamp>/, evidence/eval-results.json;
+│                              #   own structural_check (S-1…S-11), INV-1…INV-11 incl. its own value_in_cr conversion, SPEC_CONSTANTS
 └── run_all.sh                 # harness, then eval (eval skipped if harness fails)
 tests/
 ├── conftest.py                # network block, fakes
 ├── unit/                      # test_guards, test_prompt, test_client, test_parser, test_validators, test_agent, test_config, test_cli
-├── contract/                  # test_schemas, test_dataset
-└── harness/                   # test_run_eval (importlib)
+├── contract/                  # test_schemas, test_dataset, test_dataset_guards, test_traceability
+└── harness/                   # test_run_eval, test_run_eval_e2e (importlib), test_harness_scripts
 evidence/
 ├── harness-results/<stamp>/
 ├── eval-runs/<stamp>/
@@ -192,17 +216,22 @@ share the transport and retry code.
   5. ranking, assembly and post-validation;
   6. prompt and client with a fake transport;
   7. agent and CLI;
-  8. dataset of 27 cases with ground truth;
-  9. `run_eval.py` with tests;
-  10. `run_all.sh`;
-  11. green harness, then the first evaluation run, then repair cycles under FR-033.
+  8. dataset of 28 cases with ground truth (including `value_in_cr`), then the Dataset binding spec
+     revision (T093, now rev 4);
+  9. `run_eval.py` with tests, using a scripted agent;
+  10. triage, guards and multi-order;
+  11. only then an end-to-end runner test over the real dataset with the real agent and a fake
+      transport (rev 2, F1);
+  12. `run_all.sh`;
+  13. green harness, then the first evaluation run, then repair cycles under FR-033.
 
 ## Risks
 
 | Risk | Mitigation |
 |---|---|
 | The 4B model misses layer 2 (grounding, INV-7) or layer 3 < 80% | The compact model response (R-5) keeps arithmetic and bookkeeping out of the model. Strict feedback records drive prompt repairs. If it is still failing after reasonable repairs, stop and report (FR-033). |
-| Output truncated at `num_predict` 700 | The compact format takes about 340 tokens for 4 orders. `done_reason` is recorded, and the dataset stays at ≤ 3 orders (P-3). |
+| Output truncated at `num_predict` 700 | The compact format takes about 340 tokens for 4 orders. `value_in_cr` adds no model tokens. `done_reason` is recorded, and the dataset stays at ≤ 3 orders (P-3, CONFIRMED: at most 4). |
+| The agent's and the runner's crore conversions disagree, or both share one bug | Both use exact decimal arithmetic with half-up rounding, which the spec defines (FR-035). Their multiplier tables are derived differently: the owner's list in `validators`, unit factors ÷ 1e7 in the runner. An AST check keeps the runner from importing the agent's version. Tie cases (e.g. 12.345 lakh → 0.1235) are in both test suites. |
 | An injected value is copied verbatim and so passes grounding | INV-7 in evaluation. The prompt's data rule. A documented residual risk. |
 | bandit B310 on `urllib` | Restricted `OpenerDirector`, URL scheme allow-list, no `nosec`. Fallback to `http.client` (R-9). |
 | The judge's reasoning output breaks parsing | `<think>` stripping. Judge failures are informational and counted separately (R-12). |

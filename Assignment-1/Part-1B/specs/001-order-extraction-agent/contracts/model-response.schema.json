@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:order-agent:model-response:mr-1",
-  "title": "Model response (internal), version mr-1, bound to prompt version p1",
-  "description": "What qwen3.5:4b must return. NOT the public contract: deterministic assembly (data-model.md A-1..A-7) turns it into an output 1.0 object. Pairing/null consistency rules MC-1..MC-3 are checked in code (MR-CONSIST). Strict: no extra keys, no case-folding of enums, numbers must be JSON numbers (research.md R-5).",
+  "title": "Model response (internal), version mr-1",
+  "description": "What qwen3.5:4b must return. NOT the public contract: deterministic assembly (data-model.md A-1..A-8) turns it into an output 1.0 object. Pairing/null consistency rules MC-1..MC-3 are checked in code (MR-CONSIST). Strict: no extra keys, no case-folding of enums, numbers must be JSON numbers (research.md R-5). The schema version is independent of the prompt version: which prompt version ran with mr-1 is recorded per run (run.json prompt_version, mr_version). The SHA-256 of this file is pinned against version mr-1 in spec.md (Schema file pins).",
   "type": "object",
   "additionalProperties": false,
   "required": [

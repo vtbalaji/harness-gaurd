@@ -49,6 +49,7 @@ $ python -m order_agent /path/to/n01.txt               # AC-1.1 text, see quicks
   "company": "Example Transformers Limited",
   "announcement_date": "2026-11-20",
   "order": {"order_value": 1250.5, "currency": "INR", "unit": "crore",
+            "value_in_cr": 1250.5,
             "client": "NTPC Limited", "order_type": "supply",
             "execution_period": "within 18 months"},
   "additional_orders": [],
@@ -57,6 +58,7 @@ $ python -m order_agent /path/to/n01.txt               # AC-1.1 text, see quicks
                "client": "NTPC Limited", "order_type": "supply of transformers",
                "execution_period": "within 18 months"},
   "missing_fields": [],
+  "unstated_fields": [],
   "rejection_reason": null
 }
 $ echo $?
@@ -65,13 +67,23 @@ $ echo $?
 $ printf '' | python -m order_agent -                   # AC-3.1, no model call
 {"schema_version": "1.0", "status": "rejected", "company": null, "announcement_date": null,
  "order": null, "additional_orders": [], "evidence": {}, "missing_fields": [],
- "rejection_reason": "empty"}
+ "unstated_fields": [], "rejection_reason": "empty"}
 ```
 
-(The examples are shown compacted. Real output is indented as described above.)
+(The examples are shown compacted. Real output is indented as described above. `unstated_fields`
+is spec rev 2, P-5, **PROVISIONAL — pending Balaji**. For a rejected input it is always `[]`.
+`value_in_cr` is spec rev 3, FR-035. It appears in every order object, computed by code: the
+crore value for an INR amount (e.g. "Rs. 85.40 lakh" → `0.854`) and `null` for USD, EUR or
+`other`. It has no `evidence` key.)
 
 ## Library entry point (used by the CLI and by `.harness/run_eval.py`)
 
-`order_agent.agent.run(raw: bytes, settings: Settings, *, transport=None) -> AgentOutcome`. The
-`AgentOutcome` variants are described in [../data-model.md](../data-model.md#agentoutcome-agentrun).
-`transport` is injectable so tests never open a socket (R-9, R-14).
+`order_agent.agent.run(raw: bytes, settings: Settings, *, transport=None, sleep=None) -> AgentOutcome`.
+The `AgentOutcome` variants are described in [../data-model.md](../data-model.md#agentoutcome-agentrun).
+
+- `transport` is injectable so tests never open a socket (R-9, R-14).
+- `sleep` replaces the retry backoff sleep. `None` means `time.sleep`; tests pass a recorder.
+
+The CLI passes neither. The service-failure kinds in the exit-3 report are the data-model.md
+`Attempt.service_failure_kind` values: `unreachable`, `timeout`, `connection_lost`, `http_error`,
+`empty_response` and `bad_envelope` (spec FR-023, rev 2).
