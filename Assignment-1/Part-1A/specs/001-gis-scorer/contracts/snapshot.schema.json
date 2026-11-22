@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gis_scorer/snapshot.schema.json",
+  "title": "GIS Scorer company snapshot (input)",
+  "description": "Documentation-only contract for FR-001/FR-002; the runtime validator (src/gis_scorer/snapshot.py) is stdlib and is the source of truth. All fields optional. null == absent (PROVISIONAL R-01). JSON booleans are not numbers (R-02). JSON has no NaN/Infinity; the CLI's parser accepts those tokens and the validator rejects them as non-finite.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "num": { "type": ["number", "null"] }
+  },
+  "properties": {
+    "piotroski": { "type": ["integer", "null"], "minimum": 0, "maximum": 9, "description": "FR-010; integral floats such as 6.0 accepted (PROVISIONAL R-02)" },
+    "altman_z": { "$ref": "#/$defs/num", "description": "FR-011" },
+    "beneish_m": { "$ref": "#/$defs/num", "description": "FR-012" },
+
+    "revenue_12m": { "$ref": "#/$defs/num", "description": "FR-013/016, ₹ crore" },
+    "revenue_prior_12m": { "$ref": "#/$defs/num", "description": "FR-013/016, ₹ crore" },
+    "ebitda_12m": { "$ref": "#/$defs/num", "description": "FR-013/014, ₹ crore" },
+    "ebitda_prior_12m": { "$ref": "#/$defs/num", "description": "FR-013/014, ₹ crore" },
+    "net_profit_12m": { "$ref": "#/$defs/num", "description": "FR-013/015; TTM sign for FR-018, ₹ crore" },
+    "net_profit_prior_12m": { "$ref": "#/$defs/num", "description": "FR-013/015, ₹ crore" },
+
+    "equity": { "$ref": "#/$defs/num", "description": "FR-017, ₹ crore" },
+    "equity_prior": { "$ref": "#/$defs/num", "description": "FR-017, ₹ crore" },
+    "debt_to_equity": { "$ref": "#/$defs/num", "description": "FR-025/027, ratio" },
+    "debt_to_equity_prior": { "$ref": "#/$defs/num", "description": "FR-025, ratio" },
+    "current_ratio": { "type": ["number", "null"], "minimum": 0, "description": "FR-026, ratio >= 0" },
+
+    "ocf_to_net_profit": { "$ref": "#/$defs/num", "description": "FR-018, ratio" },
+
+    "net_profit_margin": { "$ref": "#/$defs/num", "description": "FR-019/022/043/051, %" },
+    "operating_margin": { "$ref": "#/$defs/num", "description": "FR-020/043, %" },
+    "net_profit_margin_year_ago": { "$ref": "#/$defs/num", "description": "FR-043, %" },
+    "operating_margin_year_ago": { "$ref": "#/$defs/num", "description": "FR-043, %" },
+    "previous_net_profit_margin": { "$ref": "#/$defs/num", "description": "FR-022, %" },
+    "roe": { "$ref": "#/$defs/num", "description": "FR-021/054, %" },
+    "roce": { "$ref": "#/$defs/num", "description": "FR-021, %" },
+
+    "recent_net_profit_margins": {
+      "type": ["array", "null"],
+      "maxItems": 8,
+      "items": { "type": ["number", "null"] },
+      "description": "FR-023, quarterly net margins %, newest first; null element stops the run; [] == no quarter supplied (PROVISIONAL R-01)"
+    },
+
+    "ccc_days": { "$ref": "#/$defs/num", "description": "FR-024, days" },
+    "ccc_days_prior": { "$ref": "#/$defs/num", "description": "FR-024, days" },
+    "dso_days": { "$ref": "#/$defs/num", "description": "FR-024, days" },
+    "dso_days_prior": { "$ref": "#/$defs/num", "description": "FR-024, days" },
+
+    "pe": { "$ref": "#/$defs/num", "description": "FR-060" },
+    "pb": { "$ref": "#/$defs/num", "description": "FR-060" },
+    "peg": { "$ref": "#/$defs/num", "description": "FR-060" }
+  }
+}

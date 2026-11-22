@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gis_scorer/result.schema.json",
+  "title": "GIS Scorer result (output of ScoreResult.to_dict / CLI stdout)",
+  "description": "FR-070/FR-071. Property order below IS the serialised key order (R-06). Documentation-only; tests assert the shape directly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["total", "max", "raw_earned", "raw_available", "dimensions", "label", "valuation"],
+  "properties": {
+    "total": { "type": "integer", "minimum": 0, "maximum": 100, "description": "FR-050" },
+    "max": { "const": 100 },
+    "raw_earned": { "type": "integer", "description": "may be negative" },
+    "raw_available": { "type": "integer", "minimum": 0, "maximum": 97 },
+    "dimensions": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "prefixItems": [
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Forensic Quality" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Growth" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Revenue Quality" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Financial Health" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Profitability" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Competitive Moat" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Turnaround" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Balance Sheet" } } },
+        { "$ref": "#/$defs/dimension", "properties": { "name": { "const": "Penalties" } } }
+      ],
+      "description": "FR-030 order"
+    },
+    "label": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_gate", "final", "reasons"],
+      "properties": {
+        "pre_gate": { "$ref": "#/$defs/labelValue" },
+        "final": { "$ref": "#/$defs/labelValue" },
+        "reasons": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "R-14 fixed wording" }
+      }
+    },
+    "valuation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "max", "parts"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "max": { "const": 10 },
+        "parts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "requirement", "value", "points", "available", "reason"],
+            "properties": {
+              "name": { "enum": ["P/E", "P/B", "PEG"] },
+              "requirement": { "const": "FR-060" },
+              "value": { "type": ["number", "null"] },
+              "points": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "available": { "enum": [5, 3, 2] },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "labelValue": { "enum": ["STRONG BUY", "BUY", "HOLD", "SELL", "STRONG SELL", "INSUFFICIENT DATA", "SUSPICIOUS"] },
+    "dimension": {
+      "type": "object",
+      "required": ["name", "earned", "available", "items"],
+      "properties": {
+        "name": { "type": "string" },
+        "earned": { "type": "integer" },
+        "available": { "type": "integer", "minimum": 0 },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/item" } }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "requirement", "value", "earned", "available", "status", "reason"],
+      "properties": {
+        "name": { "type": "string" },
+        "requirement": { "type": "string", "pattern": "^FR-0[0-9]{2}$" },
+        "value": { "type": ["number", "object", "null"] },
+        "earned": { "type": "integer", "minimum": -5, "maximum": 10 },
+        "available": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "status": { "enum": ["scored", "no_data", "capped", "not_applicable", "penalty"] },
+        "reason": { "type": "string" }
+      }
+    }
+  }
+}
