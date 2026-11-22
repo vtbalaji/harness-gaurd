@@ -12,7 +12,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
 
 ## R-01 — Explicit `null`, null list elements, empty list
 
-> **CONFIRMED by Balaji, 2026-11-22** (project thread; recorded in spec.md Clarifications)
+> **CONFIRMED by Balakrishnan, 2026-11-22** (project thread; recorded in spec.md Clarifications)
 
 - **Decision**:
   - An explicit `null` (Python `None`) for any field means the same as an absent field: the value
@@ -40,7 +40,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
 
 ## R-02 — Integral floats for Piotroski; booleans
 
-> **CONFIRMED by Balaji, 2026-11-22** (project thread; recorded in spec.md Clarifications)
+> **CONFIRMED by Balakrishnan, 2026-11-22** (project thread; recorded in spec.md Clarifications)
 
 - **Decision**:
   - `piotroski` accepts an `int`, or a `float` with no fractional part. `6.0` is normalised to the
@@ -354,7 +354,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
 
 ## Open items for owner review
 
-1. **R-01 and R-02**: CONFIRMED by Balaji 2026-11-22 (recorded in spec.md Clarifications).
+1. **R-01 and R-02**: CONFIRMED by Balakrishnan 2026-11-22 (recorded in spec.md Clarifications).
 2. **R-07 overflow reporting**: this is output-only and changes no points. Confirm that `null` with
    a reason suffix is acceptable.
 3. **R-14 missing Piotroski at the gate**: this follows FR-054 literally. A missing Piotroski does

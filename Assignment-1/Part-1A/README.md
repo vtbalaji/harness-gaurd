@@ -1,5 +1,7 @@
 # Part 1A: GIS Scorer
 
+Author: Balakrishnan, student ID 2026ns93087 (2026ns93087@wilp.bits-pilani.ac.in)
+
 A small, deterministic re-implementation of the General Investor Score (GIS) method from
 myportfolio-web. It was built spec-first with GitHub Spec Kit and checked by a test harness.
 

@@ -3,6 +3,11 @@
 Feature: `specs/001-gis-scorer` (a deterministic re-implementation of the General Investor Score
 from myportfolio-web; the reference is `Assignment-1/GIS_REFERENCE.md`).
 Date: 2026-11-22. All times are UTC.
+Author: Balakrishnan, student ID 2026ns93087 (2026ns93087@wilp.bits-pilani.ac.in).
+
+Note: the owner's name was updated from "Balaji" to "Balakrishnan" on 2026-11-22 at the owner's
+request. The recorded Spec Kit transcripts in `evidence/speckit-transcripts/` are kept verbatim
+as evidence and still show the earlier name.
 
 ## 1. How the code was generated
 
@@ -17,7 +22,7 @@ step ran as a real Spec Kit slash command, headless, with `claude -p` (Claude Co
 | Constitution v1.0.0 | by hand, following `speckit-constitution` | `.specify/memory/constitution.md` | (not a headless run) |
 | Specify | by hand, following `speckit-specify` | `spec.md`, `checklists/requirements.md` | (not a headless run) |
 | Clarify | headless `/speckit-clarify` | 7 owner decisions recorded, 2 new questions raised | `01-clarify.md` |
-| Q1/Q2 | confirmed by Balaji in the project thread 07:23Z | spec.md Clarifications | |
+| Q1/Q2 | confirmed by Balakrishnan in the project thread 07:23Z | spec.md Clarifications | |
 | Plan | headless `/speckit-plan` | plan, research, data-model, contracts, quickstart | `02-plan.md` |
 | Tasks | headless `/speckit-tasks` | `tasks.md`, 83 tasks | `03-tasks.md` |
 | Analyze | headless `/speckit-analyze` | 15 findings (1 critical) | `04-analyze.md` |
@@ -149,11 +154,11 @@ This also stands in for task T007, the harness smoke run, which was skipped as i
 
 ## 6. Final human decision
 
-**Final human decision: ACCEPT / REJECT** (Balaji to fill in)
+**Final human decision: ACCEPT / REJECT** (Balakrishnan to fill in)
 
-Decision: **ACCEPT**. Balaji gave it as "accept" in the project thread on 2026-11-22T08:15Z, after
+Decision: **ACCEPT**. Balakrishnan gave it as "accept" in the project thread on 2026-11-22T08:15Z, after
 reading the final report (all gates PASS on run 20261122T080110Z, 0 repair cycles).
 
-Justification: _(for Balaji to write in their own words)_
+Justification: _(for Balakrishnan to write in their own words)_
 
-Signed / date: Balaji, 2026-11-22
+Signed / date: Balakrishnan, 2026-11-22

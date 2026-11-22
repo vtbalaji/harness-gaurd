@@ -16,7 +16,7 @@ alone (see GIS_REFERENCE.md §7)."
 
 ### Session 2026-11-22
 
-Decisions confirmed by the project owner (Balaji); non-interactive session.
+Decisions confirmed by the project owner (Balakrishnan); non-interactive session.
 
 - Q: Which companies and which parts of the reference GIS method are in scope? → A: Non-financial
   companies only (banks, NBFCs and insurers are out of scope). Scoring ladders are fixed, with no
@@ -34,10 +34,10 @@ Decisions confirmed by the project owner (Balaji); non-interactive session.
   in `recent_net_profit_margins` mean? → A: Explicit null is the same as absent (missing). A null
   element stops the run of consecutive profitable quarters. An empty list means no quarter was
   supplied, so Profitability Sustainability is 0 of 0. (Raised by /speckit-clarify; confirmed by
-  Balaji in the project thread, 2026-11-22.)
+  Balakrishnan in the project thread, 2026-11-22.)
 - Q: Does a whole-number float count as an integer for Piotroski, and are booleans numeric? → A:
   `6.0` is accepted as 6; `6.5` is rejected; booleans are rejected as non-numeric in every field.
-  (Raised by /speckit-clarify; confirmed by Balaji in the project thread, 2026-11-22.)
+  (Raised by /speckit-clarify; confirmed by Balakrishnan in the project thread, 2026-11-22.)
 
 ## User Scenarios & Testing *(mandatory)*
 

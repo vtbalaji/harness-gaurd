@@ -17,7 +17,7 @@ ids it verifies, and those ids MUST appear in the test function names or docstri
 R-12), so the traceability check (written in T011a, completed in T075) can find them.
 
 **Validation decisions**: research.md R-01 (explicit `null`, null list elements, empty list) and
-R-02 (integral-float Piotroski, booleans rejected) are **CONFIRMED by Balaji (2026-11-22)** and recorded in spec.md Clarifications.
+R-02 (integral-float Piotroski, booleans rejected) are **CONFIRMED by Balakrishnan (2026-11-22)** and recorded in spec.md Clarifications.
 Every test that depends on them carries the literal tag `R-01` or `R-02`
 in its docstring (they are already in spec.md Clarifications; no task edits the spec).
 

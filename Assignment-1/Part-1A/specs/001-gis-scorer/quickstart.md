@@ -88,7 +88,7 @@ Quick check of the headline fields:
 ## Provisional behaviour to re-check after owner confirmation
 
 The tests tagged `R-01` (null, null element, empty list) and `R-02`
-(integral float, booleans) encode decisions that are **not yet confirmed by Balaji**. List them
+(integral float, booleans) encode decisions that are **not yet confirmed by Balakrishnan**. List them
 with:
 
 ```bash
