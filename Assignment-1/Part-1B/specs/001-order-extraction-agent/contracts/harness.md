@@ -48,7 +48,7 @@ Each test's name or docstring names the FR, AC or INV id it covers.
 | `tests/unit/test_prompt.py` | FR-018: markers, hash id, version and hash, no dataset text in the prompt |
 | `tests/unit/test_client.py` | FR-020 (exact request body, the `num_ctx` formula, seed, think, format) and FR-023 (every service-failure kind, retry count, no retry on application failure, attempt log), using a fake transport |
 | `tests/unit/test_parser.py` | FR-019: PC-1…PC-3 only, logging, rejection of prose, truncated JSON and arrays |
-| `tests/unit/test_validators.py` | R-1 (every schema keyword, good and bad), FR-001…FR-015, MC-1…MC-3, G-1…G-5, C-1…C-5 (C-4: `unstated_fields`, PROVISIONAL P-5; C-5: `value_in_cr`, rev 3), FR-009 ranking including FX and `other` (INV-9 rev 2), FR-035 `value_in_cr` conversion: every unit, half-up ties, non-INR null (rev 3, R-17) |
+| `tests/unit/test_validators.py` | R-1 (every schema keyword, good and bad), FR-001…FR-015, MC-1…MC-3, G-1…G-5, C-1…C-5 (C-4: `unstated_fields`, CONFIRMED P-5; C-5: `value_in_cr`, rev 3), FR-009 ranking including FX and `other` (INV-9 rev 2), FR-035 `value_in_cr` conversion: every unit, half-up ties, non-INR null (rev 3, R-17) |
 | `tests/unit/test_agent.py` | The pipeline with canned model responses: AC-1.1…1.5, AC-2.1…2.6, AC-3.5/3.6 (pipeline level), AC-4.1…4.3 |
 | `tests/unit/test_config.py` | FR-021 and R-10: `.env` parsing, precedence, missing keys, URL scheme, pins |
 | `tests/unit/test_cli.py` | Exit codes and stdout/stderr separation ([cli.md](./cli.md)) |

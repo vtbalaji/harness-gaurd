@@ -30,17 +30,17 @@ heading and its anchor are kept so that existing links still work.
 
 ### P-1 — The five Assumption defaults in spec.md
 
-**PROVISIONAL — pending Balaji**
+**CONFIRMED by Balaji 2026-11-22**
 
 Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#assumptions):
 
 | # | Default | Where it is applied |
 |---|---|---|
-| P-1.1 | L1-bidder status and MoUs are `not_an_order`. **PROVISIONAL — pending Balaji** | prompt rule; cases A02, A03 |
-| P-1.2 | An unnamed client ("a leading PSU", "a reputed overseas customer") counts as missing → `needs_clarification`. A named government department or PSU is a client. **PROVISIONAL — pending Balaji** | prompt rule; case K01 |
-| P-1.3 | Ranges, "between", "up to" are ambiguous (value null). "Approximately / about / over / more than X" reports X. **PROVISIONAL — pending Balaji** | prompt rule; cases A01, A04, E01 |
-| P-1.4 | Maximum input length is 20,000 code points. **PROVISIONAL — pending Balaji** | `guards.MAX_CHARS`; cases X04, X05 |
-| P-1.5 | Reference FX rates for ranking only: USD = 84 INR, EUR = 90 INR. They are never applied to `value_in_cr` (rev 3). **PROVISIONAL — pending Balaji** | `validators` ranking; INV-9; case M03 |
+| P-1.1 | L1-bidder status and MoUs are `not_an_order`. **CONFIRMED by Balaji 2026-11-22** | prompt rule; cases A02, A03 |
+| P-1.2 | An unnamed client ("a leading PSU", "a reputed overseas customer") counts as missing → `needs_clarification`. A named government department or PSU is a client. **CONFIRMED by Balaji 2026-11-22** | prompt rule; case K01 |
+| P-1.3 | Ranges, "between", "up to" are ambiguous (value null). "Approximately / about / over / more than X" reports X. **CONFIRMED by Balaji 2026-11-22** | prompt rule; cases A01, A04, E01 |
+| P-1.4 | Maximum input length is 20,000 code points. **CONFIRMED by Balaji 2026-11-22** | `guards.MAX_CHARS`; cases X04, X05 |
+| P-1.5 | Reference FX rates for ranking only: USD = 84 INR, EUR = 90 INR. They are never applied to `value_in_cr` (rev 3). **CONFIRMED by Balaji 2026-11-22** | `validators` ranking; INV-9; case M03 |
 
 - **Rationale**: these are the spec's own defaults. They are conservative: when in doubt the agent
   reports "missing" or "not an order" instead of a guess.
@@ -99,7 +99,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-4 — Amendments, extensions and corrigenda are `not_an_order`
 
-**PROVISIONAL — pending Balaji**
+**CONFIRMED by Balaji 2026-11-22**
 
 - **Decision**: an announcement that amends, extends, corrects (corrigendum) or re-states an order
   that was **already disclosed** is `not_an_order`, unless the text explicitly calls it a new or
@@ -113,7 +113,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
 
 ### P-5 — Explicit marker for unstated optional fields: `unstated_fields` (spec rev 2)
 
-**PROVISIONAL — pending Balaji**
+**CONFIRMED by Balaji 2026-11-22**
 
 - **Decision**: schema 1.0 gains a required top-level array `unstated_fields`. It lists every
   **optional** field that is null in the result: `company` and `announcement_date` when null, and,
@@ -290,7 +290,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
   - it copies `value_quote` to the `order_value`, `currency` and `unit` evidence keys and
     `client_quote` to `client`, which FR-010 allows ("one quote may support several fields");
   - it adds the constants `schema_version` and `rejection_reason: null`;
-  - it derives `unstated_fields` from the nulls (A-8, P-5, **PROVISIONAL — pending Balaji**);
+  - it derives `unstated_fields` from the nulls (A-8, P-5, **CONFIRMED by Balaji 2026-11-22**);
   - it computes `value_in_cr` for every order from the order's own `order_value`, `currency` and
     `unit` (A-9, spec FR-035, rev 3; R-17).
 
@@ -367,7 +367,7 @@ Each of the five is adopted as stated in [spec.md › Assumptions](./spec.md#ass
   | `C-1` | `missing_fields` is inconsistent | L2 |
   | `C-2` | the ranking does not hold | L2 |
   | `C-3` | the status is inconsistent | L2 |
-  | `C-4` | `unstated_fields` is not exactly the null optional fields (rev 2, P-5, **PROVISIONAL — pending Balaji**) | L2 |
+  | `C-4` | `unstated_fields` is not exactly the null optional fields (rev 2, P-5, **CONFIRMED by Balaji 2026-11-22**) | L2 |
   | `C-5` | a `value_in_cr` is not the FR-035 conversion of its order, or is non-null for a non-INR order (rev 3) | L2 |
 
   C-1 … C-5 hold by construction. They are checked anyway as a guard against regressions. C-5

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:order-agent:output:1.0",
   "title": "Order extraction result, schema version 1.0",
-  "description": "One object per announcement (FR-001..FR-015 and FR-035, spec rev 3). Cross-field grounding rules (evidence substrings, digits, client-in-quote, evidence coverage, ranking, unstated_fields equality, the exact value_in_cr conversion) are checked in code, see research.md R-7 and the INV table in spec.md. unstated_fields is P-5, PROVISIONAL — pending Balaji. value_in_cr (rev 3, FR-035) is derived by deterministic code, never by the model, and has no evidence key. Uses only the keyword subset declared in research.md R-1. The SHA-256 of this file is pinned against version 1.0 in spec.md (Schema file pins). Version 1.0 is still pre-release: rev 3 changed these bytes before any run and before the pin was recorded (T098), so the pin records the rev 3 bytes.",
+  "description": "One object per announcement (FR-001..FR-015 and FR-035, spec rev 3). Cross-field grounding rules (evidence substrings, digits, client-in-quote, evidence coverage, ranking, unstated_fields equality, the exact value_in_cr conversion) are checked in code, see research.md R-7 and the INV table in spec.md. unstated_fields is P-5, CONFIRMED by Balaji 2026-11-22. value_in_cr (rev 3, FR-035) is derived by deterministic code, never by the model, and has no evidence key. Uses only the keyword subset declared in research.md R-1. The SHA-256 of this file is pinned against version 1.0 in spec.md (Schema file pins). Version 1.0 is still pre-release: rev 3 changed these bytes before any run and before the pin was recorded (T098), so the pin records the rev 3 bytes.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -35,7 +35,7 @@
       "uniqueItems": true
     },
     "unstated_fields": {
-      "$comment": "Spec rev 2, P-5 (PROVISIONAL — pending Balaji): the optional fields that are null. Equality with the set of null optional fields is INV-10 (layer 2), checked in code.",
+      "$comment": "Spec rev 2, P-5 (CONFIRMED by Balaji 2026-11-22): the optional fields that are null. Equality with the set of null optional fields is INV-10 (layer 2), checked in code.",
       "type": "array",
       "items": { "enum": ["company", "announcement_date", "order_type", "execution_period"] },
       "uniqueItems": true
