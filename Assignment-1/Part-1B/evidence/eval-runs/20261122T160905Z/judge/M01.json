@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 2,
+  "rationale": "The extraction incorrectly assigns the total aggregate order value of ₹1,250 crore to the specific order from the National Highways Authority of India, which is actually valued at ₹800 crore, thereby misreporting the primary data point.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:14:44.911Z",
+      "ended_at": "2026-11-22T16:14:52.323Z",
+      "elapsed_s": 7.412,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 2,\n  \"rationale\": \"The extraction incorrectly assigns the total aggregate order value of ₹1,250 crore to the specific order from the National Highways Authority of India, which is actually valued at ₹800 crore, thereby misreporting the primary data point.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

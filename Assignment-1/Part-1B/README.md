@@ -1,5 +1,7 @@
 # Part 1B — New-Order Announcement Extraction Agent
 
+Author: Balakrishnan, student ID 2026ns93087 (2026ns93087@wilp.bits-pilani.ac.in)
+
 The agent reads the raw text of one NSE/BSE corporate announcement and returns **one JSON
 object, schema version 1.0**, with status `extracted`, `not_an_order`, `needs_clarification` or
 `rejected`. It reports the announcing company, the announcement date, the order (value as
@@ -7,7 +9,7 @@ stated, currency, unit, client, order type, execution period), any further order
 verbatim evidence quote for every non-null extracted field. The model under test is the local
 `qwen3.5:4b` on Ollama; everything around it is deterministic code.
 
-Design documents: [spec](specs/001-order-extraction-agent/spec.md) (rev 4) ·
+Design documents: [spec](specs/001-order-extraction-agent/spec.md) (rev 5) ·
 [plan](specs/001-order-extraction-agent/plan.md) ·
 [research](specs/001-order-extraction-agent/research.md) ·
 [data model](specs/001-order-extraction-agent/data-model.md) ·
@@ -118,6 +120,23 @@ change. One gap remains by design: an injected value copied **verbatim** from th
 is "grounded" by definition, so the agent's own grounding checks cannot catch it. The
 evaluation's INV-7 (forbidden injected strings and numbers anywhere in the output) is the check
 for that case (research.md R-4).
+
+## Results (2026-11-22)
+
+All runs used the same 28 cases, thresholds declared before any evaluation (L1 100%, L2 100%,
+L3 ≥ 80%), qwen3.5:4b with seed 42, and the 35B judge as an informational signal.
+
+| Run | Prompt | L1 | L2 | L3 | Verdict |
+|---|---|---|---|---|---|
+| 20261122T154734Z | p1 (initial generation) | 25/28 | 19/28 | 75.9% | FAIL |
+| 20261122T155859Z | p2 (repair 1) | 28/28 | 25/28 | 93.2% | FAIL |
+| 20261122T160905Z | p3 (repair 2) | 27/28 | 27/28 | 92.0% | FAIL |
+
+The deterministic harness passes on the final code: 652 tests, coverage of at least 90% on `src`
+and `run_eval`. On the original generated agent it found 9 failing evaluation cases and 1 lint
+failure. The two prompt-only repairs fixed 8 of the 9. The final run still fails layers 1 and 2
+on one case (E02, an aggregate order whose value was nulled), so the verdict is FAIL. Nothing was
+lowered or dropped. Full account: [evidence/harness-log.md](evidence/harness-log.md).
 
 ## Decision
 

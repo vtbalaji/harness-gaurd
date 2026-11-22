@@ -1,0 +1,189 @@
+{
+  "case_id": "E01",
+  "categories": [
+    "edge_case"
+  ],
+  "covers": {
+    "fr": [
+      "FR-006",
+      "FR-012"
+    ],
+    "ac": [
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:13:07.544Z",
+      "ended_at": "2026-11-22T16:13:19.983Z",
+      "elapsed_s": 12.445,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4878,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Ganga Smart Infra Limited\", \"company_quote\": \"Ganga Smart Infra Limited has received a Letter of Award\", \"announcement_date\": \"2026-11-05\", \"announcement_date_quote\": \"Date: 05/11/2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"turnkey execution\", \"execution_period\": \"within 24 months\", \"execution_period_quote\": \"to be completed within 24 months\", \"orders\": [{\"order_value\": 500, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Uttar Pradesh Jal Nigam\", \"value_quote\": \"approximately ₹500 crore (including GST)\", \"client_quote\": \"Uttar Pradesh Jal Nigam\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 186,
+        "prompt_eval_count": 2823,
+        "total_duration": 12352637417,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Ganga Smart Infra Limited",
+    "announcement_date": "2026-11-05",
+    "order": {
+      "order_value": 500,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 500.0,
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "epc_construction",
+      "execution_period": "within 24 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Ganga Smart Infra Limited has received a Letter of Award",
+      "announcement_date": "Date: 05/11/2026",
+      "order_value": "approximately ₹500 crore (including GST)",
+      "currency": "approximately ₹500 crore (including GST)",
+      "unit": "approximately ₹500 crore (including GST)",
+      "client": "Uttar Pradesh Jal Nigam",
+      "order_type": "turnkey execution",
+      "execution_period": "to be completed within 24 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "5000000000"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      500.0
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Ganga Smart Infra Limited",
+        "actual": "Ganga Smart Infra Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-05",
+        "actual": "2026-11-05",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 500,
+        "actual": 500,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Uttar Pradesh Jal Nigam",
+        "actual": "Uttar Pradesh Jal Nigam",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "epc_construction",
+        "actual": "epc_construction",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 24 months",
+        "actual": "within 24 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction incorrectly maps the order value string to the currency and unit fields, and misclassifies the 'turnkey execution' order type as 'epc_construction' without explicit textual support."
+  }
+}

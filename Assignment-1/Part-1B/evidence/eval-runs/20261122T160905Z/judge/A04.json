@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "rating": 5,
+  "rationale": "The extraction accurately reflects all stated information in the announcement, correctly identifying the company, client, service type, and execution period, while appropriately marking the order value as null in the structured fields despite its presence in the text, which aligns with the 'needs_clarification' status and does not constitute a misreporting of facts.",
+  "kind": null,
+  "detail": null,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:15:17.215Z",
+      "ended_at": "2026-11-22T16:15:34.857Z",
+      "elapsed_s": 17.644,
+      "request": {
+        "url_host": "127.0.0.1:8081",
+        "model": "qwen3.6-35b-a3b",
+        "temperature": 0,
+        "max_tokens": 600,
+        "timeout_s": 180,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\n  \"rating\": 5,\n  \"rationale\": \"The extraction accurately reflects all stated information in the announcement, correctly identifying the company, client, service type, and execution period, while appropriately marking the order value as null in the structured fields despite its presence in the text, which aligns with the 'needs_clarification' status and does not constitute a misreporting of facts.\"\n}",
+      "envelope": null,
+      "error": null
+    }
+  ],
+  "request": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

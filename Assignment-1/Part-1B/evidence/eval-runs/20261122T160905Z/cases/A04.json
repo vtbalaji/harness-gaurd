@@ -1,0 +1,187 @@
+{
+  "case_id": "A04",
+  "categories": [
+    "ambiguous_value"
+  ],
+  "covers": {
+    "fr": [
+      "FR-012"
+    ],
+    "ac": [
+      "AC-2.5",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:11:33.226Z",
+      "ended_at": "2026-11-22T16:11:45.077Z",
+      "elapsed_s": 11.852,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4832,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Utkal Bulk Logistics Limited\", \"company_quote\": \"Utkal Bulk Logistics Limited has received a rate contract\", \"announcement_date\": \"2026-11-11\", \"announcement_date_quote\": \"Date: 11.11.2026\", \"order_type\": \"services\", \"order_type_quote\": \"coal transportation and handling services\", \"execution_period\": \"within three years\", \"execution_period_quote\": \"to be executed within three years\", \"orders\": [{\"order_value\": null, \"currency\": null, \"unit\": null, \"client\": \"Mahanadi Coalfields Limited\", \"value_quote\": null, \"client_quote\": \"Mahanadi Coalfields Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 162,
+        "prompt_eval_count": 2791,
+        "total_duration": 11756275708,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Utkal Bulk Logistics Limited",
+    "announcement_date": "2026-11-11",
+    "order": {
+      "order_value": null,
+      "currency": null,
+      "unit": null,
+      "value_in_cr": null,
+      "client": "Mahanadi Coalfields Limited",
+      "order_type": "services",
+      "execution_period": "within three years"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Utkal Bulk Logistics Limited has received a rate contract",
+      "announcement_date": "Date: 11.11.2026",
+      "client": "Mahanadi Coalfields Limited",
+      "order_type": "coal transportation and handling services",
+      "execution_period": "to be executed within three years"
+    },
+    "missing_fields": [
+      "order_value"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        2,
+        "0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      null
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Utkal Bulk Logistics Limited",
+        "actual": "Utkal Bulk Logistics Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-11",
+        "actual": "2026-11-11",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "unit": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "client": {
+        "expected": "Mahanadi Coalfields Limited",
+        "actual": "Mahanadi Coalfields Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "services",
+        "actual": "services",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within three years",
+        "actual": "within three years",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "The extraction accurately reflects all stated information in the announcement, correctly identifying the company, client, service type, and execution period, while appropriately marking the order value as null in the structured fields despite its presence in the text, which aligns with the 'needs_clarification' status and does not constitute a misreporting of facts."
+  }
+}

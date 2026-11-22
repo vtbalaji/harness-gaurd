@@ -1,0 +1,165 @@
+{
+  "case_id": "E02",
+  "categories": [
+    "edge_case"
+  ],
+  "covers": {
+    "fr": [
+      "FR-009"
+    ],
+    "ac": [
+      "AC-4.3"
+    ]
+  },
+  "outcome": "application_failure",
+  "stage": "mr_consistency",
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:13:20.007Z",
+      "ended_at": "2026-11-22T16:13:31.988Z",
+      "elapsed_s": 11.982,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4847,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Brahmaputra Power Equipment Limited\", \"company_quote\": \"Brahmaputra Power Equipment Limited has received orders aggregating ₹600 crore from NTPC and NHPC for the supply of hydro turbine components\", \"announcement_date\": \"2026-11-04\", \"announcement_date_quote\": \"Date: 04.11.2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of hydro turbine components\", \"execution_period\": \"within 20 months\", \"execution_period_quote\": \"to be executed within 20 months\", \"orders\": [{\"order_value\": null, \"currency\": null, \"unit\": null, \"client\": \"NTPC and NHPC\", \"value_quote\": \"₹600 crore\", \"client_quote\": \"NTPC and NHPC\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 193,
+        "prompt_eval_count": 2805,
+        "total_duration": 11916804584,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": null,
+  "agent_errors": [
+    {
+      "code": "MR-CONSIST",
+      "pointer": "/orders/0/value_quote",
+      "message": "MC-3: value_quote must be null iff order_value is null",
+      "layer": 1
+    }
+  ],
+  "parser_log": [],
+  "assembly_trace": null,
+  "scored": true,
+  "layer1": {
+    "pass": false,
+    "has_candidate": false,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [
+      {
+        "code": "MR-CONSIST",
+        "pointer": "/orders/0/value_quote",
+        "message": "MC-3: value_quote must be null iff order_value is null",
+        "layer": 1
+      }
+    ],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": false,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [
+      {
+        "inv": "INV-1",
+        "detail": "no candidate (FR-028 item 1)"
+      }
+    ],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Brahmaputra Power Equipment Limited",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "announcement_date": {
+        "expected": "2026-11-04",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "order_value": {
+        "expected": 600,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "client": {
+        "expected": "NTPC and NHPC",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "execution_period": {
+        "expected": "within 20 months",
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": null,
+        "correct": false,
+        "rule": "no candidate: 0 of 9 (reading (c))"
+      }
+    },
+    "correct": 0,
+    "compared": 9
+  },
+  "judge": {
+    "status": "not_applicable"
+  }
+}

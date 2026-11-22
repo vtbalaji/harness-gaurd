@@ -1,0 +1,187 @@
+{
+  "case_id": "A01",
+  "categories": [
+    "ambiguous_value"
+  ],
+  "covers": {
+    "fr": [
+      "FR-012"
+    ],
+    "ac": [
+      "AC-2.5",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:11:00.138Z",
+      "ended_at": "2026-11-22T16:11:10.872Z",
+      "elapsed_s": 10.734,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4857,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Tapti Engineering Works Limited\", \"company_quote\": \"Tapti Engineering Works Limited wishes to inform that it has received orders\", \"announcement_date\": \"2026-11-14\", \"announcement_date_quote\": \"Date: 14.11.2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of bogie frames\", \"execution_period\": \"within 15 months\", \"execution_period_quote\": \"to be executed within 15 months\", \"orders\": [{\"order_value\": null, \"currency\": null, \"unit\": null, \"client\": \"Chittaranjan Locomotive Works\", \"value_quote\": null, \"client_quote\": \"Chittaranjan Locomotive Works\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 173,
+        "prompt_eval_count": 2813,
+        "total_duration": 10609113083,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "needs_clarification",
+    "company": "Tapti Engineering Works Limited",
+    "announcement_date": "2026-11-14",
+    "order": {
+      "order_value": null,
+      "currency": null,
+      "unit": null,
+      "value_in_cr": null,
+      "client": "Chittaranjan Locomotive Works",
+      "order_type": "supply",
+      "execution_period": "within 15 months"
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Tapti Engineering Works Limited wishes to inform that it has received orders",
+      "announcement_date": "Date: 14.11.2026",
+      "client": "Chittaranjan Locomotive Works",
+      "order_type": "supply of bogie frames",
+      "execution_period": "to be executed within 15 months"
+    },
+    "missing_fields": [
+      "order_value"
+    ],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        2,
+        "0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      null
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Tapti Engineering Works Limited",
+        "actual": "Tapti Engineering Works Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-14",
+        "actual": "2026-11-14",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "unit": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "client": {
+        "expected": "Chittaranjan Locomotive Works",
+        "actual": "Chittaranjan Locomotive Works",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "supply",
+        "actual": "supply",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": "within 15 months",
+        "actual": "within 15 months",
+        "correct": true,
+        "rule": "normalised text"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 2,
+    "rationale": "The extraction is unfaithful because it sets order_value, currency, unit, and value_in_cr to null, ignoring the explicit text stating the orders are in the range of ₹200–250 crore."
+  }
+}

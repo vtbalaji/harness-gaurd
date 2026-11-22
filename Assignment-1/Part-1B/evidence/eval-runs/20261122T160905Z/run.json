@@ -1,0 +1,63 @@
+{
+  "run_id": "20261122T160905Z",
+  "started_at": "2026-11-22T16:09:05Z",
+  "ended_at": "2026-11-22T16:16:33Z",
+  "completed": true,
+  "model": {
+    "tag": "qwen3.5:4b",
+    "digest_pinned": "d8b0f5e9760c",
+    "digest_installed": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04"
+  },
+  "runner": {
+    "name": "ollama",
+    "version_pinned": "0.32.14",
+    "version_installed": "0.32.14"
+  },
+  "settings": {
+    "temperature": 0.1,
+    "seed": 42,
+    "num_predict": 700,
+    "think": false,
+    "format": "json",
+    "stream": false,
+    "timeout_s": 300,
+    "num_ctx_formula": "max(4096, prompt_chars // 3 + num_predict + 512)",
+    "max_attempts": 3,
+    "backoff_s": [
+      5,
+      10
+    ]
+  },
+  "prompt_version": "p3",
+  "system_sha256": "a19b0bb4eba850a359d45ffbbad55905d16640a553aa005bbd4189db75c07797",
+  "schema_version": "1.0",
+  "mr_version": "mr-1",
+  "dataset": {
+    "path": "evals/dataset.json",
+    "sha256": "8ab71de92f6e2def624dc67b9da7c0102be86f8c90b7d78a8172b4a07f24ef98",
+    "case_count": 28,
+    "dataset_version": "1.0",
+    "bound_sha256": "8ab71de92f6e2def624dc67b9da7c0102be86f8c90b7d78a8172b4a07f24ef98",
+    "bound_version": "1.0",
+    "matches_spec": true
+  },
+  "code_sha256": {
+    "src/order_agent/validators.py": "316e6ba066a1ce4ce211fc3cb963af37207f92c4377c93108ba5e8e53083f7d3",
+    ".harness/run_eval.py": "a04909dbae3dc9bd249fd978d72fac8d102e2b4831b73b7b985bd0c6752b6c12"
+  },
+  "judge": {
+    "url_host": "127.0.0.1:8081",
+    "model": "qwen3.6-35b-a3b",
+    "temperature": 0,
+    "max_tokens": 600,
+    "timeout_s": 180,
+    "disable_thinking": true
+  },
+  "pin_check": {
+    "ok": true,
+    "mismatches": []
+  },
+  "env_mismatch": [],
+  "git_head": "358f55bb9fe5e8206c6b453109d64c4d6de405d8",
+  "python_version": "3.14.7"
+}

@@ -1,0 +1,192 @@
+{
+  "case_id": "N02",
+  "categories": [
+    "normal_single_order",
+    "unit_crore"
+  ],
+  "covers": {
+    "fr": [
+      "FR-004",
+      "FR-007"
+    ],
+    "ac": [
+      "AC-1.4",
+      "AC-4.3"
+    ]
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:09:19.182Z",
+      "ended_at": "2026-11-22T16:09:30.795Z",
+      "elapsed_s": 11.615,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4927,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Harbinger Powerlines Limited\", \"company_quote\": \"Harbinger Powerlines Limited has received a Letter of Award\", \"announcement_date\": \"2026-11-20\", \"announcement_date_quote\": \"Date: 20.11.2026\", \"order_type\": \"epc_construction\", \"order_type_quote\": \"EPC construction\", \"execution_period\": null, \"execution_period_quote\": null, \"orders\": [{\"order_value\": 12.5, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Maharashtra State Electricity Transmission Company Limited\", \"value_quote\": \"Rs 12.5 Cr\", \"client_quote\": \"Maharashtra State Electricity Transmission Company Limited\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 174,
+        "prompt_eval_count": 2881,
+        "total_duration": 11541424584,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Harbinger Powerlines Limited",
+    "announcement_date": "2026-11-20",
+    "order": {
+      "order_value": 12.5,
+      "currency": "INR",
+      "unit": "crore",
+      "value_in_cr": 12.5,
+      "client": "Maharashtra State Electricity Transmission Company Limited",
+      "order_type": "epc_construction",
+      "execution_period": null
+    },
+    "additional_orders": [],
+    "evidence": {
+      "company": "Harbinger Powerlines Limited has received a Letter of Award",
+      "announcement_date": "Date: 20.11.2026",
+      "order_value": "Rs 12.5 Cr",
+      "currency": "Rs 12.5 Cr",
+      "unit": "Rs 12.5 Cr",
+      "client": "Maharashtra State Electricity Transmission Company Limited",
+      "order_type": "EPC construction"
+    },
+    "missing_fields": [],
+    "unstated_fields": [
+      "execution_period"
+    ],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "ranking_keys": [
+      [
+        0,
+        "125000000.0"
+      ]
+    ],
+    "top_index": 0,
+    "additional_indices": [],
+    "value_in_cr": [
+      12.5
+    ]
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-3",
+      "INV-4",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10",
+      "INV-11"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": {
+    "fields": {
+      "company": {
+        "expected": "Harbinger Powerlines Limited",
+        "actual": "Harbinger Powerlines Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "announcement_date": {
+        "expected": "2026-11-20",
+        "actual": "2026-11-20",
+        "correct": true,
+        "rule": "exact"
+      },
+      "order_value": {
+        "expected": 12.5,
+        "actual": 12.5,
+        "correct": true,
+        "rule": "base units within value_tolerance, same currency"
+      },
+      "currency": {
+        "expected": "INR",
+        "actual": "INR",
+        "correct": true,
+        "rule": "exact"
+      },
+      "unit": {
+        "expected": "crore",
+        "actual": "crore",
+        "correct": true,
+        "rule": "exact"
+      },
+      "client": {
+        "expected": "Maharashtra State Electricity Transmission Company Limited",
+        "actual": "Maharashtra State Electricity Transmission Company Limited",
+        "correct": true,
+        "rule": "FR-029 name normalisation"
+      },
+      "order_type": {
+        "expected": "epc_construction",
+        "actual": "epc_construction",
+        "correct": true,
+        "rule": "exact"
+      },
+      "execution_period": {
+        "expected": null,
+        "actual": null,
+        "correct": true,
+        "rule": "null in ground truth: correct only if null"
+      },
+      "additional_orders": {
+        "expected": 0,
+        "actual": 0,
+        "correct": true,
+        "rule": "same count"
+      }
+    },
+    "correct": 9,
+    "compared": 9
+  },
+  "judge": {
+    "status": "ok",
+    "rating": 5,
+    "rationale": "All extracted values, including the company name, date, order value, currency, unit, client, and order type, are explicitly stated in the announcement text and are accurately reported without any misrepresentation or invention."
+  }
+}

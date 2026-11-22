@@ -1,0 +1,169 @@
+{
+  "case_id": "M03",
+  "layers_failed": [
+    3
+  ],
+  "failed_checks": [
+    {
+      "id": "L3:order_type",
+      "detail": "expected 'export', got 'supply'"
+    },
+    {
+      "id": "L3:execution_period",
+      "detail": "expected 'within 10 months', got None"
+    }
+  ],
+  "expected": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Vindhya Pumps & Valves Limited",
+    "announcement_date": "2026-11-15",
+    "order": {
+      "order_value": 2.3,
+      "currency": "EUR",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": "Rotterdam Process Equipment B.V.",
+      "order_type": "export",
+      "execution_period": "within 10 months"
+    },
+    "additional_orders": [
+      {
+        "order_value": 15,
+        "currency": "INR",
+        "unit": "crore",
+        "value_in_cr": 15,
+        "client": "Indian Oil Corporation Limited",
+        "evidence": {
+          "order_value": "₹15 crore",
+          "currency": "₹15 crore",
+          "unit": "₹15 crore",
+          "client": "Indian Oil Corporation Limited"
+        }
+      },
+      {
+        "order_value": 40,
+        "currency": "INR",
+        "unit": "lakh",
+        "value_in_cr": 0.4,
+        "client": "Gujarat Industrial Development Corporation",
+        "evidence": {
+          "order_value": "₹40 lakh",
+          "currency": "₹40 lakh",
+          "unit": "₹40 lakh",
+          "client": "Gujarat Industrial Development Corporation"
+        }
+      }
+    ],
+    "evidence": {
+      "company": "Vindhya Pumps & Valves Limited informs",
+      "announcement_date": "Date: 15/11/2026",
+      "order_value": "EUR 2.3 Mn",
+      "currency": "EUR 2.3 Mn",
+      "unit": "EUR 2.3 Mn",
+      "client": "Rotterdam Process Equipment B.V.",
+      "order_type": "an export order",
+      "execution_period": "to be executed within 10 months"
+    },
+    "missing_fields": [],
+    "unstated_fields": [],
+    "rejection_reason": null
+  },
+  "actual": {
+    "schema_version": "1.0",
+    "status": "extracted",
+    "company": "Vindhya Pumps & Valves Limited",
+    "announcement_date": "2026-11-15",
+    "order": {
+      "order_value": 2.3,
+      "currency": "EUR",
+      "unit": "million",
+      "value_in_cr": null,
+      "client": "Rotterdam Process Equipment B.V.",
+      "order_type": "supply",
+      "execution_period": null
+    },
+    "additional_orders": [
+      {
+        "order_value": 15,
+        "currency": "INR",
+        "unit": "crore",
+        "value_in_cr": 15.0,
+        "client": "Indian Oil Corporation Limited",
+        "evidence": {
+          "order_value": "₹15 crore",
+          "currency": "₹15 crore",
+          "unit": "₹15 crore",
+          "client": "Indian Oil Corporation Limited"
+        }
+      },
+      {
+        "order_value": 40,
+        "currency": "INR",
+        "unit": "lakh",
+        "value_in_cr": 0.4,
+        "client": "Gujarat Industrial Development Corporation",
+        "evidence": {
+          "order_value": "₹40 lakh",
+          "currency": "₹40 lakh",
+          "unit": "₹40 lakh",
+          "client": "Gujarat Industrial Development Corporation"
+        }
+      }
+    ],
+    "evidence": {
+      "company": "Vindhya Pumps & Valves Limited informs that it has received the following orders",
+      "announcement_date": "Date: 15/11/2026",
+      "order_value": "EUR 2.3 Mn",
+      "currency": "EUR 2.3 Mn",
+      "unit": "EUR 2.3 Mn",
+      "client": "Rotterdam Process Equipment B.V.",
+      "order_type": "supply of pipeline valves"
+    },
+    "missing_fields": [],
+    "unstated_fields": [
+      "execution_period"
+    ],
+    "rejection_reason": null
+  },
+  "raw_model_output": "{\"is_new_order\": true, \"company\": \"Vindhya Pumps & Valves Limited\", \"company_quote\": \"Vindhya Pumps & Valves Limited informs that it has received the following orders\", \"announcement_date\": \"2026-11-15\", \"announcement_date_quote\": \"Date: 15/11/2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of pipeline valves\", \"execution_period\": null, \"execution_period_quote\": null, \"orders\": [{\"order_value\": 15, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Indian Oil Corporation Limited\", \"value_quote\": \"₹15 crore\", \"client_quote\": \"Indian Oil Corporation Limited\"}, {\"order_value\": 2.3, \"currency\": \"EUR\", \"unit\": \"million\", \"client\": \"Rotterdam Process Equipment B.V.\", \"value_quote\": \"EUR 2.3 Mn\", \"client_quote\": \"Rotterdam Process Equipment B.V.\"}, {\"order_value\": 40, \"currency\": \"INR\", \"unit\": \"lakh\", \"client\": \"Gujarat Industrial Development Corporation\", \"value_quote\": \"₹40 lakh\", \"client_quote\": \"Gujarat Industrial Development Corporation\"}]}",
+  "parser_log": [],
+  "agent_errors": [],
+  "reason": "Semantic miss only: wrong layer-3 field(s) order_type, execution_period.",
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:10:46.201Z",
+      "ended_at": "2026-11-22T16:11:00.102Z",
+      "elapsed_s": 13.901,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4923,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": true, \"company\": \"Vindhya Pumps & Valves Limited\", \"company_quote\": \"Vindhya Pumps & Valves Limited informs that it has received the following orders\", \"announcement_date\": \"2026-11-15\", \"announcement_date_quote\": \"Date: 15/11/2026\", \"order_type\": \"supply\", \"order_type_quote\": \"supply of pipeline valves\", \"execution_period\": null, \"execution_period_quote\": null, \"orders\": [{\"order_value\": 15, \"currency\": \"INR\", \"unit\": \"crore\", \"client\": \"Indian Oil Corporation Limited\", \"value_quote\": \"₹15 crore\", \"client_quote\": \"Indian Oil Corporation Limited\"}, {\"order_value\": 2.3, \"currency\": \"EUR\", \"unit\": \"million\", \"client\": \"Rotterdam Process Equipment B.V.\", \"value_quote\": \"EUR 2.3 Mn\", \"client_quote\": \"Rotterdam Process Equipment B.V.\"}, {\"order_value\": 40, \"currency\": \"INR\", \"unit\": \"lakh\", \"client\": \"Gujarat Industrial Development Corporation\", \"value_quote\": \"₹40 lakh\", \"client_quote\": \"Gujarat Industrial Development Corporation\"}]}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 281,
+        "prompt_eval_count": 2859,
+        "total_duration": 13839138208,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "run_id": "20261122T160905Z"
+}

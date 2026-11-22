@@ -1,0 +1,100 @@
+{
+  "case_id": "P01",
+  "categories": [
+    "owner_decision"
+  ],
+  "covers": {
+    "fr": [
+      "FR-013"
+    ],
+    "ac": []
+  },
+  "outcome": "success",
+  "stage": null,
+  "exception": null,
+  "model_called": true,
+  "attempts": [
+    {
+      "n": 1,
+      "started_at": "2026-11-22T16:13:00.148Z",
+      "ended_at": "2026-11-22T16:13:07.533Z",
+      "elapsed_s": 7.386,
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "model": "qwen3.5:4b",
+        "stream": false,
+        "think": false,
+        "format": "json",
+        "options": {
+          "temperature": 0.1,
+          "num_predict": 700,
+          "num_ctx": 4907,
+          "seed": 42
+        },
+        "timeout_s": 300
+      },
+      "http_status": 200,
+      "outcome": "ok",
+      "service_failure_kind": null,
+      "raw_text": "{\"is_new_order\": false, \"company\": \"Sarayu Transformers Limited\", \"company_quote\": \"Sarayu Transformers Limited wishes to inform\", \"announcement_date\": null, \"announcement_date_quote\": null, \"order_type\": null, \"order_type_quote\": null, \"execution_period\": null, \"execution_period_quote\": null, \"orders\": []}",
+      "envelope": {
+        "done_reason": "stop",
+        "eval_count": 74,
+        "prompt_eval_count": 2835,
+        "total_duration": 7295742208,
+        "model": "qwen3.5:4b"
+      },
+      "error": null
+    }
+  ],
+  "candidate": {
+    "schema_version": "1.0",
+    "status": "not_an_order",
+    "company": "Sarayu Transformers Limited",
+    "announcement_date": null,
+    "order": null,
+    "additional_orders": [],
+    "evidence": {
+      "company": "Sarayu Transformers Limited wishes to inform"
+    },
+    "missing_fields": [],
+    "unstated_fields": [
+      "announcement_date"
+    ],
+    "rejection_reason": null
+  },
+  "agent_errors": [],
+  "parser_log": [],
+  "assembly_trace": {
+    "is_new_order": false,
+    "value_in_cr": []
+  },
+  "scored": true,
+  "layer1": {
+    "pass": true,
+    "has_candidate": true,
+    "schema_errors": [],
+    "structural_errors": [],
+    "date_error": null,
+    "agent_errors": [],
+    "checker_disagreement": false
+  },
+  "layer2": {
+    "pass": true,
+    "applicable": [
+      "INV-1",
+      "INV-2",
+      "INV-5",
+      "INV-6",
+      "INV-8",
+      "INV-10"
+    ],
+    "failed": [],
+    "agent_errors": []
+  },
+  "layer3": null,
+  "judge": {
+    "status": "not_applicable"
+  }
+}
