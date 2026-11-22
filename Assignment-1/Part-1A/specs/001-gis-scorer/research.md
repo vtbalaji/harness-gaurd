@@ -12,7 +12,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
 
 ## R-01 — Explicit `null`, null list elements, empty list
 
-> **PROVISIONAL — not confirmed by Balaji**
+> **CONFIRMED by Balaji, 2026-11-22** (project thread; recorded in spec.md Clarifications)
 
 - **Decision**:
   - An explicit `null` (Python `None`) for any field means the same as an absent field: the value
@@ -36,11 +36,11 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
     supplied".
   - (iii) Skip null elements instead of stopping. This contradicts FR-023's "stopping at the first
     that is not, or is missing".
-- **Tests**: Tests that depend on this decision carry `PROVISIONAL R-01` in their docstring.
+- **Tests**: Tests that depend on this decision carry `R-01` in their docstring.
 
 ## R-02 — Integral floats for Piotroski; booleans
 
-> **PROVISIONAL — not confirmed by Balaji**
+> **CONFIRMED by Balaji, 2026-11-22** (project thread; recorded in spec.md Clarifications)
 
 - **Decision**:
   - `piotroski` accepts an `int`, or a `float` with no fractional part. `6.0` is normalised to the
@@ -58,7 +58,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
   - Accept only `int`. This would break on JSON written by floating-point tools.
   - Round non-integral values. That is guessing.
   - Accept booleans as 0/1. That is a silent coercion.
-- **Tests**: Tests that depend on this decision carry `PROVISIONAL R-02` in their docstring.
+- **Tests**: Tests that depend on this decision carry `R-02` in their docstring.
 
 ---
 
@@ -207,9 +207,17 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
   | Tool | Pin |
   |---|---|
   | ruff | `ruff==0.14.0` |
-  | bandit | `bandit==1.8.6` |
+  | bandit | `bandit==1.9.1` (bumped from `1.8.6`, see the change note below) |
   | pytest | `pytest==8.4.2` |
   | pytest-cov | `pytest-cov==7.0.0` |
+
+  **Change (2026-11-22, `/speckit-implement` T006/T078)**: `bandit==1.8.6` installs on Python
+  3.14.7 and `bandit --version` works, but it does not *run*. Every file is reported as
+  "exception while scanning file" (`AttributeError: 'Constant' object has no attribute 's'`,
+  because Python 3.14 removed the deprecated `ast.Constant.s` alias). That gives exit 0 with
+  zero files scanned, which is a false pass of Gate 2. The pin was bumped to the nearest later
+  release, `bandit==1.9.1`. It scans all of `src/` (0 files skipped) on Python 3.14.7. The
+  other three pins install and run unchanged.
 
   The harness records `pip freeze` with each run, so the resolved transitive versions (such as
   `coverage`) are captured as evidence.
@@ -346,8 +354,7 @@ on the owner's instruction they are *not* recorded in the spec's Clarifications.
 
 ## Open items for owner review
 
-1. **R-01 and R-02** (PROVISIONAL): confirm them, or choose the alternatives listed. Then record the
-   decision in the spec (Clarifications or Edge Cases) before implementation is accepted.
+1. **R-01 and R-02**: CONFIRMED by Balaji 2026-11-22 (recorded in spec.md Clarifications).
 2. **R-07 overflow reporting**: this is output-only and changes no points. Confirm that `null` with
    a reason suffix is acceptable.
 3. **R-14 missing Piotroski at the gate**: this follows FR-054 literally. A missing Piotroski does

@@ -80,7 +80,7 @@ Checked against `.specify/memory/constitution.md` v1.0.0.
 | Principle / constraint | How the plan satisfies it | Pre-research | Post-design |
 |---|---|---|---|
 | **I. Deterministic Pure Scoring** | `score_snapshot()` is a pure function with no I/O, clock, environment or randomness. The total uses exact `Fraction` arithmetic (R-04). The result is frozen dataclasses with a fixed key order (R-06). Only `cli.py` touches a file, and it sits outside the scorer. The determinism test runs 1,000 in-process calls and compares the CLI's bytes across different `PYTHONHASHSEED` values (R-11). | PASS | PASS |
-| **II. Spec-Traceable Rules** | Every threshold, operator and point value lives in a constant named `FRxxx_*` in `rules.py` / `valuation.py` (R-03). Each item's output carries its `requirement` id. There are no constants beyond the spec. The provisional decisions R-01/R-02 are validation semantics, not scoring constants. They are recorded in research.md, not the spec, as the owner instructed. **Condition**: they must be confirmed by the owner, and moved into the spec, before `/speckit-implement` treats them as final. Their tests are tagged `PROVISIONAL` so they are easy to find if the decision changes. | PASS (conditional) | PASS (conditional) |
+| **II. Spec-Traceable Rules** | Every threshold, operator and point value lives in a constant named `FRxxx_*` in `rules.py` / `valuation.py` (R-03). Each item's output carries its `requirement` id. There are no constants beyond the spec. The validation decisions R-01/R-02 are not scoring constants; the owner confirmed them on 2026-11-22 and they are recorded in spec.md Clarifications. Their tests are tagged `R-01` / `R-02`. | PASS | PASS |
 | **III. Test-First With a Harness** | The task order will put the failing acceptance and unit tests before each behaviour. Every boundary is tested on both sides (SC-002). The test-to-FR traceability check is automated (R-12). `.harness/run_harness.sh` runs all gates (R-10). The 90% coverage gate is the owner's floor. SC-002's 100% line and branch coverage on the scoring modules is checked from the same coverage report (R-10). | PASS | PASS |
 | **IV. Explicit Missing-Data Semantics** | Absent and (provisionally) `null` mean missing, and an item with missing input is 0 of 0 with status `no_data`, reason "No data". Zero and negative values are scored. Bad types, non-finite values and out-of-range values raise `SnapshotValidationError` naming every bad field, and no partial result is returned (R-05). | PASS | PASS |
 | **V. Simplicity and Isolation** | Runtime is stdlib only, in 8 small modules (one of them is the CLI). Nothing out of scope is built: no sectors, lenders, capital deployment or red flags. Nothing is imported from myportfolio-web. | PASS | PASS |
@@ -97,7 +97,7 @@ one condition is owner confirmation of R-01/R-02 before implementation is accept
 ```text
 specs/001-gis-scorer/
 ├── plan.md              # This file
-├── research.md          # Phase 0: decisions, incl. PROVISIONAL R-01/R-02
+├── research.md          # Phase 0: decisions, incl. R-01/R-02
 ├── data-model.md        # Phase 1: snapshot fields, result entities, validation rules
 ├── quickstart.md        # Phase 1: setup, run and validation scenarios
 ├── contracts/

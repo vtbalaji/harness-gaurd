@@ -87,10 +87,10 @@ Quick check of the headline fields:
 
 ## Provisional behaviour to re-check after owner confirmation
 
-The tests tagged `PROVISIONAL R-01` (null, null element, empty list) and `PROVISIONAL R-02`
+The tests tagged `R-01` (null, null element, empty list) and `R-02`
 (integral float, booleans) encode decisions that are **not yet confirmed by Balaji**. List them
 with:
 
 ```bash
-grep -rn "PROVISIONAL R-0" tests/
+grep -rn "R-0" tests/
 ```
